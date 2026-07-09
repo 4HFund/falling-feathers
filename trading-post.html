@@ -1,181 +1,215 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Trading Post | Falling Feathers Hollow</title>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Lora&display=swap" rel="stylesheet"/>
+  <meta name="description" content="Local Chicken, Duck, & Quail Eggs and future Falling Feathers Hollow goods from Wheeling, West Virginia." />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --primary-bg: #f4e0c5;
-      --accent: #d1a76f;
-      --text-dark: #4b3b2a;
+      --cream: #fffaf1;
+      --warm: #f4e0c5;
+      --tan: #d1a76f;
+      --brown: #4b3b2a;
+      --deep: #2f2419;
+      --green: #49633e;
+      --gold: #c7941f;
     }
+
+    * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background-color: var(--primary-bg);
-      color: var(--text-dark);
-      overflow-x: hidden;
-      text-align: center;
+      background: linear-gradient(135deg, #fffaf1 0%, var(--warm) 100%);
+      color: var(--brown);
       scroll-behavior: smooth;
     }
 
-    header img {
-      max-width: 220px;
-      height: auto;
-      margin: 1.5rem auto 0.5rem;
-      display: block;
-    }
+    header { text-align: center; padding: 2rem 1rem 1rem; }
+    header img { max-width: 260px; width: 80%; height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 6px 18px rgba(75,59,42,0.18)); }
 
     .navbar {
-      padding: 0.75rem 1rem;
       position: sticky;
       top: 0;
-      width: 100%;
-      background: rgba(139, 94, 60, 0.85);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
       z-index: 999;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      width: 100%;
+      background: rgba(75, 59, 42, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
     }
 
-    .nav-row {
-      max-width: 600px;
-      margin: 0.3rem auto;
+    .nav-wrap {
+      max-width: 950px;
+      margin: 0 auto;
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
-      gap: 2rem;
+      justify-content: center;
+      gap: .35rem;
+      padding: .75rem 1rem;
     }
 
-    .nav-row a {
+    .nav-wrap a {
       color: white;
       text-decoration: none;
-      font-size: 1rem;
       font-family: 'Lora', serif;
-      position: relative;
-      padding: 0.25rem 0.5rem;
-      transition: color 0.2s ease;
+      font-size: .98rem;
+      padding: .55rem .85rem;
+      border-radius: 999px;
+      transition: background .2s ease, transform .2s ease;
     }
 
-    .nav-row a:hover::before {
-      content: "🪶";
-      position: absolute;
-      left: -1.3rem;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-    }
+    .nav-wrap a:hover,
+    .nav-wrap a.active { background: rgba(255,234,196,.18); color: #ffeac4; transform: translateY(-1px); }
 
-    .nav-row a.active {
-      font-weight: bold;
-      color: #ffeac4;
-    }
+    main { max-width: 1080px; margin: 0 auto; padding: 1rem; }
 
-    .content-block {
-      background: #fffaf1;
-      margin: 2rem auto;
-      padding: 2rem 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.04);
-      max-width: 1000px;
-    }
-
-    h2 {
-      font-family: 'Courier New', Courier, monospace;
-      background: #deb887;
-      display: inline-block;
-      padding: 0.4em 1em;
-      border-radius: 6px;
-      box-shadow: 2px 2px 0 #a87c4c;
-      margin-bottom: 1rem;
-    }
-
-    .intro {
-      font-family: 'Dancing Script', cursive;
-      font-size: 1.4rem;
-      line-height: 1.6;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .merch-preview {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    .merch-preview img {
-      max-width: 100%;
-      width: 300px;
-      border-radius: 12px;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-    }
-
-    footer {
+    .hero {
       text-align: center;
-      padding: 1rem;
-      background-color: var(--accent);
+      margin: 1.5rem auto 2rem;
+      padding: clamp(2rem, 5vw, 4rem) 1.5rem;
       color: white;
-      font-size: 0.9rem;
-      margin-top: 2rem;
+      border-radius: 28px;
+      background:
+        linear-gradient(rgba(47,36,25,.62), rgba(47,36,25,.72)),
+        linear-gradient(135deg, #6f8b55, #49633e 50%, #6f9f9a);
+      box-shadow: 0 18px 50px rgba(75,59,42,0.20);
     }
 
-    @media (max-width: 500px) {
-      .nav-row {
-        flex-direction: row;
-        justify-content: center;
-        gap: 1rem;
-      }
+    .eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; font-weight: 800; color: #ffeac4; margin-bottom: .75rem; }
+    h1, h2, h3 { font-family: 'Lora', serif; margin-top: 0; }
+    h1 { font-size: clamp(2.1rem, 6vw, 4.5rem); line-height: 1; margin-bottom: 1rem; }
+    .hero p { max-width: 740px; margin: 0 auto; font-size: clamp(1rem, 2.3vw, 1.2rem); line-height: 1.7; }
 
-      .nav-row a {
-        font-size: 0.95rem;
-        padding: 0.25rem;
-      }
+    .section {
+      background: rgba(255,253,248,.9);
+      border: 1px solid rgba(209,167,111,.28);
+      border-radius: 24px;
+      box-shadow: 0 10px 35px rgba(75,59,42,0.08);
+      padding: clamp(1.5rem, 4vw, 3rem);
+      margin: 1.5rem 0;
+    }
+
+    .section-heading { text-align: center; max-width: 780px; margin: 0 auto 2rem; }
+    .section-heading h2 { color: var(--deep); font-size: clamp(1.7rem, 4vw, 2.6rem); margin-bottom: .65rem; }
+    .section-heading p { color: #5e4a35; line-height: 1.7; margin: 0; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.35rem;
+      border: 1px solid rgba(209,167,111,.25);
+      box-shadow: 0 8px 24px rgba(75,59,42,0.08);
+      text-align: center;
+    }
+
+    .card .icon { font-size: 2.4rem; margin-bottom: .7rem; }
+    .card h3 { color: var(--deep); margin-bottom: .45rem; font-size: 1.28rem; }
+    .card p { color: #5e4a35; line-height: 1.65; margin: 0; }
+
+    .merch-preview { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+    .merch-preview img { width: 100%; border-radius: 18px; box-shadow: 0 8px 24px rgba(75,59,42,0.12); background: #f3eadf; }
+
+    .note {
+      background: #f7ead3;
+      border-left: 6px solid var(--gold);
+      border-radius: 16px;
+      padding: 1.25rem;
+      line-height: 1.7;
+      color: #5b432d;
+    }
+
+    .button-row { display: flex; justify-content: center; flex-wrap: wrap; gap: .85rem; margin-top: 1.5rem; }
+    .button { display: inline-block; text-decoration: none; border-radius: 999px; padding: .85rem 1.2rem; font-weight: 800; background: var(--gold); color: white; box-shadow: 0 6px 18px rgba(199,148,31,.24); }
+    .button.secondary { background: var(--green); }
+
+    footer { text-align: center; padding: 1.5rem 1rem; background-color: var(--tan); color: white; font-size: .95rem; margin-top: 2rem; }
+    footer a { color: white; font-weight: 700; }
+
+    @media (max-width: 560px) {
+      .nav-wrap { gap: .15rem; padding: .6rem .5rem; }
+      .nav-wrap a { font-size: .9rem; padding: .45rem .55rem; }
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow Logo" />
+    <img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow logo" />
   </header>
 
-  <nav class="navbar">
-    <div class="nav-row">
+  <nav class="navbar" aria-label="Main navigation">
+    <div class="nav-wrap">
       <a href="index.html">Our Nest</a>
       <a href="about.html">Our Story</a>
       <a href="profiles.html">Meet Our Flock</a>
-    </div>
-    <div class="nav-row">
       <a href="sponsor.html">Sponsor</a>
       <a href="studio/index.html">Studio</a>
       <a href="trading-post.html" class="active">Trading Post</a>
     </div>
   </nav>
 
-  <section class="content-block">
-    <div class="intro">
-      Our rustic Trading Post is almost open! While we build out inventory, here’s a peek at what’s coming.
-      Whether you're into feathers, flannel, or faith—there’s something here for every heart.
-    </div>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">Local eggs and hollow goods</div>
+      <h1>The Trading Post</h1>
+      <p>A simple place for Falling Feathers Hollow eggs, future merch, and goods that help support the sanctuary.</p>
+    </section>
 
-    <h2>Coming Soon</h2>
-    <div class="merch-preview">
-      <img src="veteran-merch-preview.png" alt="Veteran Merch Preview" />
-      <img src="duck-merch-preview.png" alt="Duck Collection Preview" />
-      <img src="slogans-merch-preview.png" alt="Slogan Collection Preview" />
-    </div>
-  </section>
+    <section class="section" aria-labelledby="eggs-heading">
+      <div class="section-heading">
+        <h2 id="eggs-heading">Chicken, Duck, &amp; Quail Eggs</h2>
+        <p>Eggs are local, seasonal, and based on what the flock is laying. Availability may change week to week.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="icon" aria-hidden="true">🥚</div>
+          <h3>Chicken Eggs</h3>
+          <p>Classic everyday eggs for breakfast, baking, and family meals.</p>
+        </article>
+        <article class="card">
+          <div class="icon" aria-hidden="true">🦆</div>
+          <h3>Duck Eggs</h3>
+          <p>Large, rich eggs many people love for baking and hearty recipes.</p>
+        </article>
+        <article class="card">
+          <div class="icon" aria-hidden="true">🪶</div>
+          <h3>Quail Eggs</h3>
+          <p>Small speckled eggs that are great for snacks, unique meals, and occasional pet toppers.</p>
+        </article>
+      </div>
+      <div class="button-row">
+        <a class="button" href="mailto:info@fallingfeathers.us?subject=Egg%20Availability%20Question">Ask About Eggs</a>
+        <a class="button secondary" href="profiles.html#eggs-heading">Learn About the Eggs</a>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="merch-heading">
+      <div class="section-heading">
+        <h2 id="merch-heading">Hollow Goods Coming Soon</h2>
+        <p>Merch and special collections are still being built out. Every future purchase will help support the animals and the mission.</p>
+      </div>
+      <div class="merch-preview">
+        <img src="veteran-merch-preview.png" alt="Veteran inspired merch preview" loading="lazy" />
+        <img src="duck-merch-preview.png" alt="Duck collection merch preview" loading="lazy" />
+        <img src="slogans-merch-preview.png" alt="Falling Feathers slogan merch preview" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="note">
+        <strong>Good to know:</strong> Falling Feathers Hollow is a small family-run sanctuary project in Wheeling, West Virginia. We are growing carefully, and the animals come first.
+      </div>
+    </section>
+  </main>
 
   <footer>
-    &copy; Falling Feathers Hollow 2025. All rights reserved.<br>
-    <a href="mailto:info@fallingfeathers.us" style="color:white;">info@fallingfeathers.us</a>
+    &copy; Falling Feathers Hollow 2026. All rights reserved.<br />
+    <a href="mailto:info@fallingfeathers.us">info@fallingfeathers.us</a>
   </footer>
 </body>
 </html>

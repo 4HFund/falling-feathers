@@ -34,7 +34,9 @@
     .section-heading p { line-height:1.7; margin:0; color:#614c37; }
     .flock-gallery,.egg-grid,.help-grid,.count-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(245px,1fr)); gap:1.25rem; }
     .flock-card,.egg-card,.help-card,.count-card { background:white; border-radius:20px; overflow:hidden; border:1px solid rgba(209,167,111,.25); box-shadow:0 8px 24px rgba(75,59,42,.08); }
-    .flock-card img { width:100%; height:230px; object-fit:cover; display:block; background:#f3eadf; }
+    .image-frame,.flock-visual { height:230px; width:100%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#fff6e5,#e7d1ad); }
+    .image-frame img { width:100%; height:100%; object-fit:contain; object-position:center; display:block; padding:.55rem; }
+    .flock-visual { font-size:4.25rem; color:var(--green); text-shadow:0 4px 10px rgba(75,59,42,.12); }
     .flock-card .card-body,.egg-card,.help-card,.count-card { padding:1.25rem; }
     .flock-card h3,.egg-card h3,.help-card h3,.count-card h3 { color:var(--deep); font-size:1.35rem; margin-bottom:.45rem; }
     .flock-card p,.egg-card p,.help-card p,.count-card p { margin:0; line-height:1.65; color:#5e4a35; }
@@ -48,7 +50,7 @@
     .button.secondary { background:white; color:var(--brown); }
     footer { text-align:center; padding:1.5rem 1rem; background-color:var(--tan); color:white; font-size:.95rem; margin-top:2rem; }
     footer a { color:white; font-weight:700; }
-    @media (max-width:560px){ .nav-wrap{ gap:.15rem; padding:.6rem .5rem; } .nav-wrap a{ font-size:.9rem; padding:.45rem .55rem; } .flock-card img{ height:190px; } }
+    @media (max-width:560px){ .nav-wrap{ gap:.15rem; padding:.6rem .5rem; } .nav-wrap a{ font-size:.9rem; padding:.45rem .55rem; } .image-frame,.flock-visual{ height:190px; } }
   </style>
 </head>
 <body>
@@ -70,7 +72,13 @@
 
     <section class="section" aria-labelledby="flock-heading">
       <div class="section-heading"><h2 id="flock-heading">The Feathered Family</h2><p>Every part of the flock plays a role in the daily rhythm of the sanctuary.</p></div>
-      <div class="flock-gallery"><article class="flock-card"><img src="duck_collage_cleaned.png" alt="Pekin ducks at Falling Feathers Hollow" loading="lazy" /><div class="card-body"><span class="badge">Pekins</span><h3>Moonbeam &amp; Ming Ming</h3><p>The two Pekins currently leading the duck side of the hollow with big personalities and plenty of charm.</p></div></article><article class="flock-card"><div class="card-body"><span class="badge">Rouens</span><h3>Pip, Puddles &amp; 12 Babies</h3><p>Pip and Puddles have a growing group of 12 baby Rouens now being raised and cared for.</p></div></article><article class="flock-card"><div class="card-body"><span class="badge">Runner Ducks</span><h3>9 Runner Ducklings</h3><p>Nine baby Runner ducklings bring nonstop movement and future flock potential.</p></div></article><article class="flock-card"><img src="barred-rock-chicks-falling-feathers.jpg" alt="Young chickens at Falling Feathers Hollow" loading="lazy" /><div class="card-body"><span class="badge">Chicken Crew</span><h3>19 Chickens &amp; a Rooster</h3><p>The chicken crew brings eggs, personality, and plenty of daily chores.</p></div></article><article class="flock-card"><div class="card-body"><span class="badge">Quail</span><h3>Miniature &amp; Jumbo Quail</h3><p>The current quail group includes 10 miniature quail and 4 jumbo quail, supporting the quail egg side of the hollow.</p></div></article></div>
+      <div class="flock-gallery">
+        <article class="flock-card"><div class="image-frame"><img src="duck_collage_cleaned.png" alt="Pekin ducks at Falling Feathers Hollow" loading="lazy" /></div><div class="card-body"><span class="badge">Pekins</span><h3>Moonbeam &amp; Ming Ming</h3><p>The two Pekins currently leading the duck side of the hollow with big personalities and plenty of charm.</p></div></article>
+        <article class="flock-card"><div class="flock-visual" aria-hidden="true">🦆</div><div class="card-body"><span class="badge">Rouens</span><h3>Pip, Puddles &amp; 12 Babies</h3><p>Pip and Puddles have a growing group of 12 baby Rouens now being raised and cared for.</p></div></article>
+        <article class="flock-card"><div class="flock-visual" aria-hidden="true">🐥</div><div class="card-body"><span class="badge">Runner Ducks</span><h3>9 Runner Ducklings</h3><p>Nine baby Runner ducklings bring nonstop movement and future flock potential.</p></div></article>
+        <article class="flock-card"><div class="image-frame"><img src="barred-rock-chicks-falling-feathers.jpg" alt="Young chickens at Falling Feathers Hollow" loading="lazy" /></div><div class="card-body"><span class="badge">Chicken Crew</span><h3>19 Chickens &amp; a Rooster</h3><p>The chicken crew brings eggs, personality, and plenty of daily chores.</p></div></article>
+        <article class="flock-card"><div class="flock-visual" aria-hidden="true">🪶</div><div class="card-body"><span class="badge">Quail</span><h3>Miniature &amp; Jumbo Quail</h3><p>The current quail group includes 10 miniature quail and 4 jumbo quail, supporting the quail egg side of the hollow.</p></div></article>
+      </div>
     </section>
 
     <section class="section" aria-labelledby="eggs-heading"><div class="section-heading"><h2 id="eggs-heading">Chicken, Duck, &amp; Quail Eggs</h2><p>When the flock is laying and supply allows, Falling Feathers Hollow offers local eggs produced through small-scale, hands-on care.</p></div><div class="egg-grid"><article class="egg-card"><div class="egg-icon" aria-hidden="true">🥚</div><span class="badge">Everyday Favorite</span><h3>Chicken Eggs</h3><p>Classic, familiar, and great for everyday breakfasts, baking, and family meals.</p></article><article class="egg-card"><div class="egg-icon" aria-hidden="true">🦆</div><span class="badge">Rich &amp; Big</span><h3>Duck Eggs</h3><p>Larger eggs with a rich yolk that many people love for baking and hearty recipes.</p></article><article class="egg-card"><div class="egg-icon" aria-hidden="true">🪶</div><span class="badge">Tiny Powerhouse</span><h3>Quail Eggs</h3><p>Small, speckled eggs that are fun, unique, and popular for meals or occasional pet toppers.</p></article></div></section>

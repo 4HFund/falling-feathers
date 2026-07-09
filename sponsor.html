@@ -4,347 +4,71 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sponsor the Flock | Falling Feathers Hollow</title>
-  <meta name="description" content="Sponsor animals, feed, bedding, and care at Falling Feathers Hollow in Wheeling, West Virginia." />
+  <meta name="description" content="Support Jacy's woman veteran-owned Falling Feathers Hollow sanctuary project in Wheeling, West Virginia." />
   <link rel="icon" type="image/png" href="favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --cream: #fffaf1;
-      --warm: #f4e0c5;
-      --tan: #d1a76f;
-      --brown: #4b3b2a;
-      --deep: #2f2419;
-      --green: #49633e;
-      --gold: #c7941f;
-      --card: #fffdf8;
-    }
-
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #fffaf1 0%, var(--warm) 100%);
-      color: var(--brown);
-      scroll-behavior: smooth;
-    }
-
-    header {
-      text-align: center;
-      padding: 2rem 1rem 1rem;
-    }
-
-    header img {
-      max-width: 260px;
-      width: 80%;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-      filter: drop-shadow(0 6px 18px rgba(75,59,42,0.18));
-    }
-
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 999;
-      width: 100%;
-      background: rgba(75, 59, 42, 0.92);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
-    }
-
-    .nav-wrap {
-      max-width: 950px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: .35rem;
-      padding: .75rem 1rem;
-    }
-
-    .nav-wrap a {
-      color: white;
-      text-decoration: none;
-      font-family: 'Lora', serif;
-      font-size: .98rem;
-      padding: .55rem .85rem;
-      border-radius: 999px;
-      transition: background .2s ease, transform .2s ease;
-    }
-
-    .nav-wrap a:hover,
-    .nav-wrap a.active {
-      background: rgba(255, 234, 196, .18);
-      color: #ffeac4;
-      transform: translateY(-1px);
-    }
-
-    main {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 1rem;
-    }
-
-    .hero {
-      text-align: center;
-      margin: 1.5rem auto 2rem;
-      padding: clamp(2rem, 5vw, 4rem) 1.5rem;
-      color: white;
-      border-radius: 28px;
-      background:
-        linear-gradient(rgba(47,36,25,.62), rgba(47,36,25,.72)),
-        linear-gradient(135deg, #6f8b55, #49633e 50%, #6f9f9a);
-      box-shadow: 0 18px 50px rgba(75,59,42,0.20);
-    }
-
-    .eyebrow {
-      text-transform: uppercase;
-      letter-spacing: .14em;
-      font-size: .78rem;
-      font-weight: 800;
-      color: #ffeac4;
-      margin-bottom: .75rem;
-    }
-
-    h1, h2, h3 { font-family: 'Lora', serif; margin-top: 0; }
-
-    h1 {
-      font-size: clamp(2.1rem, 6vw, 4.5rem);
-      line-height: 1;
-      margin-bottom: 1rem;
-    }
-
-    .hero p {
-      max-width: 740px;
-      margin: 0 auto 1.25rem;
-      font-size: clamp(1rem, 2.3vw, 1.2rem);
-      line-height: 1.7;
-    }
-
-    .button {
-      display: inline-block;
-      text-decoration: none;
-      border-radius: 999px;
-      padding: .9rem 1.25rem;
-      font-weight: 800;
-      background: var(--gold);
-      color: white;
-      box-shadow: 0 6px 18px rgba(199,148,31,.24);
-    }
-
-    .section {
-      background: rgba(255,253,248,.9);
-      border: 1px solid rgba(209,167,111,.28);
-      border-radius: 24px;
-      box-shadow: 0 10px 35px rgba(75,59,42,0.08);
-      padding: clamp(1.5rem, 4vw, 3rem);
-      margin: 1.5rem 0;
-    }
-
-    .section-heading {
-      text-align: center;
-      max-width: 780px;
-      margin: 0 auto 2rem;
-    }
-
-    .section-heading h2 {
-      color: var(--deep);
-      font-size: clamp(1.7rem, 4vw, 2.6rem);
-      margin-bottom: .65rem;
-    }
-
-    .section-heading p {
-      color: #5e4a35;
-      line-height: 1.7;
-      margin: 0;
-    }
-
-    .sponsor-grid,
-    .impact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .sponsor-card,
-    .impact-card {
-      background: white;
-      border-radius: 20px;
-      padding: 1.4rem;
-      border: 1px solid rgba(209,167,111,.25);
-      box-shadow: 0 8px 24px rgba(75,59,42,0.08);
-      text-align: center;
-    }
-
-    .sponsor-card .icon,
-    .impact-card .icon {
-      font-size: 2.4rem;
-      margin-bottom: .75rem;
-    }
-
-    .sponsor-card h3,
-    .impact-card h3 {
-      color: var(--deep);
-      font-size: 1.3rem;
-      margin-bottom: .45rem;
-    }
-
-    .sponsor-card p,
-    .impact-card p {
-      color: #5e4a35;
-      line-height: 1.65;
-      margin: 0 0 1rem;
-    }
-
-    .sponsor-btn {
-      display: inline-block;
-      background: var(--gold);
-      color: white;
-      text-decoration: none;
-      padding: .75rem 1rem;
-      border-radius: 999px;
-      font-weight: 800;
-      box-shadow: 0 6px 18px rgba(199,148,31,.22);
-    }
-
-    .note-box {
-      background: #f7ead3;
-      border-left: 6px solid var(--gold);
-      border-radius: 16px;
-      padding: 1.25rem;
-      line-height: 1.7;
-      color: #5b432d;
-    }
-
-    .photo-strip {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    .photo-strip img {
-      width: 100%;
-      height: 240px;
-      object-fit: cover;
-      border-radius: 18px;
-      box-shadow: 0 8px 24px rgba(75,59,42,0.10);
-      background: #f3eadf;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      background-color: var(--tan);
-      color: white;
-      font-size: .95rem;
-      margin-top: 2rem;
-    }
-
-    footer a { color: white; font-weight: 700; }
-
-    @media (max-width: 560px) {
-      .nav-wrap { gap: .15rem; padding: .6rem .5rem; }
-      .nav-wrap a { font-size: .9rem; padding: .45rem .55rem; }
-      .photo-strip img { height: 200px; }
-    }
+    :root { --cream:#fffaf1; --warm:#f4e0c5; --tan:#d1a76f; --brown:#4b3b2a; --deep:#2f2419; --green:#49633e; --gold:#c7941f; }
+    * { box-sizing:border-box; }
+    html,body { margin:0; font-family:'Inter',sans-serif; background:linear-gradient(135deg,#fffaf1 0%,var(--warm) 100%); color:var(--brown); scroll-behavior:smooth; }
+    header { text-align:center; padding:2rem 1rem 1rem; }
+    header img { max-width:260px; width:80%; height:auto; display:block; margin:0 auto; filter:drop-shadow(0 6px 18px rgba(75,59,42,.18)); }
+    .navbar { position:sticky; top:0; z-index:999; width:100%; background:rgba(75,59,42,.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); box-shadow:0 2px 12px rgba(0,0,0,.18); }
+    .nav-wrap { max-width:950px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:center; gap:.35rem; padding:.75rem 1rem; }
+    .nav-wrap a { color:white; text-decoration:none; font-family:'Lora',serif; font-size:.98rem; padding:.55rem .85rem; border-radius:999px; transition:background .2s ease, transform .2s ease; }
+    .nav-wrap a:hover,.nav-wrap a.active { background:rgba(255,234,196,.18); color:#ffeac4; transform:translateY(-1px); }
+    main { max-width:1080px; margin:0 auto; padding:1rem; }
+    .hero { text-align:center; margin:1.5rem auto 2rem; padding:clamp(2rem,5vw,4rem) 1.5rem; color:white; border-radius:28px; background:linear-gradient(rgba(47,36,25,.62),rgba(47,36,25,.72)),linear-gradient(135deg,#6f8b55,#49633e 50%,#6f9f9a); box-shadow:0 18px 50px rgba(75,59,42,.20); }
+    .eyebrow { text-transform:uppercase; letter-spacing:.14em; font-size:.78rem; font-weight:800; color:#ffeac4; margin-bottom:.75rem; }
+    h1,h2,h3 { font-family:'Lora',serif; margin-top:0; }
+    h1 { font-size:clamp(2.1rem,6vw,4.5rem); line-height:1; margin-bottom:1rem; }
+    .hero p { max-width:780px; margin:0 auto 1.25rem; font-size:clamp(1rem,2.3vw,1.2rem); line-height:1.7; }
+    .button,.sponsor-btn { display:inline-block; text-decoration:none; border-radius:999px; padding:.9rem 1.25rem; font-weight:800; background:var(--gold); color:white; box-shadow:0 6px 18px rgba(199,148,31,.24); }
+    .section { background:rgba(255,253,248,.9); border:1px solid rgba(209,167,111,.28); border-radius:24px; box-shadow:0 10px 35px rgba(75,59,42,.08); padding:clamp(1.5rem,4vw,3rem); margin:1.5rem 0; }
+    .section-heading { text-align:center; max-width:820px; margin:0 auto 2rem; }
+    .section-heading h2 { color:var(--deep); font-size:clamp(1.7rem,4vw,2.6rem); margin-bottom:.65rem; }
+    .section-heading p { color:#5e4a35; line-height:1.7; margin:0; }
+    .sponsor-grid,.impact-grid,.count-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.25rem; }
+    .sponsor-card,.impact-card,.count-card { background:white; border-radius:20px; padding:1.4rem; border:1px solid rgba(209,167,111,.25); box-shadow:0 8px 24px rgba(75,59,42,.08); text-align:center; }
+    .icon { font-size:2.4rem; margin-bottom:.75rem; }
+    .big-number { font-family:'Lora',serif; font-size:2.35rem; color:var(--green); font-weight:800; line-height:1; margin-bottom:.5rem; }
+    .sponsor-card h3,.impact-card h3,.count-card h3 { color:var(--deep); font-size:1.3rem; margin-bottom:.45rem; }
+    .sponsor-card p,.impact-card p,.count-card p { color:#5e4a35; line-height:1.65; margin:0 0 1rem; }
+    .note-box { background:#f7ead3; border-left:6px solid var(--gold); border-radius:16px; padding:1.25rem; line-height:1.7; color:#5b432d; }
+    .photo-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; margin-top:1.5rem; }
+    .photo-strip img { width:100%; height:240px; object-fit:cover; border-radius:18px; box-shadow:0 8px 24px rgba(75,59,42,.10); background:#f3eadf; }
+    footer { text-align:center; padding:1.5rem 1rem; background-color:var(--tan); color:white; font-size:.95rem; margin-top:2rem; }
+    footer a { color:white; font-weight:700; }
+    @media (max-width:560px){ .nav-wrap{ gap:.15rem; padding:.6rem .5rem; } .nav-wrap a{ font-size:.9rem; padding:.45rem .55rem; } .photo-strip img{ height:200px; } }
   </style>
 </head>
 <body>
-  <header>
-    <img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow logo" />
-  </header>
-
-  <nav class="navbar" aria-label="Main navigation">
-    <div class="nav-wrap">
-      <a href="index.html">Our Nest</a>
-      <a href="about.html">Our Story</a>
-      <a href="profiles.html">Meet Our Flock</a>
-      <a href="sponsor.html" class="active">Sponsor</a>
-      <a href="studio/index.html">Studio</a>
-      <a href="trading-post.html">Trading Post</a>
-    </div>
-  </nav>
+  <header><img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow logo" /></header>
+  <nav class="navbar" aria-label="Main navigation"><div class="nav-wrap"><a href="index.html">Our Nest</a><a href="about.html">Our Story</a><a href="profiles.html">Meet Our Flock</a><a href="sponsor.html" class="active">Sponsor</a><a href="studio/index.html">Studio</a><a href="trading-post.html">Trading Post</a></div></nav>
 
   <main>
     <section class="hero">
-      <div class="eyebrow">Support the Hollow</div>
+      <div class="eyebrow">Support Jacy’s hollow</div>
       <h1>Sponsor the Flock</h1>
-      <p>Your support helps provide feed, bedding, safe housing, enrichment, and everyday care for the ducks, chickens, quail, and rescues of Falling Feathers Hollow.</p>
+      <p>Your support helps Jacy provide feed, bedding, safe housing, enrichment, and everyday care for the ducks, ducklings, chickens, quail, and rescues of Falling Feathers Hollow.</p>
       <a class="button" href="https://www.zeffy.com/en-US/fundraising/support-falling-feathers-hollow" target="_blank" rel="noopener">Give Through Zeffy</a>
     </section>
 
+    <section class="section" aria-labelledby="current-flock">
+      <div class="section-heading"><h2 id="current-flock">Who You’re Helping</h2><p>Falling Feathers Hollow is Jacy’s woman veteran-owned sanctuary project, and the flock is growing fast.</p></div>
+      <div class="count-grid"><article class="count-card"><div class="big-number">2</div><h3>Pekin Ducks</h3><p>Moonbeam and Ming Ming.</p></article><article class="count-card"><div class="big-number">12</div><h3>Baby Rouens</h3><p>Pip and Puddles’ babies.</p></article><article class="count-card"><div class="big-number">9</div><h3>Runner Ducklings</h3><p>Nine baby Runner ducks.</p></article><article class="count-card"><div class="big-number">14</div><h3>Quail</h3><p>Ten miniature quail and four jumbo quail.</p></article><article class="count-card"><div class="big-number">20</div><h3>Chicken Crew</h3><p>Nineteen chickens and one rooster.</p></article></div>
+    </section>
+
     <section class="section" aria-labelledby="sponsor-options">
-      <div class="section-heading">
-        <h2 id="sponsor-options">Ways to Help</h2>
-        <p>Every gift, share, egg purchase, and encouraging message helps us keep building this little sanctuary feather by feather.</p>
-      </div>
-
-      <div class="sponsor-grid">
-        <article class="sponsor-card">
-          <div class="icon" aria-hidden="true">🌾</div>
-          <h3>Feed &amp; Bedding</h3>
-          <p>Help cover the everyday essentials that keep the flock healthy, clean, and comfortable.</p>
-          <a class="sponsor-btn" href="https://www.zeffy.com/en-US/fundraising/support-falling-feathers-hollow" target="_blank" rel="noopener">Support Care</a>
-        </article>
-
-        <article class="sponsor-card">
-          <div class="icon" aria-hidden="true">🦆</div>
-          <h3>Duck Crew</h3>
-          <p>Support Waddles, Ming Ming, Pip, Puddles, Moon Beam, and the muddy little personalities that started the dream.</p>
-          <a class="sponsor-btn" href="https://www.zeffy.com/en-US/fundraising/support-falling-feathers-hollow" target="_blank" rel="noopener">Sponsor Ducks</a>
-        </article>
-
-        <article class="sponsor-card">
-          <div class="icon" aria-hidden="true">🐓</div>
-          <h3>Chickens &amp; Quail</h3>
-          <p>Help with care for the birds behind our Chicken, Duck, &amp; Quail Eggs and the growing nest around them.</p>
-          <a class="sponsor-btn" href="https://www.zeffy.com/en-US/fundraising/support-falling-feathers-hollow" target="_blank" rel="noopener">Sponsor Birds</a>
-        </article>
-      </div>
+      <div class="section-heading"><h2 id="sponsor-options">Ways to Help</h2><p>Every gift, share, egg purchase, and encouraging message helps Jacy keep building this sanctuary feather by feather.</p></div>
+      <div class="sponsor-grid"><article class="sponsor-card"><div class="icon" aria-hidden="true">🌾</div><h3>Feed &amp; Bedding</h3><p>Help cover the everyday essentials that keep the flock healthy, clean, and comfortable.</p><a class="sponsor-btn" href="https://www.zeffy.com/en-US/fundraising/support-falling-feathers-hollow" target="_blank" rel="noopener">Support Care</a></article><article class="sponsor-card"><div class="icon" aria-hidden="true">🦆</div><h3>Duck &amp; Duckling Crew</h3><p>Support Moonbeam, Ming Ming, Pip, Puddles, 12 baby Rouens, and 9 Runner ducklings.</p><a class="sponsor-btn" href="https://www.zeffy.com/en-US/fundraising/support-falling-feathers-hollow" target="_blank" rel="noopener">Sponsor Ducks</a></article><article class="sponsor-card"><div class="icon" aria-hidden="true">🐓</div><h3>Chickens &amp; Quail</h3><p>Help with care for 19 chickens, a rooster, 10 miniature quail, and 4 jumbo quail.</p><a class="sponsor-btn" href="https://www.zeffy.com/en-US/fundraising/support-falling-feathers-hollow" target="_blank" rel="noopener">Sponsor Birds</a></article></div>
     </section>
 
-    <section class="section" aria-labelledby="impact-heading">
-      <div class="section-heading">
-        <h2 id="impact-heading">What Sponsorship Makes Possible</h2>
-      </div>
+    <section class="section" aria-labelledby="impact-heading"><div class="section-heading"><h2 id="impact-heading">What Sponsorship Makes Possible</h2></div><div class="impact-grid"><article class="impact-card"><div class="icon" aria-hidden="true">🏡</div><h3>Safer Spaces</h3><p>Better fencing, shelter, predator protection, and cleaner areas for animals to rest.</p></article><article class="impact-card"><div class="icon" aria-hidden="true">🩺</div><h3>Care When Needed</h3><p>Supplies, first aid, and vet support when a bird or rescue needs extra attention.</p></article><article class="impact-card"><div class="icon" aria-hidden="true">🇺🇸</div><h3>Woman Veteran-Owned</h3><p>Support Jacy’s project, her passion, and the steady work she is putting into these animals.</p></article></div><div class="photo-strip" aria-label="Flock photos"><img src="duck_collage_cleaned.png" alt="Ducks at Falling Feathers Hollow" loading="lazy" /><img src="barred-rock-chicks-falling-feathers.jpg" alt="Young chickens at Falling Feathers Hollow" loading="lazy" /></div></section>
 
-      <div class="impact-grid">
-        <article class="impact-card">
-          <div class="icon" aria-hidden="true">🏡</div>
-          <h3>Safer Spaces</h3>
-          <p>Better fencing, shelter, predator protection, and cleaner areas for animals to rest.</p>
-        </article>
-        <article class="impact-card">
-          <div class="icon" aria-hidden="true">🩺</div>
-          <h3>Care When Needed</h3>
-          <p>Supplies, first aid, and vet support when a bird or rescue needs extra attention.</p>
-        </article>
-        <article class="impact-card">
-          <div class="icon" aria-hidden="true">👨‍👩‍👧‍👦</div>
-          <h3>Community</h3>
-          <p>A family-built space where kids, neighbors, and supporters can learn about stewardship and second chances.</p>
-        </article>
-      </div>
-
-      <div class="photo-strip" aria-label="Flock photos">
-        <img src="duck_collage_cleaned.png" alt="Ducks at Falling Feathers Hollow" loading="lazy" />
-        <img src="barred-rock-chicks-falling-feathers.jpg" alt="Young chickens at Falling Feathers Hollow" loading="lazy" />
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="note-box">
-        <strong>A quick note:</strong> Falling Feathers Hollow is growing step by step in Wheeling, West Virginia. Sponsorships help us care for the animals we already have and prepare for the rescues and projects still ahead.
-      </div>
-    </section>
+    <section class="section"><div class="note-box"><strong>A quick note:</strong> Falling Feathers Hollow is Jacy’s project and passion in Wheeling, West Virginia. Sponsorships help her care for the animals already here and prepare for the rescues and projects still ahead.</div></section>
   </main>
 
-  <footer>
-    &copy; Falling Feathers Hollow 2026. All rights reserved.<br />
-    <a href="mailto:info@fallingfeathers.us">info@fallingfeathers.us</a>
-  </footer>
+  <footer>&copy; Falling Feathers Hollow 2026. All rights reserved.<br /><a href="mailto:info@fallingfeathers.us">info@fallingfeathers.us</a></footer>
 </body>
 </html>

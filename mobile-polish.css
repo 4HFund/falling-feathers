@@ -1,0 +1,358 @@
+/* Mobile-first polish layer for Falling Feathers Hollow */
+:root {
+  --ffh-radius-xl: 28px;
+  --ffh-radius-lg: 22px;
+  --ffh-radius-pill: 999px;
+  --ffh-soft-shadow: 0 18px 48px rgba(47,36,25,.12);
+  --ffh-button-shadow: 0 14px 34px rgba(199,148,31,.28);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.cta-row,
+.pill-row {
+  justify-content: center;
+  align-items: center;
+}
+
+.button,
+.sponsor-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  min-height: 52px;
+  padding: .95rem 1.45rem !important;
+  border-radius: var(--ffh-radius-pill) !important;
+  font-size: .98rem;
+  line-height: 1;
+  letter-spacing: .01em;
+  text-align: center;
+  background: linear-gradient(135deg, #d1a122, #b97b11) !important;
+  color: #fff !important;
+  box-shadow: var(--ffh-button-shadow) !important;
+  border: 1px solid rgba(255,255,255,.24);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+.button.secondary,
+.sponsor-btn.secondary {
+  background: rgba(255,255,255,.94) !important;
+  color: #241a12 !important;
+  border: 1px solid rgba(75,59,42,.14);
+  box-shadow: 0 12px 30px rgba(47,36,25,.10) !important;
+}
+
+.button:hover,
+.sponsor-btn:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.05);
+}
+
+.card,
+.gallery-card,
+.count-card,
+.sponsor-card,
+.impact-card,
+.egg-card,
+.help-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before,
+.gallery-card::before,
+.sponsor-card::before,
+.impact-card::before,
+.egg-card::before,
+.help-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(199,148,31,.85), rgba(73,99,62,.75));
+  opacity: .75;
+}
+
+.card .icon,
+.icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 1rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fff8e8, #f0dec0);
+  box-shadow: 0 10px 24px rgba(75,59,42,.08);
+  font-size: 1.85rem !important;
+}
+
+.card h3,
+.gallery-card h3,
+.sponsor-card h3,
+.impact-card h3,
+.egg-card h3,
+.help-card h3 {
+  letter-spacing: -.02em;
+}
+
+.visual {
+  background: radial-gradient(circle at top left, rgba(199,148,31,.18), transparent 34%), linear-gradient(135deg, #fff8e8, #ead6b7) !important;
+}
+
+.visual:not(:has(img)) {
+  font-size: 3.1rem !important;
+}
+
+.hero-media,
+.hero-copy,
+.section,
+.card,
+.gallery-card,
+.sponsor-card,
+.impact-card,
+.egg-card,
+.help-card {
+  backdrop-filter: saturate(1.08);
+}
+
+@media (max-width: 820px) {
+  .topbar {
+    font-size: .64rem !important;
+    line-height: 1.35;
+    padding: .6rem .8rem !important;
+  }
+
+  .nav {
+    top: 0;
+  }
+
+  .nav-inner {
+    padding: .75rem .75rem .68rem !important;
+    gap: .65rem !important;
+  }
+
+  .brand {
+    width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .brand img {
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  .links {
+    width: 100%;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: .45rem !important;
+    overflow-x: auto;
+    padding: .15rem .1rem .25rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .links a {
+    flex: 0 0 auto;
+    padding: .58rem .82rem !important;
+    font-size: .83rem !important;
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(75,59,42,.10);
+    box-shadow: 0 6px 16px rgba(75,59,42,.06);
+  }
+
+  main {
+    padding: .85rem !important;
+  }
+
+  .hero {
+    margin: .95rem 0 1rem !important;
+    gap: .9rem !important;
+  }
+
+  .hero-copy,
+  .hero-media,
+  .section {
+    border-radius: var(--ffh-radius-xl) !important;
+  }
+
+  .hero-copy {
+    padding: 2rem 1.15rem !important;
+    text-align: center;
+  }
+
+  .hero h1,
+  h1 {
+    font-size: clamp(2.25rem, 12vw, 3.25rem) !important;
+    line-height: .98 !important;
+    letter-spacing: -.045em;
+  }
+
+  .hero p,
+  .section-heading p,
+  .card p,
+  .story p,
+  .feature p,
+  .split p {
+    font-size: 1rem !important;
+    line-height: 1.68 !important;
+  }
+
+  .eyebrow {
+    text-align: center;
+    font-size: .68rem !important;
+    letter-spacing: .12em !important;
+  }
+
+  .hero-media {
+    padding: .75rem !important;
+  }
+
+  .hero-media img {
+    max-height: 360px !important;
+  }
+
+  .cta-row {
+    width: 100%;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: .7rem !important;
+    margin-top: 1.2rem !important;
+  }
+
+  .button,
+  .sponsor-btn {
+    width: min(100%, 315px) !important;
+    min-height: 54px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: .96rem !important;
+  }
+
+  .pill-row {
+    gap: .45rem !important;
+  }
+
+  .pill {
+    font-size: .78rem !important;
+    padding: .48rem .68rem !important;
+    background: rgba(255,255,255,.16) !important;
+  }
+
+  .section {
+    padding: 1.45rem 1rem !important;
+    margin: 1rem 0 !important;
+    box-shadow: 0 12px 32px rgba(75,59,42,.08) !important;
+  }
+
+  .section-heading {
+    margin-bottom: 1.25rem !important;
+  }
+
+  .section-heading h2,
+  .section h2 {
+    font-size: clamp(2rem, 10vw, 2.85rem) !important;
+    line-height: 1.02 !important;
+    letter-spacing: -.045em;
+  }
+
+  .grid,
+  .gallery,
+  .feature-grid,
+  .egg-grid,
+  .flock-gallery,
+  .sponsor-grid,
+  .impact-grid,
+  .count-grid,
+  .help-grid {
+    grid-template-columns: 1fr !important;
+    gap: .85rem !important;
+  }
+
+  .card,
+  .gallery-card,
+  .sponsor-card,
+  .impact-card,
+  .egg-card,
+  .help-card,
+  .count-card {
+    border-radius: var(--ffh-radius-lg) !important;
+    padding: 1.15rem !important;
+    text-align: center !important;
+    box-shadow: 0 12px 30px rgba(75,59,42,.08) !important;
+  }
+
+  .gallery-card,
+  .card:has(.visual) {
+    padding: 0 !important;
+  }
+
+  .card-body,
+  .gallery-card div {
+    padding: 1.2rem !important;
+    text-align: center;
+  }
+
+  .visual,
+  .gallery-card img,
+  .photo-strip img,
+  .split img {
+    height: auto !important;
+    max-height: 340px !important;
+    object-fit: contain !important;
+  }
+
+  .visual {
+    min-height: 190px !important;
+  }
+
+  .badge {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .split,
+  .feature {
+    gap: 1rem !important;
+  }
+
+  .split > div,
+  .feature > div {
+    text-align: center;
+  }
+
+  .quote {
+    font-size: clamp(2rem, 12vw, 3rem) !important;
+  }
+}
+
+@media (max-width: 420px) {
+  main {
+    padding: .65rem !important;
+  }
+
+  .hero-copy {
+    padding: 1.75rem .95rem !important;
+  }
+
+  .section {
+    padding: 1.25rem .9rem !important;
+  }
+
+  .button,
+  .sponsor-btn {
+    width: 100% !important;
+  }
+}

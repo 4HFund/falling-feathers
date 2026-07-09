@@ -1,333 +1,473 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Meet Our Flock - Falling Feathers Hollow</title>
-  <meta property="og:image" content="https://yourdomain.com/images/feathers-preview.jpg" />
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Lora&display=swap" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meet Our Flock | Falling Feathers Hollow</title>
+  <meta name="description" content="Meet the birds of Falling Feathers Hollow in Wheeling, West Virginia. Chickens, ducks, quail, sanctuary updates, and local Chicken, Duck, & Quail Eggs." />
+  <meta property="og:title" content="Meet Our Flock | Falling Feathers Hollow" />
+  <meta property="og:description" content="A small hollow sanctuary in Wheeling, West Virginia with chickens, ducks, quail, rescue stories, and local eggs." />
+  <meta property="og:image" content="https://4hfund.github.io/falling-feathers/falling_feathers_logo_compressed.png" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --primary-bg: #f4e0c5;
-      --accent: #d1a76f;
-      --text-dark: #4b3b2a;
+      --cream: #fffaf1;
+      --warm: #f4e0c5;
+      --tan: #d1a76f;
+      --brown: #4b3b2a;
+      --deep: #2f2419;
+      --green: #49633e;
+      --water: #6f9f9a;
+      --gold: #c7941f;
+      --card: #fffdf8;
     }
+
+    * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
       padding: 0;
       font-family: 'Inter', sans-serif;
-      background-color: var(--primary-bg);
-      color: var(--text-dark);
+      background:
+        radial-gradient(circle at top left, rgba(111,159,154,0.16), transparent 30%),
+        linear-gradient(135deg, #fffaf1 0%, var(--warm) 100%);
+      color: var(--brown);
       overflow-x: hidden;
-      text-align: center;
       scroll-behavior: smooth;
     }
 
+    a { color: inherit; }
+
+    .skip-link {
+      position: absolute;
+      top: -50px;
+      left: 1rem;
+      background: var(--deep);
+      color: white;
+      padding: .75rem 1rem;
+      border-radius: 999px;
+      z-index: 2000;
+    }
+
+    .skip-link:focus { top: 1rem; }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+    }
+
     header img {
-      max-width: 220px;
+      max-width: 260px;
+      width: 80%;
       height: auto;
-      margin: 1.5rem auto 0.5rem;
       display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 6px 18px rgba(75,59,42,0.18));
     }
 
     .navbar {
-      padding: 0.75rem 1rem;
       position: sticky;
       top: 0;
-      width: 100%;
-      background: rgba(139, 94, 60, 0.85);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
       z-index: 999;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      width: 100%;
+      background: rgba(75, 59, 42, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
     }
 
-    .nav-row {
+    .nav-wrap {
+      max-width: 950px;
+      margin: 0 auto;
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
-      margin: 0.3rem auto;
-      padding: 0 1rem;
-      gap: 1.25rem;
-      max-width: 100%;
-      box-sizing: border-box;
-      max-width: 600px;
-      margin: 0.3rem auto;
-      display: flex;
       justify-content: center;
-      flex-wrap: wrap;
-      gap: 2rem;
+      gap: .35rem;
+      padding: .75rem 1rem;
     }
 
-    .nav-row a {
+    .nav-wrap a {
       color: white;
       text-decoration: none;
-      font-size: 1rem;
       font-family: 'Lora', serif;
-      position: relative;
-      padding: 0.25rem 0.5rem;
-      transition: color 0.2s ease;
+      font-size: .98rem;
+      padding: .55rem .85rem;
+      border-radius: 999px;
+      transition: background .2s ease, transform .2s ease;
     }
 
-    .nav-row a:hover::before {
-      content: "🪶";
-      position: absolute;
-      left: -1.3rem;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-    }
-
-    .nav-row a.active {
-      font-weight: bold;
+    .nav-wrap a:hover,
+    .nav-wrap a.active {
+      background: rgba(255, 234, 196, .18);
       color: #ffeac4;
+      transform: translateY(-1px);
     }
 
-    .content-block {
-      background: #fffaf1;
-      margin: 2rem auto;
-      padding: 2rem 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.04);
-      max-width: 1000px;
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1rem;
     }
 
-    h2 {
-      font-family: 'Courier New', Courier, monospace;
-      background: #deb887;
-      display: inline-block;
-      padding: 0.4em 1em;
-      border-radius: 6px;
-      box-shadow: 2px 2px 0 #a87c4c;
+    .hero {
+      position: relative;
+      margin: 1.5rem auto 2rem;
+      padding: clamp(2rem, 5vw, 4.5rem) 1.5rem;
+      border-radius: 28px;
+      background:
+        linear-gradient(rgba(47,36,25,.62), rgba(47,36,25,.70)),
+        radial-gradient(circle at 20% 20%, rgba(111,159,154,.55), transparent 26%),
+        linear-gradient(135deg, #6f8b55, #3f5d42 45%, #6f9f9a 100%);
+      color: white;
+      text-align: center;
+      overflow: hidden;
+      box-shadow: 0 18px 50px rgba(75,59,42,0.20);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -8% -35% -8%;
+      height: 58%;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,.26), rgba(255,255,255,0) 60%);
+      transform: rotate(-2deg);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-size: .78rem;
+      font-weight: 700;
+      color: #ffeac4;
+      margin-bottom: .75rem;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Lora', serif;
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: clamp(2.3rem, 7vw, 5rem);
+      line-height: 1;
       margin-bottom: 1rem;
     }
 
-    .flock-gallery {
+    .hero p {
+      max-width: 740px;
+      margin: 0 auto 1.25rem;
+      font-size: clamp(1rem, 2.3vw, 1.25rem);
+      line-height: 1.7;
+    }
+
+    .pill-row {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 1.5rem;
-      margin-top: 2rem;
+      gap: .65rem;
+      margin-top: 1.4rem;
     }
 
-    .flock-card {
-      background-color: #fff9f0;
-      border-radius: 10px;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.08);
-      width: 300px;
-      overflow: hidden;
+    .pill {
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 999px;
+      padding: .55rem .9rem;
+      font-weight: 700;
+      color: #fff8e8;
+    }
+
+    .section {
+      background: rgba(255,253,248,.88);
+      border: 1px solid rgba(209,167,111,.28);
+      border-radius: 24px;
+      box-shadow: 0 10px 35px rgba(75,59,42,0.08);
+      padding: clamp(1.5rem, 4vw, 3rem);
+      margin: 1.5rem 0;
+    }
+
+    .section-heading {
       text-align: center;
+      max-width: 760px;
+      margin: 0 auto 2rem;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      color: var(--deep);
+      margin-bottom: .65rem;
+    }
+
+    .section-heading p {
+      line-height: 1.7;
+      margin: 0;
+      color: #614c37;
+    }
+
+    .flock-gallery,
+    .egg-grid,
+    .help-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .flock-card,
+    .egg-card,
+    .help-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(209,167,111,.25);
+      box-shadow: 0 8px 24px rgba(75,59,42,0.08);
     }
 
     .flock-card img {
       width: 100%;
-      border-radius: 6px 6px 0 0;
+      height: 230px;
+      object-fit: cover;
+      display: block;
+      background: #f3eadf;
     }
 
-    .flock-card h3 {
-      font-family: 'Dancing Script', cursive;
-      margin: 0.8rem 0 0.4rem;
-      font-size: 1.5rem;
+    .flock-card .card-body,
+    .egg-card,
+    .help-card {
+      padding: 1.25rem;
     }
 
-    .flock-card p {
-      font-size: 0.95rem;
-      padding: 0 1rem 1rem;
+    .flock-card h3,
+    .egg-card h3,
+    .help-card h3 {
+      color: var(--deep);
+      font-size: 1.35rem;
+      margin-bottom: .45rem;
+    }
+
+    .flock-card p,
+    .egg-card p,
+    .help-card p {
+      margin: 0;
+      line-height: 1.65;
+      color: #5e4a35;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: .75rem;
+      background: #f6e5c8;
+      color: #65411f;
+      border-radius: 999px;
+      padding: .35rem .7rem;
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .egg-icon {
+      font-size: 2.5rem;
+      margin-bottom: .6rem;
+    }
+
+    .mission-banner {
+      background: linear-gradient(135deg, var(--green), #2f4b35);
+      color: white;
+      border-radius: 22px;
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      text-align: center;
+      margin-top: 1.25rem;
+    }
+
+    .mission-banner h2 {
+      font-size: clamp(1.7rem, 4vw, 2.5rem);
+      margin-bottom: .7rem;
+    }
+
+    .mission-banner p {
+      max-width: 760px;
+      margin: 0 auto;
+      line-height: 1.7;
+      color: #fff7e6;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .8rem;
+      margin-top: 1.4rem;
+    }
+
+    .button {
+      display: inline-block;
+      text-decoration: none;
+      border-radius: 999px;
+      padding: .85rem 1.2rem;
+      font-weight: 800;
+      background: var(--gold);
+      color: white;
+      box-shadow: 0 6px 18px rgba(199,148,31,.24);
+    }
+
+    .button.secondary {
+      background: white;
+      color: var(--brown);
     }
 
     footer {
       text-align: center;
-      padding: 1rem;
-      background-color: var(--accent);
+      padding: 1.5rem 1rem;
+      background-color: var(--tan);
       color: white;
-      font-size: 0.9rem;
-    }
-  
-    .flock-card {
-      cursor: pointer;
-      transition: transform 0.2s ease;
+      font-size: .95rem;
+      margin-top: 2rem;
     }
 
-    .flock-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    }
+    footer a { color: white; font-weight: 700; }
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.7);
+    @media (max-width: 560px) {
+      .nav-wrap { gap: .15rem; padding: .6rem .5rem; }
+      .nav-wrap a { font-size: .9rem; padding: .45rem .55rem; }
+      .flock-card img { height: 190px; }
     }
-
-    .modal-content {
-      background-color: #fffaf1;
-      margin: 5% auto;
-      padding: 2rem;
-      border: 1px solid #888;
-      border-radius: 12px;
-      max-width: 500px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-
-    .modal-content img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 1rem;
-    }
-
-    .modal-content h3 {
-      font-family: 'Dancing Script', cursive;
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .modal-content p {
-      font-size: 1rem;
-    }
-
-    .nav-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.5rem;
-      background: none;
-      border: none;
-      color: #5a4632;
-      cursor: pointer;
-      padding: 0 1rem;
-      font-weight: bold;
-    }
-
-    #prevBtn { left: 0; }
-    #nextBtn { right: 0; }
-
-    .close {
-      position: absolute;
-      right: 1rem;
-      top: 1rem;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    
-    @media (max-width: 500px) {
-      .nav-row {
-        flex-direction: row;
-        justify-content: center;
-        gap: 1rem;
-      }
-
-      .nav-row a {
-        font-size: 0.95rem;
-        padding: 0.25rem;
-      }
-    }
-    </style>
+  </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <header>
-    <img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow Logo" />
+    <img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow logo" />
   </header>
 
-  <nav class="navbar">
-    <div class="nav-row">
+  <nav class="navbar" aria-label="Main navigation">
+    <div class="nav-wrap">
       <a href="index.html">Our Nest</a>
       <a href="about.html">Our Story</a>
       <a href="profiles.html" class="active">Meet Our Flock</a>
-    </div>
-    <div class="nav-row">
       <a href="sponsor.html">Sponsor</a>
       <a href="studio/index.html">Studio</a>
       <a href="trading-post.html">Trading Post</a>
     </div>
   </nav>
 
-  <section class="content-block fade-in">
-    <h2>Meet Our Flock</h2>
-    <div class="flock-gallery">
-      <div class="flock-card"><img src="duck1.jpg"><h3>Waddles</h3><p>The loudest splash in the pond. Always the first to quack an opinion.</p></div>
-      <div class="flock-card"><img src="duck2.jpg"><h3>Ming Ming</h3><p>Calm, classy, and usually cleaning up Waddles’ mess.</p></div>
-      <div class="flock-card"><img src="chick1.jpg"><h3>Little Foot</h3><p>Small feet, big presence. Might secretly be in charge.</p></div>
-      <div class="flock-card"><img src="chick2.jpg"><h3>Yolkie</h3><p>Bright and bold, already practicing morning announcements.</p></div>
-      <div class="flock-card"><img src="chick3.jpg"><h3>Pepper</h3><p>Feisty and full of flair. Pecks first, asks questions never.</p></div>
-      <div class="flock-card"><img src="chick4.jpg"><h3>Patty</h3><p>Soft-hearted, snack-motivated, and surprisingly sneaky.</p></div>
-      <div class="flock-card"><img src="chick5.jpg"><h3>Popsicle</h3><p>Cool as her name, with a waddle that melts hearts and a stare that means business.</p></div>
-      <div class="flock-card"><img src="chick6.jpg"><h3>McChicken</h3><p>Proudly named, constantly pecking, and surprisingly photogenic.</p></div>
-    </div>
-  
+  <main id="main">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="eyebrow">Wheeling, West Virginia</div>
+      <h1 id="page-title">Meet Our Flock</h1>
+      <p>Falling Feathers Hollow is a small sanctuary-style backyard farm tucked into the hollow, surrounded by woods, creek sounds, and a growing crew of ducks, chickens, quail, and rescues.</p>
+      <div class="pill-row" aria-label="What we offer">
+        <span class="pill">Animal sanctuary</span>
+        <span class="pill">Chicken, Duck, &amp; Quail Eggs</span>
+        <span class="pill">Family built</span>
+        <span class="pill">Second chances</span>
+      </div>
     </section>
 
-    <div id="flockModal" class="modal">
-      <div class="modal-content">
-        <button class="nav-btn" id="prevBtn">&#8592;</button>
-        <button class="nav-btn" id="nextBtn">&#8594;</button>
-        <span class="close">&times;</span>
-        <img id="modalImg" src="" alt="" />
-        <h3 id="modalName"></h3>
-        <p id="modalDesc"></p>
+    <section class="section" aria-labelledby="flock-heading">
+      <div class="section-heading">
+        <h2 id="flock-heading">The Feathered Family</h2>
+        <p>Some are loud. Some are fancy. Some act like they own the place. Every one of them has a story and a reason they matter here.</p>
       </div>
-    </div>
-    
+
+      <div class="flock-gallery">
+        <article class="flock-card">
+          <img src="duck_collage_cleaned.png" alt="Waddles and Ming Ming, the first ducks of Falling Feathers Hollow" loading="lazy" />
+          <div class="card-body">
+            <span class="badge">Ducks</span>
+            <h3>Waddles &amp; Ming Ming</h3>
+            <p>The original duck duo. They helped start the whole dream and still bring the perfect mix of chaos, comedy, and muddy footprints.</p>
+          </div>
+        </article>
+
+        <article class="flock-card">
+          <img src="barred-rock-chicks-falling-feathers.jpg" alt="Young barred rock chicks at Falling Feathers Hollow" loading="lazy" />
+          <div class="card-body">
+            <span class="badge">Chicken Crew</span>
+            <h3>Yolkie &amp; the Girls</h3>
+            <p>Yolkie, Little Foot, Pepper, Patty, Popsicle, and McChicken bring personality to the nest and help make the chicken egg side of the hollow possible.</p>
+          </div>
+        </article>
+
+        <article class="flock-card">
+          <div class="card-body">
+            <span class="badge">Rescues</span>
+            <h3>Pip, Puddles, Moon Beam &amp; Friends</h3>
+            <p>Our flock keeps growing as animals find their way here. The goal is simple: safe space, good care, and a place where overlooked animals are loved.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="eggs-heading">
+      <div class="section-heading">
+        <h2 id="eggs-heading">Chicken, Duck, &amp; Quail Eggs</h2>
+        <p>When the flock is laying and supply allows, we offer local eggs with the same care we give the animals themselves.</p>
+      </div>
+
+      <div class="egg-grid">
+        <article class="egg-card">
+          <div class="egg-icon" aria-hidden="true">🥚</div>
+          <span class="badge">Everyday Favorite</span>
+          <h3>Chicken Eggs</h3>
+          <p>Classic, familiar, and great for everyday breakfasts, baking, and family meals.</p>
+        </article>
+
+        <article class="egg-card">
+          <div class="egg-icon" aria-hidden="true">🦆</div>
+          <span class="badge">Rich &amp; Big</span>
+          <h3>Duck Eggs</h3>
+          <p>Larger eggs with a rich yolk that many people love for baking, hearty breakfasts, and extra special recipes.</p>
+        </article>
+
+        <article class="egg-card">
+          <div class="egg-icon" aria-hidden="true">🪶</div>
+          <span class="badge">Tiny Powerhouse</span>
+          <h3>Quail Eggs</h3>
+          <p>Small, speckled eggs that are fun, snackable, and popular with people who want something unique for meals or pet toppers.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="pet-heading">
+      <div class="section-heading">
+        <h2 id="pet-heading">For Families and Four-Legged Friends</h2>
+        <p>Some customers ask about eggs for their dogs, especially quail eggs. We keep that simple and honest.</p>
+      </div>
+
+      <div class="help-grid">
+        <article class="help-card">
+          <h3>Quail Eggs for Dogs</h3>
+          <p>Many pet owners use quail eggs as an occasional whole-food topper or special treat. Start small, keep it balanced, and check with your vet if your dog has allergies or health concerns.</p>
+        </article>
+        <article class="help-card">
+          <h3>Local and Seasonal</h3>
+          <p>Egg availability changes with the flock, the weather, and the season. We would rather be honest about supply than overpromise.</p>
+        </article>
+        <article class="help-card">
+          <h3>Care Comes First</h3>
+          <p>This is not a factory setup. The animals come first, and the eggs are part of a bigger mission of stewardship, rescue, and community.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="mission-banner" aria-labelledby="mission-heading">
+      <h2 id="mission-heading">Built feather by feather</h2>
+      <p>Falling Feathers Hollow is becoming a place where animals are safe, kids can learn, families can connect, and everyday work turns into purpose.</p>
+      <div class="cta-row">
+        <a class="button" href="sponsor.html">Help the Flock</a>
+        <a class="button secondary" href="trading-post.html">Visit the Trading Post</a>
+      </div>
+    </section>
+  </main>
 
   <footer>
     <p>
-      © Falling Feathers Hollow 2025. All rights reserved.<br>
+      &copy; Falling Feathers Hollow 2026. All rights reserved.<br />
       <a href="mailto:info@fallingfeathers.us">info@fallingfeathers.us</a>
     </p>
   </footer>
-
-  <script>
-    const flockCards = document.querySelectorAll('.flock-card');
-    const modal = document.getElementById('flockModal');
-    const modalImg = document.getElementById('modalImg');
-    const modalName = document.getElementById('modalName');
-    const modalDesc = document.getElementById('modalDesc');
-    const closeBtn = document.querySelector('.close');
-
-    
-    let currentIndex = 0;
-
-    function showCard(index) {
-      const card = flockCards[index];
-      if (!card) return;
-      modalImg.src = card.querySelector('img').src;
-      modalName.textContent = card.querySelector('h3').textContent;
-      modalDesc.textContent = card.querySelector('p').textContent;
-    }
-
-    flockCards.forEach((card, i) => {
-      card.addEventListener('click', () => {
-        modal.style.display = 'block'; currentIndex = i; showCard(i);
-        modalImg.src = card.querySelector('img').src;
-        modalName.textContent = card.querySelector('h3').textContent;
-        modalDesc.textContent = card.querySelector('p').textContent;
-      });
-    });
-
-    closeBtn.onclick = () => modal.style.display = 'none';
-    window.onclick = e => { if (e.target == modal) modal.style.display = 'none'; };
-
-    document.getElementById('nextBtn').onclick = () => {
-      currentIndex = (currentIndex + 1) % flockCards.length;
-      showCard(currentIndex);
-    };
-
-    document.getElementById('prevBtn').onclick = () => {
-      currentIndex = (currentIndex - 1 + flockCards.length) % flockCards.length;
-      showCard(currentIndex);
-    };
-    
-  </script>
 </body>
 </html>

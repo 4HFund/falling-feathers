@@ -1,158 +1,306 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Our Story - Falling Feathers Hollow</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Lora&display=swap" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Story | Falling Feathers Hollow</title>
+  <meta name="description" content="The story behind Falling Feathers Hollow, a family-built sanctuary-style backyard farm in Wheeling, West Virginia." />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --primary-bg: #f4e0c5;
-      --accent: #d1a76f;
-      --text-dark: #4b3b2a;
+      --cream: #fffaf1;
+      --warm: #f4e0c5;
+      --tan: #d1a76f;
+      --brown: #4b3b2a;
+      --deep: #2f2419;
+      --green: #49633e;
+      --water: #6f9f9a;
+      --gold: #c7941f;
     }
 
+    * { box-sizing: border-box; }
+
     html, body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--primary-bg);
-      color: var(--text-dark);
-      overflow-x: hidden;
       margin: 0;
-      text-align: center;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #fffaf1 0%, var(--warm) 100%);
+      color: var(--brown);
       scroll-behavior: smooth;
     }
 
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+    }
+
     header img {
-      max-width: 220px;
+      max-width: 260px;
+      width: 80%;
       height: auto;
-      margin: 1.5rem auto 0.5rem;
       display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 6px 18px rgba(75,59,42,0.18));
     }
 
     .navbar {
       position: sticky;
       top: 0;
-      width: 100%;
-      background: rgba(139, 94, 60, 0.85);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
       z-index: 999;
-      padding: 0.5rem 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      width: 100%;
+      background: rgba(75, 59, 42, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
     }
 
-    .nav-row {
+    .nav-wrap {
+      max-width: 950px;
+      margin: 0 auto;
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
-      gap: 2rem;
-      max-width: 600px;
-      margin: 0.3rem auto;
+      justify-content: center;
+      gap: .35rem;
+      padding: .75rem 1rem;
     }
 
-    .nav-row a {
+    .nav-wrap a {
       color: white;
       text-decoration: none;
-      font-size: 1rem;
       font-family: 'Lora', serif;
-      position: relative;
-      padding: 0.25rem 0.5rem;
-      transition: color 0.2s ease;
+      font-size: .98rem;
+      padding: .55rem .85rem;
+      border-radius: 999px;
+      transition: background .2s ease, transform .2s ease;
     }
 
-    .nav-row a:hover::before {
-      content: "🪶";
-      position: absolute;
-      left: -1.3rem;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-    }
-
-    .nav-row a.active {
-      font-weight: bold;
+    .nav-wrap a:hover,
+    .nav-wrap a.active {
+      background: rgba(255, 234, 196, .18);
       color: #ffeac4;
+      transform: translateY(-1px);
     }
 
-    .content-block {
-      background: #fffaf1;
-      margin: 2rem auto;
-      padding: 2rem 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.04);
-      max-width: 800px;
-      text-align: left;
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 1rem;
     }
 
-    h2 {
-      font-family: 'Courier New', Courier, monospace;
-      background: #deb887;
-      display: inline-block;
-      padding: 0.4em 1em;
-      border-radius: 6px;
-      box-shadow: 2px 2px 0 #a87c4c;
-      margin-bottom: 1rem;
+    .hero {
       text-align: center;
+      margin: 1.5rem auto 2rem;
+      padding: clamp(2rem, 5vw, 4rem) 1.5rem;
+      border-radius: 28px;
+      background:
+        linear-gradient(rgba(47,36,25,.62), rgba(47,36,25,.70)),
+        radial-gradient(circle at 20% 15%, rgba(111,159,154,.48), transparent 28%),
+        linear-gradient(135deg, #6f8b55, #49633e 48%, #6f9f9a);
+      color: white;
+      box-shadow: 0 18px 50px rgba(75,59,42,0.20);
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-size: .78rem;
+      font-weight: 800;
+      color: #ffeac4;
+      margin-bottom: .75rem;
+    }
+
+    h1, h2, h3 { font-family: 'Lora', serif; margin-top: 0; }
+
+    h1 {
+      font-size: clamp(2.2rem, 7vw, 4.6rem);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 0 auto;
+      font-size: clamp(1rem, 2.3vw, 1.22rem);
+      line-height: 1.75;
+    }
+
+    .section {
+      background: rgba(255,253,248,.9);
+      border: 1px solid rgba(209,167,111,.28);
+      border-radius: 24px;
+      box-shadow: 0 10px 35px rgba(75,59,42,0.08);
+      padding: clamp(1.5rem, 4vw, 3rem);
+      margin: 1.5rem 0;
+    }
+
+    .story p {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: #5e4a35;
+      margin: 0 0 1rem;
+    }
+
+    .story p.lead {
+      font-size: 1.2rem;
+      color: var(--deep);
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.35rem;
+      border: 1px solid rgba(209,167,111,.25);
+      box-shadow: 0 8px 24px rgba(75,59,42,0.08);
+    }
+
+    .card .icon {
+      font-size: 2.2rem;
+      margin-bottom: .65rem;
+    }
+
+    .card h3 {
+      color: var(--deep);
+      margin-bottom: .45rem;
+      font-size: 1.25rem;
+    }
+
+    .card p {
+      color: #5e4a35;
+      line-height: 1.65;
+      margin: 0;
     }
 
     .quote {
       font-family: 'Dancing Script', cursive;
-      font-size: 1.6rem;
-      color: #5a4632;
-      margin: 2rem auto;
+      color: var(--green);
       text-align: center;
-      max-width: 600px;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      line-height: 1.2;
+      max-width: 850px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: .85rem;
+      margin-top: 1.5rem;
+    }
+
+    .button {
+      display: inline-block;
+      text-decoration: none;
+      border-radius: 999px;
+      padding: .85rem 1.2rem;
+      font-weight: 800;
+      background: var(--gold);
+      color: white;
+      box-shadow: 0 6px 18px rgba(199,148,31,.24);
+    }
+
+    .button.secondary {
+      background: var(--green);
     }
 
     footer {
       text-align: center;
-      padding: 1rem;
-      background-color: var(--accent);
+      padding: 1.5rem 1rem;
+      background-color: var(--tan);
       color: white;
-      font-size: 0.9rem;
+      font-size: .95rem;
+      margin-top: 2rem;
     }
 
+    footer a { color: white; font-weight: 700; }
+
+    @media (max-width: 560px) {
+      .nav-wrap { gap: .15rem; padding: .6rem .5rem; }
+      .nav-wrap a { font-size: .9rem; padding: .45rem .55rem; }
+    }
   </style>
 </head>
 <body>
-
   <header>
-    <img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow Logo" />
+    <img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow logo" />
   </header>
 
-  <nav class="navbar">
-    <div class="nav-row">
+  <nav class="navbar" aria-label="Main navigation">
+    <div class="nav-wrap">
       <a href="index.html">Our Nest</a>
       <a href="about.html" class="active">Our Story</a>
       <a href="profiles.html">Meet Our Flock</a>
-    </div>
-    <div class="nav-row">
       <a href="sponsor.html">Sponsor</a>
       <a href="studio/index.html">Studio</a>
       <a href="trading-post.html">Trading Post</a>
     </div>
   </nav>
 
-  <section class="content-block">
-    <h2>Our Story</h2>
-    <p><strong>Falling Feathers Hollow is still in its early days—raw land, big dreams, and a growing flock.</strong></p>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">Wheeling, West Virginia</div>
+      <h1>Our Story</h1>
+      <p>Falling Feathers Hollow is a family-built sanctuary-style backyard farm where animals are cared for, people are reminded to breathe, and purpose grows through everyday work.</p>
+    </section>
 
-    <p>It started with two ducks and a spark of inspiration: what if a simple piece of land could become a place of second chances? A place where animals feel safe, people feel seen, and purpose is found in the everyday care of something meaningful?</p>
+    <section class="section story" aria-labelledby="story-heading">
+      <h2 id="story-heading">How the Hollow Started</h2>
+      <p class="lead">It started with two ducks, a little piece of hope, and the question: what if this could become more than a backyard?</p>
+      <p>From there, Falling Feathers Hollow began growing into a place of second chances. Ducks turned into chickens. Chickens turned into quail. Everyday chores turned into something meaningful. The hollow is still being built, one fence post, one coop improvement, one rescued animal, and one honest day of work at a time.</p>
+      <p>We are not trying to be a factory farm. We are building a place where the animals come first, the eggs are part of the story, and the community can see that care, creativity, and faith still matter.</p>
+      <p>Today, that means caring for ducks, chickens, quail, and rescues while offering local Chicken, Duck, &amp; Quail Eggs when supply allows. It also means creating a peaceful space tucked into the woods and creek life of West Virginia, where kids can learn and families can connect.</p>
+    </section>
 
-    <p>We’re building this sanctuary from the ground up—one fence post, one feather, one morning chore at a time. The barn isn't finished. The fencing still needs work. But the heart? That's already here.</p>
+    <section class="section" aria-labelledby="mission-heading">
+      <h2 id="mission-heading">What We Are Building</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="icon" aria-hidden="true">🪶</div>
+          <h3>Sanctuary</h3>
+          <p>A safe, loving home for birds and animals that need care, patience, and a second chance.</p>
+        </article>
+        <article class="card">
+          <div class="icon" aria-hidden="true">🥚</div>
+          <h3>Local Eggs</h3>
+          <p>Chicken, Duck, &amp; Quail Eggs offered locally when the flock is laying and supply allows.</p>
+        </article>
+        <article class="card">
+          <div class="icon" aria-hidden="true">🌿</div>
+          <h3>Hollow Life</h3>
+          <p>A peaceful setting shaped by woods, creek sounds, family work, and the joy of caring for creation.</p>
+        </article>
+        <article class="card">
+          <div class="icon" aria-hidden="true">🤝</div>
+          <h3>Community</h3>
+          <p>A place for supporters, families, kids, and neighbors to follow the story and help it grow.</p>
+        </article>
+      </div>
+    </section>
 
-    <p>We’re a family stepping out in faith, creating a space that blends animal care, personal healing, and community. This isn’t just about rescue—it’s about restoration, reflection, and revival.</p>
+    <div class="quote">This is what starting over looks like: messy, meaningful, and full of hope.</div>
 
-    <p>Every little quack and chirp fuels our mission. And while we’re not “there” yet, we’re grateful for every step along the way—and for folks like you walking it with us.</p>
-  </section>
-
-  <div class="quote">
-    “This is what starting over looks like: messy, meaningful, and full of hope.”
-  </div>
+    <section class="section" aria-labelledby="next-heading">
+      <h2 id="next-heading">Come Along With Us</h2>
+      <p>Falling Feathers Hollow is still in its early chapters. The dream is growing, the flock is growing, and every bit of support helps us make the space safer, cleaner, and more useful for the animals and the community around them.</p>
+      <div class="button-row">
+        <a class="button" href="profiles.html">Meet the Flock</a>
+        <a class="button secondary" href="sponsor.html">Sponsor the Hollow</a>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    <p>&copy; Falling Feathers Hollow 2025. All rights reserved.</p>
+    &copy; Falling Feathers Hollow 2026. All rights reserved.<br />
+    <a href="mailto:info@fallingfeathers.us">info@fallingfeathers.us</a>
   </footer>
 </body>
 </html>

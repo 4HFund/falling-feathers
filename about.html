@@ -3,304 +3,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About Jacy | Falling Feathers Hollow</title>
-  <meta name="description" content="Falling Feathers Hollow is Jacy's woman veteran-owned sanctuary project in Wheeling, West Virginia, built around her passion for ducks, chickens, quail, and animal care." />
+  <title>Our Story | Falling Feathers Hollow</title>
+  <meta name="description" content="Falling Feathers Hollow is a woman veteran-owned sanctuary-style backyard farm in Wheeling, West Virginia, focused on animal care, local eggs, and community connection." />
   <link rel="icon" type="image/png" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --cream: #fffaf1;
-      --warm: #f4e0c5;
-      --tan: #d1a76f;
-      --brown: #4b3b2a;
-      --deep: #2f2419;
-      --green: #49633e;
-      --water: #6f9f9a;
-      --gold: #c7941f;
-    }
-
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #fffaf1 0%, var(--warm) 100%);
-      color: var(--brown);
-      scroll-behavior: smooth;
-    }
-
-    header {
-      text-align: center;
-      padding: 2rem 1rem 1rem;
-    }
-
-    header img {
-      max-width: 260px;
-      width: 80%;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-      filter: drop-shadow(0 6px 18px rgba(75,59,42,0.18));
-    }
-
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 999;
-      width: 100%;
-      background: rgba(75, 59, 42, 0.92);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
-    }
-
-    .nav-wrap {
-      max-width: 950px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: .35rem;
-      padding: .75rem 1rem;
-    }
-
-    .nav-wrap a {
-      color: white;
-      text-decoration: none;
-      font-family: 'Lora', serif;
-      font-size: .98rem;
-      padding: .55rem .85rem;
-      border-radius: 999px;
-      transition: background .2s ease, transform .2s ease;
-    }
-
-    .nav-wrap a:hover,
-    .nav-wrap a.active {
-      background: rgba(255, 234, 196, .18);
-      color: #ffeac4;
-      transform: translateY(-1px);
-    }
-
-    main {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 1rem;
-    }
-
-    .hero {
-      text-align: center;
-      margin: 1.5rem auto 2rem;
-      padding: clamp(2rem, 5vw, 4rem) 1.5rem;
-      border-radius: 28px;
-      background:
-        linear-gradient(rgba(47,36,25,.62), rgba(47,36,25,.70)),
-        radial-gradient(circle at 20% 15%, rgba(111,159,154,.48), transparent 28%),
-        linear-gradient(135deg, #6f8b55, #49633e 48%, #6f9f9a);
-      color: white;
-      box-shadow: 0 18px 50px rgba(75,59,42,0.20);
-    }
-
-    .eyebrow {
-      text-transform: uppercase;
-      letter-spacing: .14em;
-      font-size: .78rem;
-      font-weight: 800;
-      color: #ffeac4;
-      margin-bottom: .75rem;
-    }
-
-    h1, h2, h3 { font-family: 'Lora', serif; margin-top: 0; }
-
-    h1 {
-      font-size: clamp(2.2rem, 7vw, 4.6rem);
-      line-height: 1;
-      margin-bottom: 1rem;
-    }
-
-    .hero p {
-      max-width: 780px;
-      margin: 0 auto;
-      font-size: clamp(1rem, 2.3vw, 1.22rem);
-      line-height: 1.75;
-    }
-
-    .section {
-      background: rgba(255,253,248,.9);
-      border: 1px solid rgba(209,167,111,.28);
-      border-radius: 24px;
-      box-shadow: 0 10px 35px rgba(75,59,42,0.08);
-      padding: clamp(1.5rem, 4vw, 3rem);
-      margin: 1.5rem 0;
-    }
-
-    .story p {
-      font-size: 1.05rem;
-      line-height: 1.85;
-      color: #5e4a35;
-      margin: 0 0 1rem;
-    }
-
-    .story p.lead {
-      font-size: 1.2rem;
-      color: var(--deep);
-      font-weight: 700;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
-      gap: 1.25rem;
-      margin-top: 1.5rem;
-    }
-
-    .card {
-      background: white;
-      border-radius: 20px;
-      padding: 1.35rem;
-      border: 1px solid rgba(209,167,111,.25);
-      box-shadow: 0 8px 24px rgba(75,59,42,0.08);
-    }
-
-    .card .icon {
-      font-size: 2.2rem;
-      margin-bottom: .65rem;
-    }
-
-    .card h3 {
-      color: var(--deep);
-      margin-bottom: .45rem;
-      font-size: 1.25rem;
-    }
-
-    .card p {
-      color: #5e4a35;
-      line-height: 1.65;
-      margin: 0;
-    }
-
-    .quote {
-      font-family: 'Dancing Script', cursive;
-      color: var(--green);
-      text-align: center;
-      font-size: clamp(1.8rem, 5vw, 3rem);
-      line-height: 1.2;
-      max-width: 850px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    .button-row {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: .85rem;
-      margin-top: 1.5rem;
-    }
-
-    .button {
-      display: inline-block;
-      text-decoration: none;
-      border-radius: 999px;
-      padding: .85rem 1.2rem;
-      font-weight: 800;
-      background: var(--gold);
-      color: white;
-      box-shadow: 0 6px 18px rgba(199,148,31,.24);
-    }
-
-    .button.secondary {
-      background: var(--green);
-    }
-
-    footer {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      background-color: var(--tan);
-      color: white;
-      font-size: .95rem;
-      margin-top: 2rem;
-    }
-
-    footer a { color: white; font-weight: 700; }
-
-    @media (max-width: 560px) {
-      .nav-wrap { gap: .15rem; padding: .6rem .5rem; }
-      .nav-wrap a { font-size: .9rem; padding: .45rem .55rem; }
-    }
+    :root { --cream:#fffaf1; --warm:#f4e0c5; --tan:#d1a76f; --brown:#4b3b2a; --deep:#2f2419; --green:#49633e; --water:#6f9f9a; --gold:#c7941f; }
+    * { box-sizing:border-box; }
+    html,body { margin:0; font-family:'Inter',sans-serif; background:linear-gradient(135deg,#fffaf1 0%,var(--warm) 100%); color:var(--brown); scroll-behavior:smooth; }
+    header { text-align:center; padding:2rem 1rem 1rem; }
+    header img { max-width:260px; width:80%; height:auto; display:block; margin:0 auto; filter:drop-shadow(0 6px 18px rgba(75,59,42,.18)); }
+    .navbar { position:sticky; top:0; z-index:999; width:100%; background:rgba(75,59,42,.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); box-shadow:0 2px 12px rgba(0,0,0,.18); }
+    .nav-wrap { max-width:950px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:center; gap:.35rem; padding:.75rem 1rem; }
+    .nav-wrap a { color:white; text-decoration:none; font-family:'Lora',serif; font-size:.98rem; padding:.55rem .85rem; border-radius:999px; transition:background .2s ease,transform .2s ease; }
+    .nav-wrap a:hover,.nav-wrap a.active { background:rgba(255,234,196,.18); color:#ffeac4; transform:translateY(-1px); }
+    main { max-width:1080px; margin:0 auto; padding:1rem; }
+    .hero { text-align:center; margin:1.5rem auto 2rem; padding:clamp(2rem,5vw,4rem) 1.5rem; border-radius:28px; background:linear-gradient(rgba(47,36,25,.62),rgba(47,36,25,.70)),radial-gradient(circle at 20% 15%,rgba(111,159,154,.48),transparent 28%),linear-gradient(135deg,#6f8b55,#49633e 48%,#6f9f9a); color:white; box-shadow:0 18px 50px rgba(75,59,42,.20); }
+    .eyebrow { text-transform:uppercase; letter-spacing:.14em; font-size:.78rem; font-weight:800; color:#ffeac4; margin-bottom:.75rem; }
+    h1,h2,h3 { font-family:'Lora',serif; margin-top:0; }
+    h1 { font-size:clamp(2.2rem,7vw,4.6rem); line-height:1; margin-bottom:1rem; }
+    .hero p { max-width:780px; margin:0 auto; font-size:clamp(1rem,2.3vw,1.22rem); line-height:1.75; }
+    .section { background:rgba(255,253,248,.9); border:1px solid rgba(209,167,111,.28); border-radius:24px; box-shadow:0 10px 35px rgba(75,59,42,.08); padding:clamp(1.5rem,4vw,3rem); margin:1.5rem 0; }
+    .story p { font-size:1.05rem; line-height:1.85; color:#5e4a35; margin:0 0 1rem; }
+    .story p.lead { font-size:1.2rem; color:var(--deep); font-weight:700; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(245px,1fr)); gap:1.25rem; margin-top:1.5rem; }
+    .card { background:white; border-radius:20px; padding:1.35rem; border:1px solid rgba(209,167,111,.25); box-shadow:0 8px 24px rgba(75,59,42,.08); }
+    .card .icon { font-size:2.2rem; margin-bottom:.65rem; }
+    .card h3 { color:var(--deep); margin-bottom:.45rem; font-size:1.25rem; }
+    .card p { color:#5e4a35; line-height:1.65; margin:0; }
+    .quote { font-family:'Dancing Script',cursive; color:var(--green); text-align:center; font-size:clamp(1.8rem,5vw,3rem); line-height:1.2; max-width:850px; margin:2rem auto; padding:0 1rem; }
+    .button-row { display:flex; justify-content:center; flex-wrap:wrap; gap:.85rem; margin-top:1.5rem; }
+    .button { display:inline-block; text-decoration:none; border-radius:999px; padding:.85rem 1.2rem; font-weight:800; background:var(--gold); color:white; box-shadow:0 6px 18px rgba(199,148,31,.24); }
+    .button.secondary { background:var(--green); }
+    footer { text-align:center; padding:1.5rem 1rem; background-color:var(--tan); color:white; font-size:.95rem; margin-top:2rem; }
+    footer a { color:white; font-weight:700; }
+    @media (max-width:560px){ .nav-wrap{ gap:.15rem; padding:.6rem .5rem; } .nav-wrap a{ font-size:.9rem; padding:.45rem .55rem; } }
   </style>
 </head>
 <body>
-  <header>
-    <img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow logo" />
-  </header>
-
-  <nav class="navbar" aria-label="Main navigation">
-    <div class="nav-wrap">
-      <a href="index.html">Our Nest</a>
-      <a href="about.html" class="active">Our Story</a>
-      <a href="profiles.html">Meet Our Flock</a>
-      <a href="sponsor.html">Sponsor</a>
-      <a href="studio/index.html">Studio</a>
-      <a href="trading-post.html">Trading Post</a>
-    </div>
-  </nav>
+  <header><img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow logo" /></header>
+  <nav class="navbar" aria-label="Main navigation"><div class="nav-wrap"><a href="index.html">Our Nest</a><a href="about.html" class="active">Our Story</a><a href="profiles.html">Meet Our Flock</a><a href="sponsor.html">Sponsor</a><a href="studio/index.html">Studio</a><a href="trading-post.html">Trading Post</a></div></nav>
 
   <main>
     <section class="hero">
       <div class="eyebrow">Woman veteran-owned • Wheeling, West Virginia</div>
-      <h1>Jacy’s Hollow</h1>
-      <p>Falling Feathers Hollow is Jacy’s project, her passion, and her way of turning love for ducks, chickens, quail, and rescue animals into something meaningful for the whole community.</p>
+      <h1>Our Story</h1>
+      <p>Falling Feathers Hollow is a sanctuary-style backyard farm focused on responsible animal care, local eggs, and building a peaceful place where purpose grows through everyday stewardship.</p>
     </section>
 
     <section class="section story" aria-labelledby="story-heading">
-      <h2 id="story-heading">About Jacy and the Heart Behind It</h2>
-      <p class="lead">Falling Feathers Hollow is led by Jacy, a woman veteran with a deep love for animals and a heart for building something gentle, useful, and full of purpose.</p>
-      <p>This is her vision. Her hands are in the daily care, the planning, the learning, and the dreaming. The ducks, chickens, quail, and rescues are not just animals on a page. They are the reason this project exists.</p>
-      <p>As a woman veteran-owned project, Falling Feathers Hollow is about more than selling eggs. It is about stewardship, patience, healing, and creating a peaceful place where animals are cared for well and people can see the value in small, faithful work.</p>
-      <p>The family supports the dream, but the heart of the hollow is Jacy’s passion for the flock. Every coop improvement, every rescued bird, every egg carton, and every step forward points back to her love for these animals.</p>
+      <h2 id="story-heading">About Falling Feathers Hollow</h2>
+      <p class="lead">Founded by Jacy, Falling Feathers Hollow is a woman veteran-owned project built around animal care, practical stewardship, and a deep respect for the flock.</p>
+      <p>What began with ducks has grown into a small but meaningful sanctuary-style farm with Pekins, Rouens, Runner ducklings, chickens, quail, and rescue animals. Each part of the hollow is being developed with care, patience, and a focus on the animals’ well-being.</p>
+      <p>The goal is simple: provide safe, clean, thoughtful care for the animals while offering local Chicken, Duck, &amp; Quail Eggs when supply allows. The operation is intentionally small, seasonal, and personal, with the animals always coming first.</p>
+      <p>Falling Feathers Hollow is also a place of learning and community. It reflects the values of responsibility, resilience, family support, and the belief that meaningful work can begin right at home.</p>
     </section>
 
     <section class="section" aria-labelledby="mission-heading">
-      <h2 id="mission-heading">What Jacy Is Building</h2>
+      <h2 id="mission-heading">What We Are Building</h2>
       <div class="grid">
-        <article class="card">
-          <div class="icon" aria-hidden="true">🪶</div>
-          <h3>A Sanctuary</h3>
-          <p>A safe, loving home for ducks, chickens, quail, and animals that need care, patience, and a second chance.</p>
-        </article>
-        <article class="card">
-          <div class="icon" aria-hidden="true">🥚</div>
-          <h3>Local Eggs</h3>
-          <p>Chicken, Duck, &amp; Quail Eggs offered locally when the flock is laying and supply allows.</p>
-        </article>
-        <article class="card">
-          <div class="icon" aria-hidden="true">🌿</div>
-          <h3>Hollow Life</h3>
-          <p>A peaceful setting shaped by woods, creek sounds, family work, and Jacy’s steady care for the animals.</p>
-        </article>
-        <article class="card">
-          <div class="icon" aria-hidden="true">🇺🇸</div>
-          <h3>Woman Veteran-Owned</h3>
-          <p>A project rooted in service, resilience, responsibility, and the belief that meaningful work can start right at home.</p>
-        </article>
+        <article class="card"><div class="icon" aria-hidden="true">🪶</div><h3>Animal Care</h3><p>Safe housing, daily routines, enrichment, and careful attention for ducks, chickens, quail, and rescues.</p></article>
+        <article class="card"><div class="icon" aria-hidden="true">🥚</div><h3>Local Eggs</h3><p>Chicken, Duck, &amp; Quail Eggs offered locally when the flock is laying and supply allows.</p></article>
+        <article class="card"><div class="icon" aria-hidden="true">🌿</div><h3>Hollow Life</h3><p>A peaceful setting shaped by woods, creek sounds, family work, and the steady rhythm of caring for animals.</p></article>
+        <article class="card"><div class="icon" aria-hidden="true">🇺🇸</div><h3>Woman Veteran-Owned</h3><p>A project rooted in service, responsibility, resilience, and practical hands-on care.</p></article>
       </div>
     </section>
 
-    <div class="quote">Her passion. Her flock. Her hollow.</div>
+    <div class="quote">Built feather by feather.</div>
 
     <section class="section" aria-labelledby="next-heading">
-      <h2 id="next-heading">Come Along With Jacy</h2>
-      <p>Falling Feathers Hollow is still in its early chapters. Every bit of support helps Jacy make the space safer, cleaner, and more useful for the animals she loves and the community she hopes to serve.</p>
-      <div class="button-row">
-        <a class="button" href="profiles.html">Meet the Flock</a>
-        <a class="button secondary" href="sponsor.html">Support the Hollow</a>
-      </div>
+      <h2 id="next-heading">Follow the Hollow</h2>
+      <p>Falling Feathers Hollow is still growing. Support helps improve animal housing, care supplies, fencing, and the daily needs of the flock.</p>
+      <div class="button-row"><a class="button" href="profiles.html">Meet the Flock</a><a class="button secondary" href="sponsor.html">Support the Hollow</a></div>
     </section>
   </main>
 
-  <footer>
-    &copy; Falling Feathers Hollow 2026. All rights reserved.<br />
-    <a href="mailto:info@fallingfeathers.us">info@fallingfeathers.us</a>
-  </footer>
+  <footer>&copy; Falling Feathers Hollow 2026. All rights reserved.<br /><a href="mailto:info@fallingfeathers.us">info@fallingfeathers.us</a></footer>
 </body>
 </html>

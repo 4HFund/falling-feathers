@@ -10,23 +10,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@600;700&display=swap" rel="stylesheet" />
   <style>
     :root{--cream:#fffaf1;--paper:#fffdf8;--warm:#f4e0c5;--tan:#d1a76f;--brown:#4b3b2a;--deep:#241a12;--green:#49633e;--green2:#2f4b35;--gold:#c7941f;--line:rgba(209,167,111,.32);--shadow:0 18px 55px rgba(47,36,25,.16);--success:#eaf4e6;--danger:#fff0ec}
-    *{box-sizing:border-box}html{background:var(--deep)}body{margin:0;font-family:'Inter',sans-serif;background:radial-gradient(circle at 10% 0%,rgba(111,159,154,.2),transparent 28%),linear-gradient(135deg,var(--cream),var(--warm));color:var(--brown);min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}button,input{font:inherit}.app{max-width:900px;margin:0 auto;padding:1rem}.top{display:flex;align-items:center;gap:.9rem;padding:.5rem 0 1rem}.top img{width:62px;height:62px;object-fit:contain;background:rgba(255,255,255,.72);border-radius:20px;padding:.35rem;border:1px solid var(--line)}.brand{min-width:0}.brand small{display:block;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-size:.68rem}.brand strong{display:block;font-family:'Lora',serif;color:var(--deep);font-size:clamp(1.2rem,5vw,1.8rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hero{background:linear-gradient(135deg,rgba(36,26,18,.96),rgba(47,75,53,.94));color:white;border-radius:28px;padding:clamp(1.5rem,5vw,3rem);box-shadow:var(--shadow);overflow:hidden;position:relative}.hero:after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;right:-80px;bottom:-100px;background:rgba(255,255,255,.07)}.hero h1{font-family:'Lora',serif;font-size:clamp(2rem,8vw,4.2rem);line-height:1;margin:0 0 .8rem}.hero p{max-width:640px;line-height:1.65;color:#fff6e5;margin:0}.panel{background:rgba(255,253,248,.96);border:1px solid var(--line);border-radius:26px;padding:clamp(1.15rem,4vw,2rem);margin:1rem 0;box-shadow:0 12px 35px rgba(75,59,42,.09)}.section-title{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}.section-title h2{font-family:'Lora',serif;color:var(--deep);font-size:1.55rem;margin:0}.section-title span{font-size:.8rem;font-weight:800;color:var(--green)}.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}.category{appearance:none;border:1px solid rgba(75,59,42,.14);background:white;border-radius:18px;padding:1rem;text-align:left;font-weight:900;color:var(--brown);cursor:pointer;box-shadow:0 7px 18px rgba(75,59,42,.06);transition:.18s ease}.category span{display:block;font-size:1.55rem;margin-bottom:.35rem}.category.active{background:var(--green2);color:white;border-color:var(--green2);transform:translateY(-1px)}.field{margin:1rem 0}.field label{display:block;font-weight:900;margin-bottom:.45rem;color:var(--deep)}.field input{width:100%;padding:1rem;border:1px solid rgba(75,59,42,.18);border-radius:15px;background:white;color:var(--deep)}.field small{display:block;margin-top:.4rem;line-height:1.45;color:#6c5944}.upload-button{appearance:none;border:0;border-radius:18px;padding:1rem 1.2rem;font-weight:900;font-size:1.05rem;cursor:pointer;background:linear-gradient(135deg,var(--gold),#ad7412);color:white;width:100%;box-shadow:0 12px 28px rgba(199,148,31,.3)}.upload-button:active{transform:translateY(1px)}.result{margin-top:1rem;padding:1rem;border-radius:16px;line-height:1.55;display:none}.result.show{display:block}.result.success{background:var(--success);border:1px solid #b8d8ad}.result.error{background:var(--danger);border:1px solid #e6b5a6}.recent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.recent-card{background:white;border:1px solid var(--line);border-radius:18px;overflow:hidden}.recent-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#eee}.recent-card div{padding:.75rem}.recent-card strong{display:block;color:var(--deep);font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.recent-card small{color:#77634e}.empty{text-align:center;padding:1.4rem;color:#75614c;line-height:1.6}.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.tool{display:block;text-decoration:none;background:white;border:1px solid var(--line);border-radius:18px;padding:1rem;color:var(--deep);font-weight:900;box-shadow:0 7px 18px rgba(75,59,42,.05)}.tool span{display:block;font-size:1.4rem;margin-bottom:.35rem}.tool small{display:block;font-weight:600;color:#745f49;line-height:1.4}.tool.disabled{opacity:.55;pointer-events:none}.footer{text-align:center;padding:1rem 0 2rem;color:#66523f;font-size:.86rem}.footer a{color:var(--green2);font-weight:900}.security{font-size:.82rem;line-height:1.5;background:#fff6dd;border:1px solid #ead59a;padding:.8rem 1rem;border-radius:14px;margin-top:1rem}@media(min-width:680px){.category-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.recent-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.tools{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:420px){.app{padding:.75rem}.top img{width:54px;height:54px}.panel,.hero{border-radius:22px}}
+    *{box-sizing:border-box}html{background:var(--deep)}body{margin:0;font-family:'Inter',sans-serif;background:radial-gradient(circle at 10% 0%,rgba(111,159,154,.2),transparent 28%),linear-gradient(135deg,var(--cream),var(--warm));color:var(--brown);min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}button,input,textarea{font:inherit}.app{max-width:900px;margin:0 auto;padding:1rem}.top{display:flex;align-items:center;gap:.9rem;padding:.5rem 0 1rem}.top img{width:62px;height:62px;object-fit:contain;background:rgba(255,255,255,.72);border-radius:20px;padding:.35rem;border:1px solid var(--line)}.brand small{display:block;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-size:.68rem}.brand strong{display:block;font-family:'Lora',serif;color:var(--deep);font-size:clamp(1.2rem,5vw,1.8rem)}.hero{background:linear-gradient(135deg,rgba(36,26,18,.96),rgba(47,75,53,.94));color:white;border-radius:28px;padding:clamp(1.5rem,5vw,3rem);box-shadow:var(--shadow)}.hero h1{font-family:'Lora',serif;font-size:clamp(2rem,8vw,4.2rem);line-height:1;margin:0 0 .8rem}.hero p{max-width:640px;line-height:1.65;color:#fff6e5;margin:0}.panel{background:rgba(255,253,248,.96);border:1px solid var(--line);border-radius:26px;padding:clamp(1.15rem,4vw,2rem);margin:1rem 0;box-shadow:0 12px 35px rgba(75,59,42,.09)}.section-title{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}.section-title h2{font-family:'Lora',serif;color:var(--deep);font-size:1.55rem;margin:0}.section-title span{font-size:.8rem;font-weight:800;color:var(--green)}.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}.category{appearance:none;border:1px solid rgba(75,59,42,.14);background:white;border-radius:18px;padding:1rem;text-align:left;font-weight:900;color:var(--brown);cursor:pointer;box-shadow:0 7px 18px rgba(75,59,42,.06)}.category span{display:block;font-size:1.55rem;margin-bottom:.35rem}.category.active{background:var(--green2);color:white;border-color:var(--green2)}.field{margin:1rem 0}.field label{display:block;font-weight:900;margin-bottom:.45rem;color:var(--deep)}.field input,.field textarea{width:100%;padding:1rem;border:1px solid rgba(75,59,42,.18);border-radius:15px;background:white;color:var(--deep)}.field textarea{min-height:120px;resize:vertical}.field small{display:block;margin-top:.4rem;line-height:1.45;color:#6c5944}.toggle{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:white;border:1px solid rgba(75,59,42,.16);border-radius:16px;padding:1rem;margin:1rem 0}.toggle strong{display:block;color:var(--deep)}.toggle small{display:block;color:#75614c;margin-top:.2rem}.toggle input{width:24px;height:24px}.upload-button{appearance:none;border:0;border-radius:18px;padding:1rem 1.2rem;font-weight:900;font-size:1.05rem;cursor:pointer;background:linear-gradient(135deg,var(--gold),#ad7412);color:white;width:100%;box-shadow:0 12px 28px rgba(199,148,31,.3)}.result{margin-top:1rem;padding:1rem;border-radius:16px;line-height:1.55;display:none}.result.show{display:block}.result.success{background:var(--success);border:1px solid #b8d8ad}.result.error{background:var(--danger);border:1px solid #e6b5a6}.recent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.recent-card{background:white;border:1px solid var(--line);border-radius:18px;overflow:hidden}.recent-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}.recent-card div{padding:.75rem}.recent-card strong{display:block;color:var(--deep);font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.recent-card small{color:#77634e}.empty{text-align:center;padding:1.4rem;color:#75614c}.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.tool{display:block;text-decoration:none;background:white;border:1px solid var(--line);border-radius:18px;padding:1rem;color:var(--deep);font-weight:900}.tool span{display:block;font-size:1.4rem;margin-bottom:.35rem}.tool small{display:block;font-weight:600;color:#745f49;line-height:1.4}.footer{text-align:center;padding:1rem 0 2rem;color:#66523f;font-size:.86rem}.footer a{color:var(--green2);font-weight:900}.security{font-size:.82rem;line-height:1.5;background:#fff6dd;border:1px solid #ead59a;padding:.8rem 1rem;border-radius:14px;margin-top:1rem}@media(min-width:680px){.category-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.recent-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.tools{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:420px){.app{padding:.75rem}.top img{width:54px;height:54px}.panel,.hero{border-radius:22px}}
   </style>
 </head>
 <body>
   <main class="app">
-    <header class="top">
-      <img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow logo" />
-      <div class="brand"><small>Private tools</small><strong>Hollow Admin</strong></div>
-    </header>
+    <header class="top"><img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow logo" /><div class="brand"><small>Private tools</small><strong>Hollow Admin</strong></div></header>
 
-    <section class="hero">
-      <h1>Post from your phone.</h1>
-      <p>Choose a category, add an optional caption, and upload one or several photos. Cloudinary handles storage and optimization automatically.</p>
-    </section>
+    <section class="hero"><h1>Share a moment from the Hollow.</h1><p>Add a title, a short story, choose where it belongs, and upload. Leave the text blank and the public gallery will show only the photo and a small category label.</p></section>
 
     <section class="panel">
-      <div class="section-title"><h2>Upload photos</h2><span id="selected-label">Ducks selected</span></div>
+      <div class="section-title"><h2>New photo story</h2><span id="selected-label">Ducks selected</span></div>
       <div class="category-grid" id="category-grid">
         <button class="category active" type="button" data-value="ducks"><span>🦆</span>Ducks</button>
         <button class="category" type="button" data-value="chickens"><span>🐔</span>Chickens</button>
@@ -38,32 +32,17 @@
         <button class="category" type="button" data-value="farm-life"><span>📸</span>Farm Life</button>
       </div>
 
-      <div class="field">
-        <label for="caption">Caption <span style="font-weight:600;color:#7b674f">(optional)</span></label>
-        <input id="caption" maxlength="140" placeholder="Example: The newest chicks settling in" />
-        <small>This becomes the photo title whenever Cloudinary exposes the caption to the gallery.</small>
-      </div>
+      <div class="field"><label for="title">Title <span style="font-weight:600;color:#7b674f">(optional)</span></label><input id="title" maxlength="80" placeholder="Example: New chicks settling in" /><small>Keep it short. If left blank, no large placeholder title will appear.</small></div>
+      <div class="field"><label for="story">Story or description <span style="font-weight:600;color:#7b674f">(optional)</span></label><textarea id="story" maxlength="500" placeholder="Example: These little ones spent their first evening cuddled together under the brooder."></textarea><small>This appears as smaller text beneath the photo.</small></div>
+      <label class="toggle"><span><strong>Feature on homepage</strong><small>Adds the featured tag for future homepage placement.</small></span><input id="featured" type="checkbox" /></label>
 
-      <button class="upload-button" id="upload-button" type="button">Choose Photos to Upload</button>
+      <button class="upload-button" id="upload-button" type="button">Choose Photos and Publish</button>
       <div class="result" id="result" aria-live="polite"></div>
-      <div class="security"><strong>Quick setup:</strong> this page is intentionally unlisted but not password protected. Keep the address private until a secure login is added.</div>
+      <div class="security"><strong>Quick setup:</strong> this page is unlisted but not password protected. Keep the address private until secure login is added.</div>
     </section>
 
-    <section class="panel">
-      <div class="section-title"><h2>Recently uploaded</h2><span id="upload-count">0 saved here</span></div>
-      <div class="recent-grid" id="recent-grid"></div>
-    </section>
-
-    <section class="panel">
-      <div class="section-title"><h2>Website tools</h2><span>More coming soon</span></div>
-      <div class="tools">
-        <a class="tool" href="gallery.html"><span>🖼️</span>Open Gallery<small>See the public photo page.</small></a>
-        <a class="tool" href="index.html"><span>🏡</span>Open Website<small>Return to the homepage.</small></a>
-        <div class="tool disabled"><span>🥚</span>Egg Availability<small>Planned dashboard control.</small></div>
-        <div class="tool disabled"><span>🐓</span>Animal Profiles<small>Planned dashboard control.</small></div>
-      </div>
-    </section>
-
+    <section class="panel"><div class="section-title"><h2>Recently uploaded</h2><span id="upload-count">0 saved here</span></div><div class="recent-grid" id="recent-grid"></div></section>
+    <section class="panel"><div class="section-title"><h2>Website tools</h2><span>Hollow control center</span></div><div class="tools"><a class="tool" href="gallery.html"><span>🖼️</span>Open Gallery<small>See the public gallery.</small></a><a class="tool" href="index.html"><span>🏡</span>Open Website<small>Return to the homepage.</small></a></div></section>
     <div class="footer">Falling Feathers Hollow · Wheeling, West Virginia<br /><a href="mailto:info@fallingfeathers.us">info@fallingfeathers.us</a></div>
   </main>
 
@@ -75,102 +54,54 @@
     const uploadButton = document.getElementById('upload-button');
     const categoryGrid = document.getElementById('category-grid');
     const selectedLabel = document.getElementById('selected-label');
-    const captionInput = document.getElementById('caption');
+    const titleInput = document.getElementById('title');
+    const storyInput = document.getElementById('story');
+    const featuredInput = document.getElementById('featured');
     const result = document.getElementById('result');
     const recentGrid = document.getElementById('recent-grid');
     const uploadCount = document.getElementById('upload-count');
     let selectedCategory = 'ducks';
 
-    function labelFor(value) {
-      return value.replace(/-/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
-    }
+    function labelFor(value){return value.replace(/-/g,' ').replace(/\b\w/g,letter=>letter.toUpperCase())}
+    function getRecentUploads(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')}catch{return[]}}
+    function saveRecentUpload(item){const uploads=[item,...getRecentUploads()].slice(0,8);localStorage.setItem(STORAGE_KEY,JSON.stringify(uploads));renderRecentUploads()}
+    function renderRecentUploads(){const uploads=getRecentUploads();recentGrid.replaceChildren();uploadCount.textContent=`${uploads.length} saved here`;if(!uploads.length){const empty=document.createElement('div');empty.className='empty';empty.style.gridColumn='1 / -1';empty.textContent='Your successful uploads from this phone will appear here.';recentGrid.appendChild(empty);return}uploads.forEach(item=>{const card=document.createElement('article');card.className='recent-card';const image=document.createElement('img');const copy=document.createElement('div');const title=document.createElement('strong');const meta=document.createElement('small');image.src=item.thumbnail;image.alt=item.title||item.filename;title.textContent=item.title||item.filename;meta.textContent=labelFor(item.category);copy.append(title,meta);card.append(image,copy);recentGrid.appendChild(card)})}
 
-    function getRecentUploads() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-      catch { return []; }
-    }
+    categoryGrid.addEventListener('click',event=>{const button=event.target.closest('.category');if(!button)return;document.querySelectorAll('.category').forEach(item=>item.classList.remove('active'));button.classList.add('active');selectedCategory=button.dataset.value;selectedLabel.textContent=`${labelFor(selectedCategory)} selected`});
 
-    function saveRecentUpload(item) {
-      const uploads = [item, ...getRecentUploads()].slice(0, 8);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(uploads));
-      renderRecentUploads();
-    }
+    uploadButton.addEventListener('click',()=>{
+      result.className='result';result.textContent='';
+      const title=titleInput.value.trim();
+      const story=storyInput.value.trim();
+      const featured=featuredInput.checked;
+      const tags=['website-gallery',selectedCategory];
+      if(featured)tags.push('featured');
+      const context={};
+      if(title)context.title=title;
+      if(story)context.description=story;
 
-    function renderRecentUploads() {
-      const uploads = getRecentUploads();
-      recentGrid.replaceChildren();
-      uploadCount.textContent = `${uploads.length} saved here`;
-      if (!uploads.length) {
-        const empty = document.createElement('div');
-        empty.className = 'empty';
-        empty.style.gridColumn = '1 / -1';
-        empty.textContent = 'Your successful uploads from this phone will appear here.';
-        recentGrid.appendChild(empty);
-        return;
-      }
-      uploads.forEach(item => {
-        const card = document.createElement('article');
-        card.className = 'recent-card';
-        const image = document.createElement('img');
-        const copy = document.createElement('div');
-        const title = document.createElement('strong');
-        const meta = document.createElement('small');
-        image.src = item.thumbnail;
-        image.alt = item.caption || item.filename;
-        title.textContent = item.caption || item.filename;
-        meta.textContent = labelFor(item.category);
-        copy.append(title, meta);
-        card.append(image, copy);
-        recentGrid.appendChild(card);
-      });
-    }
-
-    categoryGrid.addEventListener('click', event => {
-      const button = event.target.closest('.category');
-      if (!button) return;
-      document.querySelectorAll('.category').forEach(item => item.classList.remove('active'));
-      button.classList.add('active');
-      selectedCategory = button.dataset.value;
-      selectedLabel.textContent = `${labelFor(selectedCategory)} selected`;
-    });
-
-    uploadButton.addEventListener('click', () => {
-      result.className = 'result';
-      result.textContent = '';
-      const caption = captionInput.value.trim();
-      const widget = cloudinary.createUploadWidget({
-        cloudName: CLOUD_NAME,
-        uploadPreset: UPLOAD_PRESET,
-        multiple: true,
-        sources: ['local', 'camera'],
-        resourceType: 'image',
-        clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'heic'],
-        maxFileSize: 12000000,
-        tags: ['website-gallery', selectedCategory],
-        folder: `falling-feathers/${selectedCategory}`,
-        context: caption ? { caption } : undefined,
-        showAdvancedOptions: false,
-        cropping: false,
-        styles: { palette: { window:'#fffdf8',windowBorder:'#d1a76f',tabIcon:'#2f4b35',menuIcons:'#4b3b2a',textDark:'#241a12',textLight:'#ffffff',link:'#c7941f',action:'#c7941f',inactiveTabIcon:'#8a7a68',error:'#c0392b',inProgress:'#c7941f',complete:'#2f4b35',sourceBg:'#fffaf1' } }
-      }, (error, uploadResult) => {
-        if (error) {
-          result.textContent = `Upload failed: ${error.message || 'Unknown error'}`;
-          result.className = 'result show error';
-          return;
-        }
-        if (uploadResult && uploadResult.event === 'success') {
-          const info = uploadResult.info;
-          saveRecentUpload({
-            filename: info.original_filename || 'Uploaded photo',
-            caption,
-            category: selectedCategory,
-            thumbnail: info.thumbnail_url || info.secure_url,
-            secureUrl: info.secure_url,
-            uploadedAt: Date.now()
-          });
-          result.textContent = `${info.original_filename || 'Photo'} uploaded successfully to ${labelFor(selectedCategory)}.`;
-          result.className = 'result show success';
-          captionInput.value = '';
+      const widget=cloudinary.createUploadWidget({
+        cloudName:CLOUD_NAME,
+        uploadPreset:UPLOAD_PRESET,
+        multiple:true,
+        sources:['local','camera'],
+        resourceType:'image',
+        clientAllowedFormats:['jpg','jpeg','png','webp','heic'],
+        maxFileSize:12000000,
+        tags,
+        folder:`falling-feathers/${selectedCategory}`,
+        context:Object.keys(context).length?context:undefined,
+        showAdvancedOptions:false,
+        cropping:false,
+        styles:{palette:{window:'#fffdf8',windowBorder:'#d1a76f',tabIcon:'#2f4b35',menuIcons:'#4b3b2a',textDark:'#241a12',textLight:'#ffffff',link:'#c7941f',action:'#c7941f',inactiveTabIcon:'#8a7a68',error:'#c0392b',inProgress:'#c7941f',complete:'#2f4b35',sourceBg:'#fffaf1'}}
+      },(error,uploadResult)=>{
+        if(error){result.textContent=`Upload failed: ${error.message||'Unknown error'}`;result.className='result show error';return}
+        if(uploadResult&&uploadResult.event==='success'){
+          const info=uploadResult.info;
+          saveRecentUpload({filename:info.original_filename||'Uploaded photo',title,story,category:selectedCategory,thumbnail:info.thumbnail_url||info.secure_url,secureUrl:info.secure_url,uploadedAt:Date.now()});
+          result.textContent=`${title||info.original_filename||'Photo'} uploaded successfully to ${labelFor(selectedCategory)}.`;
+          result.className='result show success';
+          titleInput.value='';storyInput.value='';featuredInput.checked=false;
         }
       });
       widget.open();

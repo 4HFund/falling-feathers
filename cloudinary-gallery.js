@@ -1,6 +1,7 @@
 (() => {
   const CLOUD_NAME = 'ixfa510d';
   const DATA_URL = 'gallery-data.json';
+  const HIDDEN_KEY = 'falling-feathers-hidden-public-ids';
 
   const grid = document.getElementById('gallery-grid');
   const status = document.getElementById('gallery-status');
@@ -25,6 +26,11 @@
   ];
 
   const sectionKeys = sections.map(section => section.key);
+
+  function getHiddenIds() {
+    try { return JSON.parse(localStorage.getItem(HIDDEN_KEY) || '[]'); }
+    catch { return []; }
+  }
 
   function addSectionStyles() {
     const style = document.createElement('style');
@@ -211,12 +217,15 @@
       if (!response.ok) throw new Error(`Gallery data returned ${response.status}`);
 
       const data = await response.json();
+      const hiddenIds = getHiddenIds();
       allPhotos = Array.isArray(data.resources)
-        ? data.resources.sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')))
+        ? data.resources
+            .filter(photo => !hiddenIds.includes(photo.public_id))
+            .sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')))
         : [];
 
       if (!allPhotos.length) {
-        showMessage('No synced gallery photos yet.', 'Upload a photo through Hollow Admin. The gallery sync normally runs within about five minutes.');
+        showMessage('No visible gallery photos yet.', 'Upload a photo through Hollow Admin, or restore a photo hidden on this phone.');
         filters.hidden = true;
         return;
       }

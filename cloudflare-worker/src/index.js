@@ -1,140 +1,244 @@
-const ALLOWED_ORIGIN = 'https://4hfund.github.io';
 const CLOUD_NAME = 'ixfa510d';
+const DEFAULT_ORIGINS = [
+  'https://4hfund.github.io',
+  'https://fallingfeathers.us',
+  'https://www.fallingfeathers.us'
+];
+const CATEGORIES = [
+  'ducks', 'chickens', 'quail', 'eggs', 'babies',
+  'rescues', 'around-the-hollow', 'farm-life'
+];
 
-function corsHeaders(origin) {
-  const allowed = origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN;
+function allowedOrigins(env) {
+  const extras = String(env.ALLOWED_ORIGINS || '')
+    .split(',')
+    .map(value => value.trim())
+    .filter(Boolean);
+  return [...new Set([...DEFAULT_ORIGINS, ...extras])];
+}
+
+function corsHeaders(request, env) {
+  const origin = request.headers.get('Origin') || '';
+  const allowed = allowedOrigins(env);
+  const responseOrigin = allowed.includes(origin) ? origin : allowed[0];
   return {
-    'Access-Control-Allow-Origin': allowed,
-    'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+    'Access-Control-Allow-Origin': responseOrigin,
+    'Access-Control-Allow-Methods': 'GET,POST,DELETE,OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type,X-Admin-Pin',
     'Access-Control-Max-Age': '86400',
-    'Content-Type': 'application/json; charset=utf-8'
+    'Cache-Control': 'no-store',
+    'Content-Type': 'application/json; charset=utf-8',
+    'Vary': 'Origin'
   };
 }
 
-function json(data, status = 200, origin = ALLOWED_ORIGIN) {
+function json(request, env, data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: corsHeaders(origin)
+    headers: { ...corsHeaders(request, env), ...extraHeaders }
   });
 }
 
-function unauthorized(origin) {
-  return json({ error: 'Invalid admin PIN.' }, 401, origin);
+function basicAuth(env) {
+  return `Basic ${btoa(`${env.CLOUDINARY_API_KEY}:${env.CLOUDINARY_API_SECRET}`)}`;
 }
 
-function basicAuth(apiKey, apiSecret) {
-  return `Basic ${btoa(`${apiKey}:${apiSecret}`)}`;
+function requireConfiguration(env) {
+  const missing = ['CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET', 'ADMIN_PIN']
+    .filter(key => !env[key]);
+  if (missing.length) throw new Error(`Missing Worker secrets: ${missing.join(', ')}`);
 }
 
-async function listTaggedResources(tag, env) {
-  const url = new URL(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/resources/image/tags/${encodeURIComponent(tag)}`);
-  url.searchParams.set('max_results', '500');
-  url.searchParams.set('tags', 'true');
-  url.searchParams.set('context', 'true');
+function isAuthorized(request, env) {
+  const supplied = request.headers.get('X-Admin-Pin') || '';
+  return supplied.length >= 4 && supplied === env.ADMIN_PIN;
+}
 
-  const response = await fetch(url, {
+async function cloudinaryRequest(env, path, options = {}) {
+  const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}${path}`, {
+    ...options,
     headers: {
-      Authorization: basicAuth(env.CLOUDINARY_API_KEY, env.CLOUDINARY_API_SECRET)
+      Authorization: basicAuth(env),
+      ...(options.body ? { 'Content-Type': 'application/x-www-form-urlencoded' } : {}),
+      ...(options.headers || {})
     }
   });
 
-  if (!response.ok) {
-    throw new Error(`Cloudinary list request failed with ${response.status}`);
-  }
+  const text = await response.text();
+  let data = {};
+  try { data = text ? JSON.parse(text) : {}; }
+  catch { data = { raw: text }; }
 
-  const data = await response.json();
-  return Array.isArray(data.resources) ? data.resources : [];
+  if (!response.ok) {
+    const detail = data?.error?.message || data?.error || text || `HTTP ${response.status}`;
+    throw new Error(`Cloudinary request failed: ${detail}`);
+  }
+  return data;
 }
 
-async function changeTag(publicId, tag, command, env) {
-  const endpoint = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/resources/image/tags/${encodeURIComponent(tag)}`;
-  const body = new URLSearchParams();
-  body.set('command', command);
-  body.append('public_ids[]', publicId);
+async function listTaggedResources(env, tag) {
+  const resources = [];
+  let nextCursor = '';
 
-  const response = await fetch(endpoint, {
+  do {
+    const query = new URLSearchParams({
+      max_results: '500',
+      tags: 'true',
+      context: 'true',
+      metadata: 'true'
+    });
+    if (nextCursor) query.set('next_cursor', nextCursor);
+
+    const data = await cloudinaryRequest(
+      env,
+      `/resources/image/tags/${encodeURIComponent(tag)}?${query}`
+    );
+    resources.push(...(Array.isArray(data.resources) ? data.resources : []));
+    nextCursor = data.next_cursor || '';
+  } while (nextCursor && resources.length < 2000);
+
+  return resources;
+}
+
+function normalizeResource(resource, status = 'visible') {
+  const tags = Array.isArray(resource.tags) ? resource.tags : [];
+  return {
+    public_id: resource.public_id,
+    format: resource.format,
+    version: resource.version,
+    width: resource.width,
+    height: resource.height,
+    bytes: resource.bytes,
+    created_at: resource.created_at,
+    secure_url: resource.secure_url,
+    tags,
+    context: resource.context || {},
+    featured: tags.includes('featured'),
+    category: CATEGORIES.find(category => tags.includes(category)) || 'farm-life',
+    website_status: status
+  };
+}
+
+async function changeTag(env, publicId, tag, command) {
+  const body = new URLSearchParams({ command });
+  body.append('public_ids[]', publicId);
+  return cloudinaryRequest(env, `/resources/image/tags/${encodeURIComponent(tag)}`, {
     method: 'POST',
-    headers: {
-      Authorization: basicAuth(env.CLOUDINARY_API_KEY, env.CLOUDINARY_API_SECRET),
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     body
   });
-
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`Cloudinary tag update failed with ${response.status}: ${text}`);
-  }
-
-  return response.json();
 }
 
-async function requireAdminPin(request, env) {
-  const suppliedPin = request.headers.get('X-Admin-Pin') || '';
-  return suppliedPin && suppliedPin === env.ADMIN_PIN;
+async function replaceCategory(env, publicId, currentTags, category) {
+  if (!CATEGORIES.includes(category)) throw new Error('Invalid category.');
+  const existing = CATEGORIES.filter(tag => currentTags.includes(tag));
+  await Promise.all(existing.filter(tag => tag !== category).map(tag => changeTag(env, publicId, tag, 'remove')));
+  if (!existing.includes(category)) await changeTag(env, publicId, category, 'add');
+}
+
+async function updateContext(env, publicId, title, description) {
+  const body = new URLSearchParams({ command: 'add' });
+  const safeTitle = String(title || '').replace(/[|=]/g, ' ').trim();
+  const safeDescription = String(description || '').replace(/[|=]/g, ' ').trim();
+  body.set('context', `title=${safeTitle}|description=${safeDescription}`);
+  body.append('public_ids[]', publicId);
+  return cloudinaryRequest(env, '/resources/image/context', { method: 'POST', body });
+}
+
+async function deleteResource(env, publicId) {
+  const body = new URLSearchParams();
+  body.append('public_ids[]', publicId);
+  body.set('invalidate', 'true');
+  return cloudinaryRequest(env, '/resources/image/upload', { method: 'DELETE', body });
+}
+
+async function readJson(request) {
+  try { return await request.json(); }
+  catch { throw new Error('Request body must be valid JSON.'); }
+}
+
+async function getAllManagedPhotos(env) {
+  const [visible, hidden] = await Promise.all([
+    listTaggedResources(env, 'website-gallery'),
+    listTaggedResources(env, 'website-hidden')
+  ]);
+
+  const byId = new Map();
+  visible.forEach(photo => byId.set(photo.public_id, normalizeResource(photo, 'visible')));
+  hidden.forEach(photo => byId.set(photo.public_id, normalizeResource(photo, 'hidden')));
+  return [...byId.values()].sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
 }
 
 export default {
   async fetch(request, env) {
-    const origin = request.headers.get('Origin') || ALLOWED_ORIGIN;
-
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: corsHeaders(origin) });
+      return new Response(null, { status: 204, headers: corsHeaders(request, env) });
     }
-
-    if (!env.CLOUDINARY_API_KEY || !env.CLOUDINARY_API_SECRET || !env.ADMIN_PIN) {
-      return json({ error: 'Worker secrets are not configured.' }, 500, origin);
-    }
-
-    const url = new URL(request.url);
 
     try {
+      requireConfiguration(env);
+      const url = new URL(request.url);
+
       if (url.pathname === '/health' && request.method === 'GET') {
-        return json({ ok: true }, 200, origin);
+        return json(request, env, { ok: true, service: 'Falling Feathers Hollow Admin API' });
       }
 
-      if (!(await requireAdminPin(request, env))) {
-        return unauthorized(origin);
+      if (url.pathname === '/gallery' && request.method === 'GET') {
+        const visible = await listTaggedResources(env, 'website-gallery');
+        const resources = visible
+          .map(photo => normalizeResource(photo, 'visible'))
+          .sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
+        return json(request, env, { generated_at: new Date().toISOString(), resources }, 200, {
+          'Cache-Control': 'public, max-age=30, s-maxage=30'
+        });
       }
 
-      if (url.pathname === '/photos' && request.method === 'GET') {
-        const [visible, hidden] = await Promise.all([
-          listTaggedResources('website-gallery', env),
-          listTaggedResources('website-hidden', env)
-        ]);
-
-        const normalized = [
-          ...visible.map(photo => ({ ...photo, website_status: 'visible' })),
-          ...hidden.map(photo => ({ ...photo, website_status: 'hidden' }))
-        ].sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
-
-        return json({ resources: normalized }, 200, origin);
+      if (!isAuthorized(request, env)) {
+        return json(request, env, { error: 'Invalid admin PIN.' }, 401);
       }
 
-      if ((url.pathname === '/hide' || url.pathname === '/restore') && request.method === 'POST') {
-        const body = await request.json();
+      if (url.pathname === '/admin/photos' && request.method === 'GET') {
+        return json(request, env, { resources: await getAllManagedPhotos(env) });
+      }
+
+      if (url.pathname === '/admin/photo' && request.method === 'POST') {
+        const body = await readJson(request);
         const publicId = String(body.public_id || '').trim();
+        const action = String(body.action || '').trim();
+        if (!publicId) return json(request, env, { error: 'public_id is required.' }, 400);
 
-        if (!publicId) {
-          return json({ error: 'public_id is required.' }, 400, origin);
+        if (action === 'hide') {
+          await changeTag(env, publicId, 'website-gallery', 'remove');
+          await changeTag(env, publicId, 'website-hidden', 'add');
+        } else if (action === 'restore') {
+          await changeTag(env, publicId, 'website-hidden', 'remove');
+          await changeTag(env, publicId, 'website-gallery', 'add');
+        } else if (action === 'feature' || action === 'unfeature') {
+          await changeTag(env, publicId, 'featured', action === 'feature' ? 'add' : 'remove');
+        } else if (action === 'edit') {
+          const tags = Array.isArray(body.tags) ? body.tags.map(String) : [];
+          await Promise.all([
+            updateContext(env, publicId, body.title, body.description),
+            replaceCategory(env, publicId, tags, String(body.category || 'farm-life'))
+          ]);
+        } else {
+          return json(request, env, { error: 'Unsupported action.' }, 400);
         }
 
-        if (url.pathname === '/hide') {
-          await changeTag(publicId, 'website-gallery', 'remove', env);
-          await changeTag(publicId, 'website-hidden', 'add', env);
-          return json({ ok: true, status: 'hidden', public_id: publicId }, 200, origin);
-        }
-
-        await changeTag(publicId, 'website-hidden', 'remove', env);
-        await changeTag(publicId, 'website-gallery', 'add', env);
-        return json({ ok: true, status: 'visible', public_id: publicId }, 200, origin);
+        return json(request, env, { ok: true, public_id: publicId, action });
       }
 
-      return json({ error: 'Not found.' }, 404, origin);
+      if (url.pathname === '/admin/photo' && request.method === 'DELETE') {
+        const body = await readJson(request);
+        const publicId = String(body.public_id || '').trim();
+        if (!publicId) return json(request, env, { error: 'public_id is required.' }, 400);
+        await deleteResource(env, publicId);
+        return json(request, env, { ok: true, deleted: publicId });
+      }
+
+      return json(request, env, { error: 'Not found.' }, 404);
     } catch (error) {
       console.error(error);
-      return json({ error: error.message || 'Unexpected server error.' }, 500, origin);
+      return json(request, env, { error: error.message || 'Unexpected server error.' }, 500);
     }
   }
 };

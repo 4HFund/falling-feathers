@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo Admin | Falling Feathers Hollow</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{--cream:#fffaf1;--paper:#fffdf8;--brown:#4b3b2a;--deep:#241a12;--green:#2f4b35;--gold:#c7941f;--line:rgba(209,167,111,.32);--shadow:0 24px 70px rgba(47,36,25,.16)}
+    *{box-sizing:border-box}body{margin:0;font-family:'Inter',sans-serif;background:linear-gradient(135deg,#fffaf1,#f4e0c5);color:var(--brown);min-height:100vh}.wrap{max-width:760px;margin:0 auto;padding:1rem}.panel{margin:2rem 0;background:rgba(255,253,248,.96);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:clamp(1.4rem,5vw,3rem)}h1{font-family:'Lora',serif;color:var(--deep);font-size:clamp(2rem,7vw,4rem);line-height:1;margin:.3rem 0 1rem}.lead{line-height:1.7;font-size:1.05rem}.notice{background:#fff3cd;border:1px solid #e5c66f;border-radius:16px;padding:1rem;margin:1rem 0;line-height:1.55}.field{margin:1.2rem 0}.field label{display:block;font-weight:800;margin-bottom:.45rem}.field select,.field input{width:100%;padding:.9rem 1rem;border:1px solid rgba(75,59,42,.2);border-radius:14px;font:inherit;background:white}.button{appearance:none;border:0;border-radius:999px;padding:1rem 1.25rem;font-weight:900;font-size:1rem;cursor:pointer;background:var(--gold);color:white;width:100%;box-shadow:0 10px 26px rgba(199,148,31,.25)}.button:disabled{opacity:.55;cursor:not-allowed}.result{margin-top:1.2rem;padding:1rem;border-radius:16px;background:#eef5ec;line-height:1.6;display:none}.result.show{display:block}.links{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem}.links a{text-decoration:none;font-weight:800;color:var(--green)}code{background:#f4e0c5;padding:.15rem .35rem;border-radius:6px}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="panel">
+      <p style="font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:0">Falling Feathers Hollow</p>
+      <h1>Photo Upload</h1>
+      <p class="lead">Choose a category, select photos from your phone, and upload. Every uploaded image is automatically tagged for the public gallery.</p>
+
+      <div class="notice" id="setup-notice"><strong>One Cloudinary setting is still needed.</strong><br />Create an unsigned upload preset, then place its name in this page's script.</div>
+
+      <div class="field">
+        <label for="category">Photo category</label>
+        <select id="category">
+          <option value="ducks">Ducks</option>
+          <option value="chickens">Chickens</option>
+          <option value="quail">Quail</option>
+          <option value="eggs">Eggs</option>
+          <option value="babies">Babies</option>
+          <option value="rescues">Rescues</option>
+          <option value="around-the-hollow">Around the Hollow</option>
+        </select>
+      </div>
+
+      <button class="button" id="upload-button" type="button" disabled>Upload Photos</button>
+      <div class="result" id="result" aria-live="polite"></div>
+
+      <div class="links"><a href="gallery.html">Open public gallery</a><a href="index.html">Back to website</a></div>
+    </section>
+  </main>
+
+  <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+  <script>
+    const CLOUD_NAME = 'ixfa510d';
+    const UPLOAD_PRESET = 'YOUR_UNSIGNED_UPLOAD_PRESET';
+    const uploadButton = document.getElementById('upload-button');
+    const categorySelect = document.getElementById('category');
+    const setupNotice = document.getElementById('setup-notice');
+    const result = document.getElementById('result');
+
+    if (UPLOAD_PRESET !== 'YOUR_UNSIGNED_UPLOAD_PRESET') {
+      uploadButton.disabled = false;
+      setupNotice.style.display = 'none';
+    }
+
+    uploadButton.addEventListener('click', () => {
+      const category = categorySelect.value;
+      const widget = cloudinary.createUploadWidget({
+        cloudName: CLOUD_NAME,
+        uploadPreset: UPLOAD_PRESET,
+        multiple: true,
+        sources: ['local', 'camera'],
+        resourceType: 'image',
+        clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'heic'],
+        maxFileSize: 12000000,
+        tags: ['website-gallery', category],
+        folder: `falling-feathers/${category}`,
+        showAdvancedOptions: false,
+        cropping: false,
+        styles: {
+          palette: {
+            window: '#fffdf8',
+            windowBorder: '#d1a76f',
+            tabIcon: '#2f4b35',
+            menuIcons: '#4b3b2a',
+            textDark: '#241a12',
+            textLight: '#ffffff',
+            link: '#c7941f',
+            action: '#c7941f',
+            inactiveTabIcon: '#8a7a68',
+            error: '#c0392b',
+            inProgress: '#c7941f',
+            complete: '#2f4b35',
+            sourceBg: '#fffaf1'
+          }
+        }
+      }, (error, uploadResult) => {
+        if (error) {
+          result.textContent = `Upload failed: ${error.message || 'Unknown error'}`;
+          result.classList.add('show');
+          return;
+        }
+        if (uploadResult && uploadResult.event === 'success') {
+          result.textContent = `Uploaded successfully: ${uploadResult.info.original_filename}. It is now tagged for the public gallery.`;
+          result.classList.add('show');
+        }
+      });
+      widget.open();
+    });
+  </script>
+</body>
+</html>

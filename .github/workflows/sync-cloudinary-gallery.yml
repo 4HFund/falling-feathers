@@ -1,0 +1,75 @@
+name: Sync Cloudinary Gallery
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cloudinary-gallery-sync
+  cancel-in-progress: true
+
+jobs:
+  sync-gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+
+      - name: Verify Cloudinary secrets
+        env:
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+        run: |
+          if [ -z "$CLOUDINARY_API_KEY" ] || [ -z "$CLOUDINARY_API_SECRET" ]; then
+            echo "Missing CLOUDINARY_API_KEY or CLOUDINARY_API_SECRET repository secret."
+            exit 1
+          fi
+
+      - name: Fetch tagged gallery images
+        env:
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+          CLOUDINARY_CLOUD_NAME: ixfa510d
+        run: |
+          set -euo pipefail
+
+          curl --fail --silent --show-error \
+            --user "$CLOUDINARY_API_KEY:$CLOUDINARY_API_SECRET" \
+            "https://api.cloudinary.com/v1_1/$CLOUDINARY_CLOUD_NAME/resources/image/tags/website-gallery?max_results=500&tags=true&context=true" \
+            -o cloudinary-response.json
+
+          jq '{
+            generated_at: (now | todate),
+            resources: [
+              .resources[] | {
+                public_id,
+                format,
+                version,
+                width,
+                height,
+                bytes,
+                created_at,
+                tags: (.tags // []),
+                context: (.context // {})
+              }
+            ]
+          }' cloudinary-response.json > gallery-data.json
+
+          rm cloudinary-response.json
+
+      - name: Publish updated gallery data
+        run: |
+          if git diff --quiet -- gallery-data.json; then
+            echo "Gallery data is already current."
+            exit 0
+          fi
+
+          git config user.name "Falling Feathers Gallery Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add gallery-data.json
+          git commit -m "Update Cloudinary gallery data"
+          git push

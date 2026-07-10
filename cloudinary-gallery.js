@@ -1,7 +1,6 @@
 (() => {
   const CLOUD_NAME = 'ixfa510d';
-  const GALLERY_TAG = 'website-gallery';
-  const LIST_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/list/${GALLERY_TAG}.json`;
+  const DATA_URL = 'gallery-data.json';
 
   const grid = document.getElementById('gallery-grid');
   const status = document.getElementById('gallery-status');
@@ -14,16 +13,25 @@
   let allPhotos = [];
   let activeCategory = 'all';
 
-  const knownCategories = ['ducks', 'chickens', 'quail', 'eggs', 'babies', 'rescues', 'around-the-hollow'];
+  const knownCategories = [
+    'ducks',
+    'chickens',
+    'quail',
+    'eggs',
+    'babies',
+    'rescues',
+    'around-the-hollow',
+    'farm-life'
+  ];
 
   function titleFromPublicId(publicId) {
     const lastPart = publicId.split('/').pop() || 'Photo from the Hollow';
-    return lastPart.replace(/[-_]+/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+    return lastPart.replace(/[-_]+/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
   }
 
   function categoryFromPhoto(photo) {
-    const tags = Array.isArray(photo.tags) ? photo.tags.map((tag) => String(tag).toLowerCase()) : [];
-    return knownCategories.find((category) => tags.includes(category)) || 'other';
+    const tags = Array.isArray(photo.tags) ? photo.tags.map(tag => String(tag).toLowerCase()) : [];
+    return knownCategories.find(category => tags.includes(category)) || 'other';
   }
 
   function imageUrl(photo, width = 900) {
@@ -35,8 +43,7 @@
   }
 
   function displayCategory(category) {
-    if (category === 'around-the-hollow') return 'Around the Hollow';
-    return category.replace(/\b\w/g, (letter) => letter.toUpperCase());
+    return category.replace(/-/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
   }
 
   function photoTitle(photo) {
@@ -62,7 +69,7 @@
     const categories = [...new Set(allPhotos.map(categoryFromPhoto))].sort();
     filters.replaceChildren();
 
-    ['all', ...categories].forEach((category) => {
+    ['all', ...categories].forEach(category => {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = `filter-button${category === activeCategory ? ' active' : ''}`;
@@ -77,10 +84,13 @@
   }
 
   function renderGallery() {
-    const photos = activeCategory === 'all' ? allPhotos : allPhotos.filter((photo) => categoryFromPhoto(photo) === activeCategory);
+    const photos = activeCategory === 'all'
+      ? allPhotos
+      : allPhotos.filter(photo => categoryFromPhoto(photo) === activeCategory);
+
     grid.replaceChildren();
 
-    photos.forEach((photo) => {
+    photos.forEach(photo => {
       const title = photoTitle(photo);
       const category = categoryFromPhoto(photo);
       const card = document.createElement('article');
@@ -101,7 +111,7 @@
       info.append(heading, categoryText);
       card.append(image, info);
       card.addEventListener('click', () => openLightbox(photo));
-      card.addEventListener('keydown', (event) => {
+      card.addEventListener('keydown', event => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
           openLightbox(photo);
@@ -124,36 +134,43 @@
 
   async function loadGallery() {
     try {
-      const response = await fetch(`${LIST_URL}?v=${Date.now()}`, { cache: 'no-store' });
-      if (!response.ok) throw new Error(`Cloudinary returned ${response.status}`);
+      const response = await fetch(`${DATA_URL}?v=${Date.now()}`, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Gallery data returned ${response.status}`);
 
       const data = await response.json();
       allPhotos = Array.isArray(data.resources)
-        ? data.resources.sort((a, b) => (b.version || 0) - (a.version || 0))
+        ? data.resources.sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')))
         : [];
 
       if (!allPhotos.length) {
-        showMessage('No gallery photos yet.', 'Add the tag website-gallery to an image in Cloudinary, then refresh this page.');
+        showMessage(
+          'No synced gallery photos yet.',
+          'Upload a photo through Hollow Admin. The gallery sync normally runs within about five minutes.'
+        );
         filters.hidden = true;
         return;
       }
 
       status.hidden = true;
+      filters.hidden = false;
       grid.hidden = false;
       renderFilters();
       renderGallery();
     } catch (error) {
       console.error('Gallery loading error:', error);
-      showMessage('The gallery page is ready, but Cloudinary is not allowing the public photo list yet.', 'Enable the public resource list in Cloudinary security settings, then refresh this page.');
+      showMessage(
+        'The gallery is waiting for its first secure sync.',
+        'Once the GitHub Cloudinary secrets are added, uploaded photos will appear automatically.'
+      );
       filters.hidden = true;
     }
   }
 
   lightboxClose.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (event) => {
+  lightbox.addEventListener('click', event => {
     if (event.target === lightbox) closeLightbox();
   });
-  document.addEventListener('keydown', (event) => {
+  document.addEventListener('keydown', event => {
     if (event.key === 'Escape') closeLightbox();
   });
 

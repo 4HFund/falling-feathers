@@ -38,15 +38,11 @@
       .gallery-section-count{flex:0 0 auto;background:#f6e5c8;color:#65411f;border-radius:999px;padding:.4rem .7rem;font-size:.78rem;font-weight:900}
       .gallery-section-grid{columns:1;column-gap:1rem}
       .gallery-section-grid .photo-card{break-inside:avoid}
+      .photo-info .photo-description{margin-top:.35rem;color:#6a5540;line-height:1.5}
       @media(min-width:620px){.gallery-section-grid{columns:2}}
       @media(min-width:960px){.gallery-section-grid{columns:3}}
     `;
     document.head.appendChild(style);
-  }
-
-  function titleFromPublicId(publicId) {
-    const lastPart = publicId.split('/').pop() || 'Photo from the Hollow';
-    return lastPart.replace(/[-_]+/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
   }
 
   function tagsForPhoto(photo) {
@@ -67,14 +63,19 @@
   }
 
   function photoTitle(photo) {
-    return photo.context?.custom?.caption || photo.context?.caption || titleFromPublicId(photo.public_id);
+    return photo.context?.custom?.title || photo.context?.custom?.caption || photo.context?.title || photo.context?.caption || 'Photo from Falling Feathers Hollow';
+  }
+
+  function photoDescription(photo) {
+    return photo.context?.custom?.description || photo.context?.description || '';
   }
 
   function openLightbox(photo) {
     const title = photoTitle(photo);
+    const description = photoDescription(photo);
     lightboxImage.src = fullImageUrl(photo);
     lightboxImage.alt = title;
-    lightboxCaption.textContent = title;
+    lightboxCaption.textContent = description ? `${title} — ${description}` : title;
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -87,6 +88,7 @@
 
   function createPhotoCard(photo, sectionLabel) {
     const title = photoTitle(photo);
+    const description = photoDescription(photo);
     const card = document.createElement('article');
     const image = document.createElement('img');
     const info = document.createElement('div');
@@ -103,6 +105,13 @@
     categoryText.textContent = sectionLabel;
 
     info.append(heading, categoryText);
+    if (description) {
+      const descriptionText = document.createElement('p');
+      descriptionText.className = 'photo-description';
+      descriptionText.textContent = description;
+      info.appendChild(descriptionText);
+    }
+
     card.append(image, info);
     card.addEventListener('click', () => openLightbox(photo));
     card.addEventListener('keydown', event => {

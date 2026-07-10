@@ -1,4 +1,33 @@
 {
-  "generated_at": null,
-  "resources": []
+  "generated_at": "2026-07-10T20:54:07Z",
+  "resources": [
+    {
+      "public_id": "falling-feathers/chickens/IMG_5379_fimqiy",
+      "format": "jpg",
+      "version": 1783715407,
+      "width": 2316,
+      "height": 3088,
+      "bytes": 1902786,
+      "created_at": "2026-07-10T20:30:07Z",
+      "tags": [
+        "chickens",
+        "website-gallery"
+      ],
+      "context": {}
+    },
+    {
+      "public_id": "falling-feathers/ducks/IMG_1584_rmnwyq",
+      "format": "jpg",
+      "version": 1783715391,
+      "width": 4032,
+      "height": 3024,
+      "bytes": 2495233,
+      "created_at": "2026-07-10T20:29:51Z",
+      "tags": [
+        "ducks",
+        "website-gallery"
+      ],
+      "context": {}
+    }
+  ]
 }

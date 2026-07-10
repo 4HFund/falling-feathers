@@ -37,8 +37,14 @@
       .gallery-section-heading p{margin:0;color:#6a5540;line-height:1.55}
       .gallery-section-count{flex:0 0 auto;background:#f6e5c8;color:#65411f;border-radius:999px;padding:.4rem .7rem;font-size:.78rem;font-weight:900}
       .gallery-section-grid{columns:1;column-gap:1rem}
-      .gallery-section-grid .photo-card{break-inside:avoid}
-      .photo-info .photo-description{margin-top:.35rem;color:#6a5540;line-height:1.5}
+      .gallery-section-grid .photo-card{break-inside:avoid;position:relative;background:white;border-radius:22px;overflow:hidden}
+      .gallery-section-grid .photo-card>img{width:100%;height:auto;display:block}
+      .photo-badge{position:absolute;top:.75rem;left:.75rem;background:rgba(36,26,18,.78);color:white;border-radius:999px;padding:.35rem .65rem;font-size:.74rem;font-weight:900;backdrop-filter:blur(8px)}
+      .photo-info{padding:.8rem 1rem!important}
+      .photo-info:empty{display:none}
+      .photo-info h2{font-family:'Inter',sans-serif!important;font-size:1rem!important;line-height:1.3!important;margin:0!important;color:var(--deep)}
+      .photo-info .photo-description{margin:.35rem 0 0;color:#6a5540;line-height:1.5;font-size:.9rem}
+      .photo-info .photo-meta{margin:.35rem 0 0;color:#8a735b;font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
       @media(min-width:620px){.gallery-section-grid{columns:2}}
       @media(min-width:960px){.gallery-section-grid{columns:3}}
     `;
@@ -63,19 +69,26 @@
   }
 
   function photoTitle(photo) {
-    return photo.context?.custom?.title || photo.context?.custom?.caption || photo.context?.title || photo.context?.caption || 'Photo from Falling Feathers Hollow';
+    return photo.context?.custom?.title || photo.context?.custom?.caption || photo.context?.title || photo.context?.caption || '';
   }
 
   function photoDescription(photo) {
     return photo.context?.custom?.description || photo.context?.description || '';
   }
 
+  function formatDate(dateValue) {
+    if (!dateValue) return '';
+    const date = new Date(dateValue);
+    if (Number.isNaN(date.getTime())) return '';
+    return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
   function openLightbox(photo) {
     const title = photoTitle(photo);
     const description = photoDescription(photo);
     lightboxImage.src = fullImageUrl(photo);
-    lightboxImage.alt = title;
-    lightboxCaption.textContent = description ? `${title} — ${description}` : title;
+    lightboxImage.alt = title || 'Photo from Falling Feathers Hollow';
+    lightboxCaption.textContent = [title, description].filter(Boolean).join(' — ');
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -89,22 +102,27 @@
   function createPhotoCard(photo, sectionLabel) {
     const title = photoTitle(photo);
     const description = photoDescription(photo);
+    const date = formatDate(photo.created_at);
     const card = document.createElement('article');
     const image = document.createElement('img');
+    const badge = document.createElement('span');
     const info = document.createElement('div');
-    const heading = document.createElement('h2');
-    const categoryText = document.createElement('p');
 
     card.className = 'photo-card';
     card.tabIndex = 0;
     image.src = imageUrl(photo);
-    image.alt = title;
+    image.alt = title || `Photo in ${sectionLabel}`;
     image.loading = 'lazy';
+    badge.className = 'photo-badge';
+    badge.textContent = sectionLabel;
     info.className = 'photo-info';
-    heading.textContent = title;
-    categoryText.textContent = sectionLabel;
 
-    info.append(heading, categoryText);
+    if (title) {
+      const heading = document.createElement('h2');
+      heading.textContent = title;
+      info.appendChild(heading);
+    }
+
     if (description) {
       const descriptionText = document.createElement('p');
       descriptionText.className = 'photo-description';
@@ -112,7 +130,14 @@
       info.appendChild(descriptionText);
     }
 
-    card.append(image, info);
+    if ((title || description) && date) {
+      const meta = document.createElement('p');
+      meta.className = 'photo-meta';
+      meta.textContent = date;
+      info.appendChild(meta);
+    }
+
+    card.append(image, badge, info);
     card.addEventListener('click', () => openLightbox(photo));
     card.addEventListener('keydown', event => {
       if (event.key === 'Enter' || event.key === ' ') {

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo Gallery | Falling Feathers Hollow</title>
+  <meta name="description" content="See the latest ducks, chickens, quail, babies, rescues, and life around Falling Feathers Hollow in Wheeling, West Virginia." />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="mobile-polish.css" />
+  <style>
+    :root{--cream:#fffaf1;--paper:#fffdf8;--warm:#f4e0c5;--tan:#d1a76f;--brown:#4b3b2a;--deep:#241a12;--green:#49633e;--green2:#2f4b35;--gold:#c7941f;--line:rgba(209,167,111,.32);--shadow:0 24px 70px rgba(47,36,25,.16)}
+    *{box-sizing:border-box}html,body{margin:0;padding:0;font-family:'Inter',sans-serif;background:radial-gradient(circle at 8% 0%,rgba(111,159,154,.22),transparent 28%),linear-gradient(135deg,#fffaf1 0%,#f4e0c5 100%);color:var(--brown);scroll-behavior:smooth}a{color:inherit}.topbar{text-align:center;background:var(--deep);color:#ffeac4;font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.72rem;padding:.65rem 1rem}.nav{position:sticky;top:0;z-index:999;background:rgba(255,250,241,.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(75,59,42,.12)}.nav-inner{max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.85rem 1rem}.brand{display:flex;align-items:center;gap:.75rem;text-decoration:none;font-family:'Lora',serif;font-weight:800;color:var(--deep)}.brand img{width:52px;height:52px;object-fit:contain}.links{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.35rem}.links a{text-decoration:none;font-weight:800;font-size:.92rem;padding:.55rem .75rem;border-radius:999px}.links a:hover,.links a.active{background:#f6e5c8;color:var(--deep)}
+    main{max-width:1160px;margin:0 auto;padding:1rem}.hero{background:linear-gradient(135deg,rgba(36,26,18,.95),rgba(47,75,53,.92));color:white;border-radius:34px;padding:clamp(2rem,6vw,5rem);margin:1.5rem 0;box-shadow:var(--shadow);text-align:center}.hero h1{font-family:'Lora',serif;font-size:clamp(2.7rem,7vw,5.5rem);line-height:.98;margin:0 0 1rem}.hero p{max-width:760px;margin:0 auto;color:#fff7e6;font-size:1.12rem;line-height:1.75}.section{background:rgba(255,253,248,.94);border:1px solid var(--line);border-radius:30px;box-shadow:0 14px 45px rgba(75,59,42,.08);padding:clamp(1.2rem,4vw,2.5rem);margin:1.35rem 0}.filters{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-bottom:1.4rem}.filter-button{appearance:none;border:1px solid rgba(75,59,42,.16);background:white;color:var(--brown);padding:.7rem 1rem;border-radius:999px;font-weight:800;cursor:pointer}.filter-button:hover,.filter-button.active{background:var(--green2);color:white;border-color:var(--green2)}.status{text-align:center;padding:2rem;line-height:1.7}.gallery-grid{columns:1;column-gap:1rem}.photo-card{break-inside:avoid;margin:0 0 1rem;background:white;border:1px solid rgba(209,167,111,.25);border-radius:22px;overflow:hidden;box-shadow:0 10px 30px rgba(75,59,42,.08);cursor:pointer}.photo-card img{width:100%;height:auto;display:block;background:#f3eadf}.photo-info{padding:1rem 1.1rem}.photo-info h2{font-family:'Lora',serif;color:var(--deep);font-size:1.15rem;margin:0 0 .35rem}.photo-info p{margin:0;color:#6a5540;font-size:.92rem;line-height:1.5}.lightbox{position:fixed;inset:0;background:rgba(18,13,9,.94);z-index:2000;display:none;align-items:center;justify-content:center;padding:1rem}.lightbox.open{display:flex}.lightbox img{max-width:min(1100px,94vw);max-height:84vh;object-fit:contain;border-radius:16px}.lightbox-close{position:absolute;top:1rem;right:1rem;border:0;border-radius:999px;width:46px;height:46px;font-size:1.7rem;background:white;color:var(--deep);cursor:pointer}.lightbox-caption{position:absolute;bottom:1rem;left:1rem;right:1rem;text-align:center;color:white;font-weight:700}.empty-note{max-width:720px;margin:0 auto}.empty-note code{background:#f4e0c5;padding:.15rem .4rem;border-radius:6px}footer{text-align:center;padding:1.5rem 1rem;background:var(--deep);color:white;font-size:.95rem;margin-top:2rem}footer a{color:#ffeac4;font-weight:800}
+    @media(min-width:620px){.gallery-grid{columns:2}}@media(min-width:960px){.gallery-grid{columns:3}}@media(max-width:820px){.nav-inner{align-items:flex-start;flex-direction:column}.links{justify-content:flex-start}.brand img{width:46px;height:46px}}@media(max-width:560px){main{padding:.75rem}.links a{font-size:.86rem;padding:.45rem .55rem}.hero,.section{border-radius:24px}}
+  </style>
+</head>
+<body>
+  <div class="topbar">Woman veteran-owned • Wheeling, West Virginia</div>
+  <nav class="nav" aria-label="Main navigation"><div class="nav-inner"><a class="brand" href="index.html"><img src="falling_feathers_logo_compressed.png" alt="Falling Feathers Hollow logo" /><span>Falling Feathers Hollow</span></a><div class="links"><a href="index.html">Home</a><a href="about.html">Our Story</a><a href="profiles.html">Flock</a><a class="active" href="gallery.html">Gallery</a><a href="trading-post.html">Eggs</a><a href="sponsor.html">Support</a><a href="studio/index.html">Studio</a></div></div></nav>
+  <main>
+    <section class="hero"><h1>Life at the Hollow</h1><p>New photos appear here automatically whenever they are tagged <strong>website-gallery</strong> in Cloudinary.</p></section>
+    <section class="section">
+      <div class="filters" id="gallery-filters" aria-label="Gallery filters"></div>
+      <div class="status" id="gallery-status">Loading the latest photos…</div>
+      <div class="gallery-grid" id="gallery-grid" hidden></div>
+    </section>
+  </main>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer"><button class="lightbox-close" id="lightbox-close" aria-label="Close photo">×</button><img id="lightbox-image" alt="" /><div class="lightbox-caption" id="lightbox-caption"></div></div>
+  <footer>&copy; Falling Feathers Hollow 2026. All rights reserved.<br /><a href="mailto:info@fallingfeathers.us">info@fallingfeathers.us</a></footer>
+  <script src="cloudinary-gallery.js" defer></script>
+</body>
+</html>

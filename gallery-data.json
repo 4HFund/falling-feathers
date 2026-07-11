@@ -1,6 +1,48 @@
 {
-  "generated_at": "2026-07-11T04:27:41Z",
+  "generated_at": "2026-07-11T06:37:34Z",
   "resources": [
+    {
+      "public_id": "falling-feathers/about/jacy/IMG_2388_yn5jon",
+      "format": "jpg",
+      "version": 1783744117,
+      "width": 4284,
+      "height": 5712,
+      "bytes": 4615535,
+      "created_at": "2026-07-11T04:28:37Z",
+      "tags": [
+        "about-jacy",
+        "about-page",
+        "website-gallery"
+      ],
+      "context": {
+        "custom": {
+          "title": "Meet Jacy Portrait",
+          "description": "Main portrait beside Jacy’s story"
+        }
+      }
+    },
+    {
+      "public_id": "falling-feathers/eggs/chicken/IMG_5349_xksubg",
+      "format": "jpg",
+      "version": 1783744068,
+      "width": 3024,
+      "height": 4032,
+      "bytes": 2613619,
+      "created_at": "2026-07-11T04:27:48Z",
+      "tags": [
+        "egg-product-chicken-1",
+        "egg-product-photo",
+        "eggs",
+        "website-control",
+        "website-gallery"
+      ],
+      "context": {
+        "custom": {
+          "title": "Chicken Eggs product photo 1",
+          "description": "Rotating product image for Chicken Eggs on the Eggs page."
+        }
+      }
+    },
     {
       "public_id": "falling-feathers/ducks/IMG_1263_i59yag",
       "format": "jpg",

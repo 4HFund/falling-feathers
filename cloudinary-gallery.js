@@ -4,22 +4,33 @@
   const grid = document.getElementById('gallery-grid');
   const status = document.getElementById('gallery-status');
   const filters = document.getElementById('gallery-filters');
+  const cinema = document.getElementById('gallery-cinema');
+  const cinemaSlides = document.getElementById('cinema-slides');
+  const cinemaPause = document.getElementById('cinema-pause');
+  const cinemaNext = document.getElementById('cinema-next');
   const lightbox = document.getElementById('lightbox');
   const lightboxImage = document.getElementById('lightbox-image');
   const lightboxCaption = document.getElementById('lightbox-caption');
   const lightboxClose = document.getElementById('lightbox-close');
+  const lightboxPrev = document.getElementById('lightbox-prev');
+  const lightboxNext = document.getElementById('lightbox-next');
   let allPhotos = [];
+  let activePhotos = [];
+  let cinemaIndex = 0;
+  let lightboxIndex = 0;
+  let cinemaTimer = null;
+  let cinemaPlaying = true;
 
   const sections = [
-    { key: 'ducks', label: 'Ducks', icon: '🦆', description: 'Pekins, Rouens, ducklings, rescues, and everyday duck life.' },
-    { key: 'chickens', label: 'Chickens', icon: '🐔', description: 'The hens, Yolkie, new arrivals, and life around the coop.' },
-    { key: 'quail', label: 'Quail', icon: '🪶', description: 'Our smallest birds, speckled eggs, and quiet moments.' },
-    { key: 'babies', label: 'Babies', icon: '🐣', description: 'Chicks, ducklings, poults, goslings, and new beginnings.' },
-    { key: 'rescues', label: 'Rescue Stories', icon: '❤️', description: 'Animals who needed a safe place to land.' },
-    { key: 'eggs', label: 'Eggs', icon: '🥚', description: 'Chicken, duck, and quail eggs from the hollow.' },
-    { key: 'around-the-hollow', label: 'Around the Hollow', icon: '🌲', description: 'The creek, woods, changing seasons, and peaceful corners.' },
-    { key: 'farm-life', label: 'Farm Life', icon: '📸', description: 'Daily work, muddy boots, projects, and real life at the sanctuary.' },
-    { key: 'other', label: 'More From the Hollow', icon: '🌿', description: 'Everything else that makes Falling Feathers Hollow special.' }
+    { key: 'ducks', label: 'Ducks', icon: '🦆' },
+    { key: 'chickens', label: 'Chickens', icon: '🐔' },
+    { key: 'quail', label: 'Quail', icon: '🪶' },
+    { key: 'babies', label: 'Babies', icon: '🐣' },
+    { key: 'rescues', label: 'Rescue Stories', icon: '❤️' },
+    { key: 'eggs', label: 'Eggs', icon: '🥚' },
+    { key: 'around-the-hollow', label: 'Around the Hollow', icon: '🌲' },
+    { key: 'farm-life', label: 'Farm Life', icon: '📸' },
+    { key: 'other', label: 'More From the Hollow', icon: '🌿' }
   ];
   const sectionKeys = sections.map(section => section.key);
 
@@ -27,59 +38,142 @@
     return String(window.FFH_CONFIG?.apiBase || '').trim().replace(/\/$/, '');
   }
 
-  function addStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
-      #gallery-grid{columns:initial!important;display:block!important}
-      .gallery-section{margin:0 0 2.4rem;scroll-margin-top:130px}.gallery-section:last-child{margin-bottom:0}
-      .gallery-section-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin:0 0 1rem;padding-bottom:.85rem;border-bottom:1px solid rgba(209,167,111,.35)}
-      .gallery-section-heading h2{font-family:'Lora',serif;color:var(--deep);font-size:clamp(1.65rem,4vw,2.35rem);margin:0 0 .3rem}.gallery-section-heading p{margin:0;color:#6a5540;line-height:1.55}
-      .gallery-section-count{flex:0 0 auto;background:#f6e5c8;color:#65411f;border-radius:999px;padding:.4rem .7rem;font-size:.78rem;font-weight:900}
-      .gallery-section-grid{columns:1;column-gap:1rem}.gallery-section-grid .photo-card{break-inside:avoid;position:relative;background:white;border-radius:22px;overflow:hidden}.gallery-section-grid .photo-card>img{width:100%;height:auto;display:block}
-      .photo-badge{position:absolute;top:.75rem;left:.75rem;background:rgba(36,26,18,.78);color:white;border-radius:999px;padding:.35rem .65rem;font-size:.74rem;font-weight:900;backdrop-filter:blur(8px)}
-      .photo-featured{position:absolute;top:.75rem;right:.75rem;background:#c7941f;color:#fff;border-radius:999px;padding:.35rem .6rem;font-size:.72rem;font-weight:900}
-      .photo-info{padding:.8rem 1rem!important}.photo-info:empty{display:none}.photo-info h2{font-family:'Inter',sans-serif!important;font-size:1rem!important;line-height:1.3!important;margin:0!important;color:var(--deep)}
-      .photo-info .photo-description{margin:.35rem 0 0;color:#6a5540;line-height:1.5;font-size:.9rem}.photo-info .photo-meta{margin:.35rem 0 0;color:#8a735b;font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
-      @media(min-width:620px){.gallery-section-grid{columns:2}}@media(min-width:960px){.gallery-section-grid{columns:3}}
-    `;
-    document.head.appendChild(style);
-  }
-
   function tags(photo) { return Array.isArray(photo.tags) ? photo.tags.map(String) : []; }
   function category(photo) { return photo.category || sectionKeys.find(key => key !== 'other' && tags(photo).includes(key)) || 'other'; }
   function title(photo) { return photo.context?.custom?.title || photo.context?.title || ''; }
   function description(photo) { return photo.context?.custom?.description || photo.context?.description || ''; }
+  function sectionFor(photo) { return sections.find(section => section.key === category(photo)) || sections.at(-1); }
   function dateLabel(value) { const date = new Date(value); return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); }
-  function imageUrl(photo,width=900){return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,c_limit,w_${width}/${photo.public_id}.${photo.format}`;}
+  function imageUrl(photo,width=1000){return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,c_limit,w_${width}/${photo.public_id}.${photo.format}`;}
+  function cinemaUrl(photo){return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,c_fill,w_1600,h_950/${photo.public_id}.${photo.format}`;}
   function fullImageUrl(photo){return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto/${photo.public_id}.${photo.format}`;}
 
-  function openLightbox(photo) {
+  function openLightbox(index) {
+    lightboxIndex = index;
+    const photo = activePhotos[index];
+    if (!photo) return;
     lightboxImage.src = fullImageUrl(photo);
     lightboxImage.alt = title(photo) || 'Photo from Falling Feathers Hollow';
     lightboxCaption.textContent = [title(photo), description(photo)].filter(Boolean).join(' — ');
-    lightbox.classList.add('open'); document.body.style.overflow='hidden';
+    lightbox.classList.add('open');
+    document.body.style.overflow='hidden';
   }
+
+  function moveLightbox(direction) {
+    if (!activePhotos.length) return;
+    lightboxIndex = (lightboxIndex + direction + activePhotos.length) % activePhotos.length;
+    openLightbox(lightboxIndex);
+  }
+
   function closeLightbox(){lightbox.classList.remove('open');lightboxImage.src='';document.body.style.overflow='';}
 
-  function photoCard(photo, sectionLabel) {
-    const card=document.createElement('article'), image=document.createElement('img'), badge=document.createElement('span'), info=document.createElement('div');
-    card.className='photo-card';card.tabIndex=0;image.src=imageUrl(photo);image.alt=title(photo)||`Photo in ${sectionLabel}`;image.loading='lazy';badge.className='photo-badge';badge.textContent=sectionLabel;info.className='photo-info';
-    if(photo.featured||tags(photo).includes('featured')){const featured=document.createElement('span');featured.className='photo-featured';featured.textContent='★ Featured';card.appendChild(featured);}
-    if(title(photo)){const heading=document.createElement('h2');heading.textContent=title(photo);info.appendChild(heading);}
-    if(description(photo)){const copy=document.createElement('p');copy.className='photo-description';copy.textContent=description(photo);info.appendChild(copy);}
-    if((title(photo)||description(photo))&&dateLabel(photo.created_at)){const meta=document.createElement('p');meta.className='photo-meta';meta.textContent=dateLabel(photo.created_at);info.appendChild(meta);}
-    card.prepend(image,badge);card.appendChild(info);card.addEventListener('click',()=>openLightbox(photo));card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(photo);}});return card;
+  function photoCard(photo, index) {
+    const card=document.createElement('article');
+    const image=document.createElement('img');
+    const info=document.createElement('div');
+    card.className='photo-card';
+    card.tabIndex=0;
+    image.src=imageUrl(photo);
+    image.alt=title(photo)||'Photo from Falling Feathers Hollow';
+    image.loading='lazy';
+    info.className='photo-info';
+
+    if(title(photo)){
+      const heading=document.createElement('h2');
+      heading.textContent=title(photo);
+      info.appendChild(heading);
+    }
+    if(description(photo)){
+      const copy=document.createElement('p');
+      copy.textContent=description(photo);
+      info.appendChild(copy);
+    }
+    if(dateLabel(photo.created_at)){
+      const meta=document.createElement('p');
+      meta.style.cssText='margin-top:.45rem;font-size:.74rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#8a735b';
+      meta.textContent=`${sectionFor(photo).icon} ${sectionFor(photo).label} · ${dateLabel(photo.created_at)}`;
+      info.appendChild(meta);
+    }
+
+    card.append(image,info);
+    card.addEventListener('click',()=>openLightbox(index));
+    card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(index);}});
+    return card;
   }
 
-  function renderNavigation(visible) {
+  function renderFilters() {
     filters.replaceChildren();
-    visible.forEach(section=>{const button=document.createElement('button');button.type='button';button.className='filter-button';button.textContent=`${section.icon} ${section.label}`;button.addEventListener('click',()=>document.getElementById(`gallery-${section.key}`)?.scrollIntoView({behavior:'smooth',block:'start'}));filters.appendChild(button);});
+    const options = [{key:'all',label:'All Moments',icon:'✨'}, ...sections.filter(section=>allPhotos.some(photo=>category(photo)===section.key))];
+    options.forEach((section,index)=>{
+      const button=document.createElement('button');
+      button.type='button';
+      button.className=`filter-button${index===0?' active':''}`;
+      button.textContent=`${section.icon} ${section.label}`;
+      button.addEventListener('click',()=>{
+        filters.querySelectorAll('.filter-button').forEach(item=>item.classList.remove('active'));
+        button.classList.add('active');
+        activePhotos = section.key==='all' ? [...allPhotos] : allPhotos.filter(photo=>category(photo)===section.key);
+        renderGrid();
+        buildCinema();
+      });
+      filters.appendChild(button);
+    });
   }
 
-  function render() {
+  function renderGrid() {
     grid.replaceChildren();
-    const visible=sections.filter(section=>allPhotos.some(photo=>category(photo)===section.key));renderNavigation(visible);
-    visible.forEach(section=>{const photos=allPhotos.filter(photo=>category(photo)===section.key),wrapper=document.createElement('section'),headingWrap=document.createElement('div'),copy=document.createElement('div'),heading=document.createElement('h2'),descriptionText=document.createElement('p'),count=document.createElement('span'),sectionGrid=document.createElement('div');wrapper.className='gallery-section';wrapper.id=`gallery-${section.key}`;headingWrap.className='gallery-section-heading';heading.textContent=`${section.icon} ${section.label}`;descriptionText.textContent=section.description;count.className='gallery-section-count';count.textContent=`${photos.length} photo${photos.length===1?'':'s'}`;sectionGrid.className='gallery-section-grid';photos.forEach(photo=>sectionGrid.appendChild(photoCard(photo,section.label)));copy.append(heading,descriptionText);headingWrap.append(copy,count);wrapper.append(headingWrap,sectionGrid);grid.appendChild(wrapper);});
+    activePhotos.forEach((photo,index)=>grid.appendChild(photoCard(photo,index)));
+    requestAnimationFrame(()=>{
+      const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}}),{threshold:.08});
+      grid.querySelectorAll('.photo-card').forEach(card=>observer.observe(card));
+    });
+  }
+
+  function buildCinema() {
+    clearInterval(cinemaTimer);
+    cinemaSlides.replaceChildren();
+    const featured = activePhotos.filter(photo=>photo.featured||tags(photo).includes('featured'));
+    const source = (featured.length ? featured : activePhotos).slice(0,10);
+    if (!source.length) {
+      cinema.hidden = true;
+      return;
+    }
+
+    source.forEach((photo,index)=>{
+      const slide=document.createElement('article');
+      slide.className=`cinema-slide${index===0?' active':''}`;
+      slide.innerHTML=`<img src="${cinemaUrl(photo)}" alt=""><div class="cinema-overlay"></div><div class="cinema-copy"><span>${sectionFor(photo).icon} ${sectionFor(photo).label}</span><h2></h2><p></p></div>`;
+      slide.querySelector('img').alt=title(photo)||'Featured photo from Falling Feathers Hollow';
+      slide.querySelector('h2').textContent=title(photo)||'Life at the Hollow';
+      slide.querySelector('p').textContent=description(photo)||'A moment from our flock, rescues, and everyday life in the hollow.';
+      slide.addEventListener('click',()=>openLightbox(activePhotos.indexOf(photo)));
+      cinemaSlides.appendChild(slide);
+    });
+
+    cinema.hidden=false;
+    cinemaIndex=0;
+    cinemaPlaying=true;
+    cinemaPause.textContent='Ⅱ';
+    startCinema();
+  }
+
+  function showCinema(index) {
+    const slides=[...cinemaSlides.children];
+    if(!slides.length)return;
+    cinemaIndex=(index+slides.length)%slides.length;
+    slides.forEach((slide,i)=>slide.classList.toggle('active',i===cinemaIndex));
+  }
+
+  function startCinema() {
+    clearInterval(cinemaTimer);
+    if(!cinemaPlaying)return;
+    cinemaTimer=setInterval(()=>showCinema(cinemaIndex+1),5200);
+  }
+
+  function toggleCinema() {
+    cinemaPlaying=!cinemaPlaying;
+    cinemaPause.textContent=cinemaPlaying?'Ⅱ':'▶';
+    startCinema();
   }
 
   function showMessage(headline,detail){status.replaceChildren();const wrapper=document.createElement('div'),strong=document.createElement('strong');wrapper.className='empty-note';strong.textContent=headline;wrapper.append(strong,document.createElement('br'),document.createTextNode(detail));status.appendChild(wrapper);}
@@ -92,11 +186,25 @@
 
   async function load() {
     try {
-      const data=await fetchGallery();allPhotos=Array.isArray(data.resources)?data.resources.filter(photo=>photo.website_status!=='hidden').sort((a,b)=>String(b.created_at||'').localeCompare(String(a.created_at||''))):[];
+      const data=await fetchGallery();
+      allPhotos=Array.isArray(data.resources)?data.resources.filter(photo=>photo.website_status!=='hidden').sort((a,b)=>String(b.created_at||'').localeCompare(String(a.created_at||''))):[];
       if(!allPhotos.length){showMessage('No gallery photos yet.','New photos will appear here after they are published from Hollow Admin.');filters.hidden=true;return;}
-      status.hidden=true;filters.hidden=false;grid.hidden=false;render();
+      activePhotos=[...allPhotos];
+      status.hidden=true;
+      filters.hidden=false;
+      grid.hidden=false;
+      renderFilters();
+      renderGrid();
+      buildCinema();
     } catch(error){console.error(error);showMessage('The gallery could not load.','Please try refreshing in a moment.');filters.hidden=true;}
   }
 
-  addStyles();lightboxClose.addEventListener('click',closeLightbox);lightbox.addEventListener('click',event=>{if(event.target===lightbox)closeLightbox();});document.addEventListener('keydown',event=>{if(event.key==='Escape')closeLightbox();});load();
+  cinemaPause.addEventListener('click',toggleCinema);
+  cinemaNext.addEventListener('click',()=>{showCinema(cinemaIndex+1);startCinema();});
+  lightboxClose.addEventListener('click',closeLightbox);
+  lightboxPrev.addEventListener('click',()=>moveLightbox(-1));
+  lightboxNext.addEventListener('click',()=>moveLightbox(1));
+  lightbox.addEventListener('click',event=>{if(event.target===lightbox)closeLightbox();});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape')closeLightbox();if(lightbox.classList.contains('open')&&event.key==='ArrowLeft')moveLightbox(-1);if(lightbox.classList.contains('open')&&event.key==='ArrowRight')moveLightbox(1);});
+  load();
 })();

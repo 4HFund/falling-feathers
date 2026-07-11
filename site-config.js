@@ -17,11 +17,9 @@ if (/\/admin\.html$/i.test(window.location.pathname)) {
     'egg-product-photos-admin.js?v=20260711-2',
     'flock-images-admin.js?v=20260710-1',
     'about-page-admin.js?v=20260710-1',
-    'admin-quick-publish.js?v=20260711-1',
-    'admin-polish.js?v=20260711-2'
+    'admin-quick-publish.js?v=20260711-2',
+    'admin-polish.js?v=20260711-3'
   ].forEach(loadFfhScript);
-} else {
-  loadFfhScript('public-final-polish.js?v=20260711-1');
 }
 
 if (/\/profiles\.html$/i.test(window.location.pathname)) {

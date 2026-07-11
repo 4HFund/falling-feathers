@@ -27,6 +27,7 @@
 
   function updateStoryCard(card, photo) {
     if (!card || !photo) return;
+    card.hidden = false;
     setImage(card.querySelector('img'), photo, 'Featured photo from Falling Feathers Hollow');
     const badge = card.querySelector('.badge');
     const heading = card.querySelector('h3');
@@ -50,7 +51,13 @@
       setImage(document.getElementById('homepage-hero-photo'), featured[0], 'Featured photo from Falling Feathers Hollow');
 
       const storyCards = [...document.querySelectorAll('[data-homepage-featured-card]')];
-      storyCards.forEach((card, index) => updateStoryCard(card, featured[index] || featured[0]));
+      const storyPhotos = featured.slice(1, 3);
+
+      storyCards.forEach((card, index) => {
+        const photo = storyPhotos[index];
+        if (photo) updateStoryCard(card, photo);
+        else card.hidden = true;
+      });
     } catch (error) {
       console.error('Homepage featured photos could not load:', error);
     }

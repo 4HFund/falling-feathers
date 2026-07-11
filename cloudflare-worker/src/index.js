@@ -8,6 +8,7 @@ const CATEGORIES = [
   'ducks', 'chickens', 'quail', 'eggs', 'babies',
   'rescues', 'around-the-hollow', 'farm-life'
 ];
+const HOMEPAGE_SLOTS = ['homepage-hero', 'homepage-story-1', 'homepage-story-2'];
 
 function allowedOrigins(env) {
   const extras = String(env.ALLOWED_ORIGINS || '')
@@ -114,6 +115,7 @@ function normalizeResource(resource, status = 'visible') {
     tags,
     context: resource.context || {},
     featured: tags.includes('featured'),
+    homepage_slot: HOMEPAGE_SLOTS.find(slot => tags.includes(slot)) || '',
     category: CATEGORIES.find(category => tags.includes(category)) || 'farm-life',
     website_status: status
   };
@@ -133,6 +135,22 @@ async function replaceCategory(env, publicId, currentTags, category) {
   const existing = CATEGORIES.filter(tag => currentTags.includes(tag));
   await Promise.all(existing.filter(tag => tag !== category).map(tag => changeTag(env, publicId, tag, 'remove')));
   if (!existing.includes(category)) await changeTag(env, publicId, category, 'add');
+}
+
+async function setHomepageSlot(env, publicId, slot) {
+  if (!HOMEPAGE_SLOTS.includes(slot)) throw new Error('Invalid homepage slot.');
+  const existing = await listTaggedResources(env, slot);
+  await Promise.all(existing.filter(photo => photo.public_id !== publicId).map(photo => changeTag(env, photo.public_id, slot, 'remove')));
+  await Promise.all([
+    changeTag(env, publicId, slot, 'add'),
+    changeTag(env, publicId, 'featured', 'add'),
+    changeTag(env, publicId, 'website-gallery', 'add')
+  ]);
+}
+
+async function clearHomepageSlot(env, publicId, slot) {
+  if (!HOMEPAGE_SLOTS.includes(slot)) throw new Error('Invalid homepage slot.');
+  await changeTag(env, publicId, slot, 'remove');
 }
 
 async function updateContext(env, publicId, title, description) {
@@ -192,6 +210,16 @@ export default {
         });
       }
 
+      if (url.pathname === '/homepage' && request.method === 'GET') {
+        const slotEntries = await Promise.all(HOMEPAGE_SLOTS.map(async slot => {
+          const matches = await listTaggedResources(env, slot);
+          return [slot, matches[0] ? normalizeResource(matches[0], 'visible') : null];
+        }));
+        return json(request, env, { slots: Object.fromEntries(slotEntries) }, 200, {
+          'Cache-Control': 'public, max-age=30, s-maxage=30'
+        });
+      }
+
       if (!isAuthorized(request, env)) {
         return json(request, env, { error: 'Invalid admin PIN.' }, 401);
       }
@@ -214,6 +242,10 @@ export default {
           await changeTag(env, publicId, 'website-gallery', 'add');
         } else if (action === 'feature' || action === 'unfeature') {
           await changeTag(env, publicId, 'featured', action === 'feature' ? 'add' : 'remove');
+        } else if (action === 'set-homepage-slot') {
+          await setHomepageSlot(env, publicId, String(body.slot || ''));
+        } else if (action === 'clear-homepage-slot') {
+          await clearHomepageSlot(env, publicId, String(body.slot || ''));
         } else if (action === 'edit') {
           const tags = Array.isArray(body.tags) ? body.tags.map(String) : [];
           await Promise.all([

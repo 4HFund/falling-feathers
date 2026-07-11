@@ -1,4 +1,6 @@
 (() => {
+  const setText = (node, value) => { if (node && node.textContent !== value) node.textContent = value; };
+
   function addStyles() {
     const style = document.createElement('style');
     style.textContent = `
@@ -17,9 +19,7 @@
   function hideDevelopmentSections() {
     document.querySelectorAll('.panel').forEach(panel => {
       const heading = panelHeading(panel).toLowerCase();
-      if (heading === 'build roadmap' || heading === 'the sanctuary system') {
-        panel.classList.add('admin-hidden-development');
-      }
+      if (heading === 'build roadmap' || heading === 'the sanctuary system') panel.classList.add('admin-hidden-development');
     });
     document.querySelectorAll('.module.coming').forEach(item => item.classList.add('admin-hidden-development'));
   }
@@ -27,23 +27,20 @@
   function replacePrototypeLanguage() {
     document.querySelectorAll('.section-title span').forEach(span => {
       const text = span.textContent.trim().toLowerCase();
-      if (text.includes('phase 1')) span.textContent = 'Live';
-      if (text === 'our shared vision') span.textContent = 'Hollow tools';
-      if (text === 'designed in phases') span.textContent = 'Future tools';
+      if (text.includes('phase 1')) setText(span, 'Live');
+      if (text === 'our shared vision') setText(span, 'Hollow tools');
+      if (text === 'designed in phases') setText(span, 'Future tools');
     });
     document.querySelectorAll('*').forEach(node => {
-      if (node.children.length) return;
-      if (node.textContent.trim() === 'Coming next') node.textContent = 'Planned';
+      if (!node.children.length && node.textContent.trim() === 'Coming next') setText(node, 'Planned');
     });
   }
 
   function personalizeHero() {
     const hero = document.querySelector('.hero');
     if (!hero) return;
-    const heading = hero.querySelector('h1');
-    const copy = hero.querySelector('p');
-    if (heading) heading.textContent = 'Welcome back, Jacy.';
-    if (copy) copy.textContent = 'Here’s what’s happening around the Hollow. Update eggs, share new moments, and keep the website looking fresh from your phone.';
+    setText(hero.querySelector('h1'), 'Welcome back, Jacy.');
+    setText(hero.querySelector('p'), 'Here’s what’s happening around the Hollow. Update eggs, share new moments, and keep the website looking fresh from your phone.');
   }
 
   function addStatusCard() {
@@ -63,8 +60,7 @@
       const controlPhoto = title.includes('product photo') || title.includes('flock picture') || title.includes('hero photo') || title.includes('meet jacy portrait') || title.includes('family & service photo') || title.includes('animal care photo');
       card.classList.toggle('admin-hidden-development', controlPhoto);
     });
-    const managerCopy = document.querySelector('#sitewide-photo-manager > p');
-    if (managerCopy) managerCopy.textContent = 'Manage the Hollow moments shared in the public gallery. Page design pictures are handled in their own sections.';
+    setText(document.querySelector('#sitewide-photo-manager > p'), 'Manage the Hollow moments shared in the public gallery. Page design pictures are handled in their own sections.');
   }
 
   function polish() {

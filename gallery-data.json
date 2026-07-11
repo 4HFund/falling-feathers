@@ -1,6 +1,146 @@
 {
-  "generated_at": "2026-07-11T01:09:06Z",
+  "generated_at": "2026-07-11T04:27:41Z",
   "resources": [
+    {
+      "public_id": "falling-feathers/ducks/IMG_1263_i59yag",
+      "format": "jpg",
+      "version": 1783741191,
+      "width": 1536,
+      "height": 2048,
+      "bytes": 1771537,
+      "created_at": "2026-07-11T03:39:51Z",
+      "tags": [
+        "around-the-hollow",
+        "website-gallery"
+      ],
+      "context": {}
+    },
+    {
+      "public_id": "falling-feathers/ducks/IMG_4688_yf4aq9",
+      "format": "jpg",
+      "version": 1783741190,
+      "width": 1536,
+      "height": 2048,
+      "bytes": 824452,
+      "created_at": "2026-07-11T03:39:50Z",
+      "tags": [
+        "farm-life",
+        "website-gallery"
+      ],
+      "context": {}
+    },
+    {
+      "public_id": "falling-feathers/ducks/IMG_4054_odwoqy",
+      "format": "jpg",
+      "version": 1783741190,
+      "width": 1536,
+      "height": 2048,
+      "bytes": 1788096,
+      "created_at": "2026-07-11T03:39:50Z",
+      "tags": [
+        "around-the-hollow",
+        "website-gallery"
+      ],
+      "context": {}
+    },
+    {
+      "public_id": "falling-feathers/ducks/IMG_3935_iusrs4",
+      "format": "jpg",
+      "version": 1783741190,
+      "width": 1536,
+      "height": 2048,
+      "bytes": 2122429,
+      "created_at": "2026-07-11T03:39:50Z",
+      "tags": [
+        "around-the-hollow",
+        "website-gallery"
+      ],
+      "context": {}
+    },
+    {
+      "public_id": "falling-feathers/ducks/IMG_1700_rgjo7y",
+      "format": "jpg",
+      "version": 1783741190,
+      "width": 1536,
+      "height": 2048,
+      "bytes": 616835,
+      "created_at": "2026-07-11T03:39:50Z",
+      "tags": [
+        "around-the-hollow",
+        "website-gallery"
+      ],
+      "context": {}
+    },
+    {
+      "public_id": "falling-feathers/ducks/IMG_2947_ta6lhv",
+      "format": "jpg",
+      "version": 1783741189,
+      "width": 2048,
+      "height": 1536,
+      "bytes": 1022816,
+      "created_at": "2026-07-11T03:39:49Z",
+      "tags": [
+        "around-the-hollow",
+        "website-gallery"
+      ],
+      "context": {}
+    },
+    {
+      "public_id": "falling-feathers/ducks/IMG_9057_xcqcm9",
+      "format": "jpg",
+      "version": 1783741189,
+      "width": 1536,
+      "height": 2048,
+      "bytes": 746839,
+      "created_at": "2026-07-11T03:39:49Z",
+      "tags": [
+        "around-the-hollow",
+        "website-gallery"
+      ],
+      "context": {}
+    },
+    {
+      "public_id": "falling-feathers/ducks/IMG_4676_elzjla",
+      "format": "jpg",
+      "version": 1783741189,
+      "width": 1536,
+      "height": 2048,
+      "bytes": 979082,
+      "created_at": "2026-07-11T03:39:49Z",
+      "tags": [
+        "around-the-hollow",
+        "website-gallery"
+      ],
+      "context": {}
+    },
+    {
+      "public_id": "falling-feathers/ducks/C6C82064-716A-47DB-9016-9C4CDBD3696B_f86fnu",
+      "format": "jpg",
+      "version": 1783741189,
+      "width": 1968,
+      "height": 2048,
+      "bytes": 913897,
+      "created_at": "2026-07-11T03:39:49Z",
+      "tags": [
+        "around-the-hollow",
+        "website-gallery"
+      ],
+      "context": {}
+    },
+    {
+      "public_id": "falling-feathers/ducks/IMG_8183_i0uzjf",
+      "format": "jpg",
+      "version": 1783741189,
+      "width": 1536,
+      "height": 2048,
+      "bytes": 1240726,
+      "created_at": "2026-07-11T03:39:49Z",
+      "tags": [
+        "around-the-hollow",
+        "website-gallery"
+      ],
+      "context": {}
+    },
     {
       "public_id": "falling-feathers/chickens/IMG_1584_tuj5c5",
       "format": "jpg",
@@ -12,12 +152,13 @@
       "tags": [
         "chickens",
         "featured",
+        "homepage-hero",
         "website-gallery"
       ],
       "context": {
         "custom": {
-          "description": "Came home with these little guys today.",
-          "title": "New Bantam Crew"
+          "title": "New Bantam Crew",
+          "description": "Came home with these little guys today."
         }
       }
     },
@@ -30,7 +171,9 @@
       "bytes": 9898148,
       "created_at": "2026-07-10T21:57:38Z",
       "tags": [
-        "around-the-hollow",
+        "farm-life",
+        "featured",
+        "homepage-story-2",
         "website-gallery"
       ],
       "context": {
@@ -49,6 +192,8 @@
       "created_at": "2026-07-10T20:30:07Z",
       "tags": [
         "chickens",
+        "featured",
+        "homepage-story-1",
         "website-gallery"
       ],
       "context": {}

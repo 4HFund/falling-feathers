@@ -9,6 +9,7 @@ const CATEGORIES = [
   'rescues', 'around-the-hollow', 'farm-life'
 ];
 const HOMEPAGE_SLOTS = ['homepage-hero', 'homepage-story-1', 'homepage-story-2'];
+const EGG_INVENTORY_KEY = 'current';
 
 function allowedOrigins(env) {
   const extras = String(env.ALLOWED_ORIGINS || '')
@@ -80,24 +81,13 @@ async function cloudinaryRequest(env, path, options = {}) {
 async function listTaggedResources(env, tag) {
   const resources = [];
   let nextCursor = '';
-
   do {
-    const query = new URLSearchParams({
-      max_results: '500',
-      tags: 'true',
-      context: 'true',
-      metadata: 'true'
-    });
+    const query = new URLSearchParams({ max_results: '500', tags: 'true', context: 'true', metadata: 'true' });
     if (nextCursor) query.set('next_cursor', nextCursor);
-
-    const data = await cloudinaryRequest(
-      env,
-      `/resources/image/tags/${encodeURIComponent(tag)}?${query}`
-    );
+    const data = await cloudinaryRequest(env, `/resources/image/tags/${encodeURIComponent(tag)}?${query}`);
     resources.push(...(Array.isArray(data.resources) ? data.resources : []));
     nextCursor = data.next_cursor || '';
   } while (nextCursor && resources.length < 2000);
-
   return resources;
 }
 
@@ -124,10 +114,7 @@ function normalizeResource(resource, status = 'visible') {
 async function changeTag(env, publicId, tag, command) {
   const body = new URLSearchParams({ command });
   body.append('public_ids[]', publicId);
-  return cloudinaryRequest(env, `/resources/image/tags/${encodeURIComponent(tag)}`, {
-    method: 'POST',
-    body
-  });
+  return cloudinaryRequest(env, `/resources/image/tags/${encodeURIComponent(tag)}`, { method: 'POST', body });
 }
 
 async function replaceCategory(env, publicId, currentTags, category) {
@@ -179,11 +166,67 @@ async function getAllManagedPhotos(env) {
     listTaggedResources(env, 'website-gallery'),
     listTaggedResources(env, 'website-hidden')
   ]);
-
   const byId = new Map();
   visible.forEach(photo => byId.set(photo.public_id, normalizeResource(photo, 'visible')));
   hidden.forEach(photo => byId.set(photo.public_id, normalizeResource(photo, 'hidden')));
   return [...byId.values()].sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
+}
+
+function defaultEggInventory() {
+  return {
+    updated_at: null,
+    public_message: 'Fresh eggs are offered when the flock is laying and supply allows.',
+    pickup_note: 'Local pickup in the Wheeling, West Virginia area. Contact us to confirm availability.',
+    products: {
+      chicken: { count: 0, price: '5.00', package: 'dozen', available: false, public_note: '' },
+      duck: { count: 0, price: '6.00', package: 'half dozen', available: false, public_note: '' },
+      quail: { count: 0, price: '6.00', package: '18-count carton', available: false, public_note: '' }
+    }
+  };
+}
+
+function cleanText(value, maxLength) {
+  return String(value || '').trim().slice(0, maxLength);
+}
+
+function sanitizeEggProduct(value, fallbackPackage) {
+  const count = Math.max(0, Math.floor(Number(value?.count) || 0));
+  const price = Math.max(0, Number(value?.price) || 0).toFixed(2);
+  return {
+    count,
+    price,
+    package: cleanText(value?.package || fallbackPackage, 40),
+    available: Boolean(value?.available) && count > 0,
+    public_note: cleanText(value?.public_note, 120)
+  };
+}
+
+function sanitizeEggInventory(value) {
+  return {
+    updated_at: new Date().toISOString(),
+    public_message: cleanText(value?.public_message, 300) || defaultEggInventory().public_message,
+    pickup_note: cleanText(value?.pickup_note, 300) || defaultEggInventory().pickup_note,
+    products: {
+      chicken: sanitizeEggProduct(value?.products?.chicken, 'dozen'),
+      duck: sanitizeEggProduct(value?.products?.duck, 'half dozen'),
+      quail: sanitizeEggProduct(value?.products?.quail, '18-count carton')
+    }
+  };
+}
+
+async function readEggInventory(env) {
+  if (!env.EGG_INVENTORY) return { inventory: defaultEggInventory(), configured: false };
+  const stored = await env.EGG_INVENTORY.get(EGG_INVENTORY_KEY, 'json');
+  return { inventory: stored || defaultEggInventory(), configured: true };
+}
+
+async function writeEggInventory(env, value) {
+  if (!env.EGG_INVENTORY) {
+    throw new Error('Egg inventory storage is not connected yet. Add a Workers KV binding named EGG_INVENTORY in Cloudflare.');
+  }
+  const inventory = sanitizeEggInventory(value);
+  await env.EGG_INVENTORY.put(EGG_INVENTORY_KEY, JSON.stringify(inventory));
+  return inventory;
 }
 
 export default {
@@ -197,17 +240,13 @@ export default {
       const url = new URL(request.url);
 
       if (url.pathname === '/health' && request.method === 'GET') {
-        return json(request, env, { ok: true, service: 'Falling Feathers Hollow Admin API' });
+        return json(request, env, { ok: true, service: 'Falling Feathers Hollow Admin API', egg_inventory_configured: Boolean(env.EGG_INVENTORY) });
       }
 
       if (url.pathname === '/gallery' && request.method === 'GET') {
         const visible = await listTaggedResources(env, 'website-gallery');
-        const resources = visible
-          .map(photo => normalizeResource(photo, 'visible'))
-          .sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
-        return json(request, env, { generated_at: new Date().toISOString(), resources }, 200, {
-          'Cache-Control': 'public, max-age=30, s-maxage=30'
-        });
+        const resources = visible.map(photo => normalizeResource(photo, 'visible')).sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
+        return json(request, env, { generated_at: new Date().toISOString(), resources }, 200, { 'Cache-Control': 'public, max-age=30, s-maxage=30' });
       }
 
       if (url.pathname === '/homepage' && request.method === 'GET') {
@@ -215,13 +254,25 @@ export default {
           const matches = await listTaggedResources(env, slot);
           return [slot, matches[0] ? normalizeResource(matches[0], 'visible') : null];
         }));
-        return json(request, env, { slots: Object.fromEntries(slotEntries) }, 200, {
-          'Cache-Control': 'public, max-age=30, s-maxage=30'
-        });
+        return json(request, env, { slots: Object.fromEntries(slotEntries) }, 200, { 'Cache-Control': 'public, max-age=30, s-maxage=30' });
+      }
+
+      if (url.pathname === '/eggs' && request.method === 'GET') {
+        const data = await readEggInventory(env);
+        return json(request, env, data, 200, { 'Cache-Control': 'public, max-age=20, s-maxage=20' });
       }
 
       if (!isAuthorized(request, env)) {
         return json(request, env, { error: 'Invalid admin PIN.' }, 401);
+      }
+
+      if (url.pathname === '/admin/eggs' && request.method === 'GET') {
+        return json(request, env, await readEggInventory(env));
+      }
+
+      if (url.pathname === '/admin/eggs' && request.method === 'POST') {
+        const body = await readJson(request);
+        return json(request, env, { inventory: await writeEggInventory(env, body), configured: true });
       }
 
       if (url.pathname === '/admin/photos' && request.method === 'GET') {
@@ -255,7 +306,6 @@ export default {
         } else {
           return json(request, env, { error: 'Unsupported action.' }, 400);
         }
-
         return json(request, env, { ok: true, public_id: publicId, action });
       }
 

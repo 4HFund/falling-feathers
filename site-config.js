@@ -19,11 +19,7 @@ if (/\/admin\.html$/i.test(window.location.pathname)) {
     'about-page-admin.js?v=20260710-1',
     'admin-quick-publish.js?v=20260711-2',
     'admin-polish.js?v=20260711-3'
-    'admin-quick-publish.js?v=20260711-1',
-    'admin-polish.js?v=20260711-2'
   ].forEach(loadFfhScript);
-} else {
-  loadFfhScript('public-final-polish.js?v=20260711-1');
 }
 
 if (/\/profiles\.html$/i.test(window.location.pathname)) {

@@ -18,11 +18,14 @@
     try {
       const data = await response.clone().json();
       if (!Array.isArray(data.resources)) return response;
-      const filtered = { ...data, resources: data.resources.filter(photo => !isControlPhoto(photo)) };
-      return new Response(JSON.stringify(filtered), {
+      const headers = new Headers(response.headers);
+      headers.delete('content-length');
+      headers.delete('content-encoding');
+      headers.set('content-type', 'application/json; charset=utf-8');
+      return new Response(JSON.stringify({ ...data, resources: data.resources.filter(photo => !isControlPhoto(photo)) }), {
         status: response.status,
         statusText: response.statusText,
-        headers: response.headers
+        headers
       });
     } catch {
       return response;

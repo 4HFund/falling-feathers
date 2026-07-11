@@ -3,8 +3,8 @@
   const PIN_KEY = 'falling-feathers-admin-pin';
   const SLOTS = [
     { key: 'homepage-hero', name: 'Top Homepage Photo', help: 'The large main photo near the top of the homepage.' },
-    { key: 'homepage-story-1', name: 'Homepage Story Card 1', help: 'An optional story card farther down the homepage.' },
-    { key: 'homepage-story-2', name: 'Homepage Story Card 2', help: 'A second optional story card farther down the homepage.' }
+    { key: 'homepage-story-1', name: 'Homepage Story Card 1', help: 'The first optional photo and story farther down the homepage.' },
+    { key: 'homepage-story-2', name: 'Homepage Story Card 2', help: 'The second optional photo and story farther down the homepage.' }
   ];
   const CATEGORY_ICONS = {
     ducks: '🦆', chickens: '🐔', quail: '🪶', eggs: '🥚', babies: '🐣',
@@ -49,8 +49,16 @@
     return data;
   }
 
+  function contextValue(photo, key, fallback = '') {
+    return photo?.context?.custom?.[key] || photo?.context?.[key] || fallback;
+  }
+
   function titleFor(photo) {
-    return photo?.context?.custom?.title || photo?.context?.title || 'Untitled photo';
+    return contextValue(photo, 'title', 'Untitled photo');
+  }
+
+  function descriptionFor(photo) {
+    return contextValue(photo, 'description', '');
   }
 
   function imageUrl(photo, width = 520) {
@@ -65,15 +73,19 @@
     return photos.filter(photo => photo.website_status !== 'hidden');
   }
 
+  function currentHomepageCount() {
+    return SLOTS.filter(slot => slotPhoto(slot.key)).length;
+  }
+
   function injectStyles() {
     const style = document.createElement('style');
     style.textContent = `
-      body{padding-bottom:calc(6rem + env(safe-area-inset-bottom))}
-      .vision-panel{scroll-margin-top:90px}.homepage-toolbar{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}.homepage-toolbar .upload-button{margin:0;flex:1}.homepage-refresh{border:1px solid rgba(75,59,42,.18);background:#fff;border-radius:15px;padding:1rem;font-weight:900;color:var(--brown)}
-      .homepage-explainer{background:#f7ead3;border:1px solid rgba(199,148,31,.25);border-radius:15px;padding:.85rem;line-height:1.5;font-size:.82rem;margin:.8rem 0}.homepage-explainer strong{color:var(--deep)}
+      body{padding-bottom:calc(6rem + env(safe-area-inset-bottom))}.vision-panel{scroll-margin-top:90px}
+      .homepage-toolbar{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}.homepage-toolbar .upload-button{margin:0;flex:1}.homepage-refresh{border:1px solid rgba(75,59,42,.18);background:#fff;border-radius:15px;padding:1rem;font-weight:900;color:var(--brown)}
+      .homepage-count-control{background:#f7ead3;border:1px solid rgba(199,148,31,.25);border-radius:16px;padding:1rem;margin:.8rem 0}.homepage-count-control label{display:block;font-weight:900;color:var(--deep);margin-bottom:.5rem}.homepage-count-row{display:grid;grid-template-columns:1fr auto;gap:.6rem}.homepage-count-row select{width:100%;padding:.85rem;border:1px solid rgba(75,59,42,.2);border-radius:13px;background:#fff;font-weight:800}.homepage-count-row button{border:0;border-radius:13px;background:var(--green);color:#fff;padding:.85rem 1rem;font-weight:900}
       .homepage-status{display:none;margin:.8rem 0 0;padding:.82rem;border-radius:13px;font-weight:800;line-height:1.4}.homepage-status.show{display:block}.homepage-status.loading{background:#fff7df;color:#6c4d16}.homepage-status.success{background:var(--mint);color:var(--green)}.homepage-status.error{background:#fff0ec;color:#8e3020}
-      .homepage-grid{display:grid;gap:.8rem;margin-top:.9rem}.homepage-slot{background:#fff;border:1px solid var(--line);border-radius:20px;padding:.8rem}.homepage-slot.current{box-shadow:0 10px 28px rgba(32,59,45,.09)}.slot-head{display:grid;grid-template-columns:105px 1fr;gap:.8rem;align-items:center}.slot-visual{width:105px;height:82px;border-radius:14px;background:#f4eadc;border:1px dashed rgba(75,59,42,.22);display:grid;place-items:center;overflow:hidden}.slot-preview{width:100%;height:100%;object-fit:cover}.slot-empty{font-size:.7rem;font-weight:900;color:var(--muted);text-align:center;line-height:1.25;padding:.4rem}.slot-copy strong,.slot-copy small{display:block}.slot-copy strong{color:var(--deep);font-size:1.05rem}.slot-copy small{color:var(--muted);line-height:1.35;margin-top:.22rem}.slot-selected{margin-top:.45rem;font-size:.72rem;font-weight:900;color:var(--green)}
-      .slot-select{width:100%;margin-top:.75rem;padding:.86rem;border:1px solid rgba(75,59,42,.2);border-radius:13px;background:#fff;color:var(--deep)}.slot-actions{display:grid;grid-template-columns:1fr auto;gap:.55rem;margin-top:.6rem}.slot-save,.slot-clear{border:0;border-radius:12px;padding:.78rem;font-weight:900}.slot-save{background:var(--green);color:#fff}.slot-clear{background:#f4e0c5;color:#65411f}.slot-save:disabled,.slot-clear:disabled{opacity:.5}
+      .homepage-grid{display:grid;gap:.8rem;margin-top:.9rem}.homepage-slot{background:#fff;border:1px solid var(--line);border-radius:20px;padding:.9rem}.homepage-slot.current{box-shadow:0 10px 28px rgba(32,59,45,.09)}.slot-head{display:grid;grid-template-columns:105px 1fr;gap:.8rem;align-items:center}.slot-visual{width:105px;height:82px;border-radius:14px;background:#f4eadc;border:1px dashed rgba(75,59,42,.22);display:grid;place-items:center;overflow:hidden}.slot-preview{width:100%;height:100%;object-fit:cover}.slot-empty{font-size:.7rem;font-weight:900;color:var(--muted);text-align:center;line-height:1.25;padding:.4rem}.slot-copy strong,.slot-copy small{display:block}.slot-copy strong{color:var(--deep);font-size:1.05rem}.slot-copy small{color:var(--muted);line-height:1.35;margin-top:.22rem}.slot-selected{margin-top:.45rem;font-size:.72rem;font-weight:900;color:var(--green)}
+      .slot-select,.slot-text input,.slot-text textarea{width:100%;padding:.84rem;border:1px solid rgba(75,59,42,.2);border-radius:13px;background:#fff;color:var(--deep)}.slot-select{margin-top:.75rem}.slot-text{display:grid;gap:.6rem;margin-top:.7rem}.slot-text label{display:block;font-size:.72rem;font-weight:900;color:var(--deep);margin-bottom:.3rem}.slot-text textarea{min-height:90px;resize:vertical;font-family:inherit}.slot-actions{display:grid;grid-template-columns:1fr auto;gap:.55rem;margin-top:.7rem}.slot-save,.slot-clear{border:0;border-radius:12px;padding:.82rem;font-weight:900}.slot-save{background:var(--green);color:#fff}.slot-clear{background:#f4e0c5;color:#65411f}.slot-save:disabled,.slot-clear:disabled{opacity:.5}
       .bottom-nav{position:fixed;z-index:5000;left:50%;transform:translateX(-50%);bottom:max(.65rem,env(safe-area-inset-bottom));width:min(calc(100% - 1rem),720px);display:grid;grid-template-columns:repeat(5,1fr);background:rgba(32,21,14,.95);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:.42rem;box-shadow:0 18px 50px rgba(0,0,0,.28)}.bottom-nav a{display:grid;place-items:center;text-decoration:none;color:#fff;font-size:.62rem;font-weight:800;gap:.12rem;padding:.42rem .15rem;border-radius:13px}.bottom-nav a span{font-size:1.18rem}.bottom-nav a:active{background:rgba(255,255,255,.12)}
       @media(min-width:760px){.homepage-grid{grid-template-columns:repeat(3,1fr)}.slot-head{grid-template-columns:1fr}.slot-visual{width:100%;height:150px}}
     `;
@@ -85,44 +97,21 @@
     if (!node) return;
     node.textContent = text;
     node.className = `homepage-status show ${type}`;
-    if (autoHide) {
-      window.setTimeout(() => {
-        if (node.textContent === text) node.className = 'homepage-status';
-      }, 3500);
-    }
+    if (autoHide) window.setTimeout(() => {
+      if (node.textContent === text) node.className = 'homepage-status';
+    }, 3500);
   }
 
   function setBusy(busy) {
-    document.querySelectorAll('#homepage-manager button,#homepage-manager select').forEach(control => {
+    document.querySelectorAll('#homepage-manager button,#homepage-manager select,#homepage-manager input,#homepage-manager textarea').forEach(control => {
       control.disabled = busy;
     });
-  }
-
-  function updateStats() {
-    const managed = document.getElementById('dashboard-photo-count');
-    const featured = document.getElementById('dashboard-featured-count');
-    const visible = document.getElementById('dashboard-visible-count');
-    if (managed) managed.textContent = photos.length;
-    if (featured) featured.textContent = photos.filter(photo => photo.featured).length;
-    if (visible) visible.textContent = visiblePhotos().length;
   }
 
   function simplifyVision() {
     document.querySelectorAll('.module').forEach(module => {
       if (module.querySelector('strong')?.textContent.trim() === 'Health records') module.remove();
     });
-
-    document.querySelectorAll('.roadmap-item').forEach(item => {
-      const strong = item.querySelector('strong');
-      const small = item.querySelector('small');
-      if (strong?.textContent.includes('Flock and sanctuary records')) {
-        strong.textContent = 'Flock and rescue stories';
-        if (small) small.textContent = 'Profiles, rescue history, updates, and memorials.';
-      }
-    });
-
-    const heroCopy = document.querySelector('.hero p');
-    if (heroCopy) heroCopy.textContent = 'Publish moments, manage the public gallery, update homepage photos, and keep egg availability current from one simple control center.';
   }
 
   function createPanel() {
@@ -133,19 +122,20 @@
     panel.className = 'panel vision-panel';
     panel.id = 'homepage-manager';
     panel.innerHTML = `
-      <div class="section-title"><h2>Homepage Photos</h2><span>Three different spots</span></div>
-      <p style="line-height:1.55;margin-top:0">This does not mean the same picture appears three times. These are three separate places where you may choose different photos.</p>
-      <div class="homepage-explainer"><strong>Top Homepage Photo</strong> is the main image. The two story cards are optional and can stay empty.</div>
-      <div class="homepage-toolbar">
-        <button class="upload-button" id="homepage-load" type="button">Load Homepage Photos</button>
-        <button class="homepage-refresh" id="homepage-refresh" type="button" aria-label="Refresh homepage photos">↻ Refresh</button>
+      <div class="section-title"><h2>Homepage Photos</h2><span>Photos and wording</span></div>
+      <p style="line-height:1.55;margin-top:0">Choose how many photos appear on the homepage, which photos are used, and the title and description shown with each one.</p>
+      <div class="homepage-count-control">
+        <label for="homepage-photo-count">How many homepage photos should show?</label>
+        <div class="homepage-count-row"><select id="homepage-photo-count"><option value="0">0 photos</option><option value="1">1 photo</option><option value="2">2 photos</option><option value="3">3 photos</option></select><button id="homepage-count-save" type="button">Apply</button></div>
       </div>
+      <div class="homepage-toolbar"><button class="upload-button" id="homepage-load" type="button">Load Homepage Photos</button><button class="homepage-refresh" id="homepage-refresh" type="button">↻ Refresh</button></div>
       <div class="homepage-status" id="homepage-status" aria-live="polite"></div>
       <div class="homepage-grid" id="homepage-grid" hidden></div>`;
     mount.before(panel);
 
     document.getElementById('homepage-load').addEventListener('click', () => loadPhotos(true));
     document.getElementById('homepage-refresh').addEventListener('click', () => loadPhotos(true));
+    document.getElementById('homepage-count-save').addEventListener('click', applyHomepageCount);
   }
 
   function renderSlots() {
@@ -153,39 +143,47 @@
     if (!grid) return;
     grid.hidden = false;
     grid.replaceChildren();
+    document.getElementById('homepage-photo-count').value = String(currentHomepageCount());
 
     SLOTS.forEach(slot => {
       const current = slotPhoto(slot.key);
       const card = document.createElement('article');
       card.className = `homepage-slot${current ? ' current' : ''}`;
       card.innerHTML = `
-        <div class="slot-head">
-          <div class="slot-visual"><img class="slot-preview" alt=""><div class="slot-empty">EMPTY<br>POSITION</div></div>
-          <div class="slot-copy"><strong></strong><small></small><div class="slot-selected"></div></div>
-        </div>
-        <select class="slot-select" aria-label="Choose photo"><option value="">Choose a photo…</option></select>
-        <div class="slot-actions"><button class="slot-save" type="button">Save This Photo</button><button class="slot-clear" type="button">Clear</button></div>`;
+        <div class="slot-head"><div class="slot-visual"><img class="slot-preview" alt=""><div class="slot-empty">EMPTY<br>POSITION</div></div><div class="slot-copy"><strong></strong><small></small><div class="slot-selected"></div></div></div>
+        <select class="slot-select"><option value="">Choose a photo…</option></select>
+        <div class="slot-text"><div><label>Title shown with this photo</label><input class="slot-title" maxlength="90" placeholder="Example: New Bantam Crew"></div><div><label>Description shown with this photo</label><textarea class="slot-description" maxlength="280" placeholder="Example: Came home with these little guys today."></textarea></div></div>
+        <div class="slot-actions"><button class="slot-save" type="button">Save Photo & Words</button><button class="slot-clear" type="button">Remove</button></div>`;
 
       const preview = card.querySelector('.slot-preview');
       const empty = card.querySelector('.slot-empty');
       const selectedText = card.querySelector('.slot-selected');
       const select = card.querySelector('.slot-select');
+      const titleInput = card.querySelector('.slot-title');
+      const descriptionInput = card.querySelector('.slot-description');
       const clearButton = card.querySelector('.slot-clear');
       card.querySelector('strong').textContent = slot.name;
       card.querySelector('small').textContent = slot.help;
 
-      if (current) {
-        preview.src = imageUrl(current);
-        preview.alt = titleFor(current);
-        preview.hidden = false;
-        empty.hidden = true;
-      } else {
-        preview.removeAttribute('src');
-        preview.alt = '';
-        preview.hidden = true;
-        empty.hidden = false;
+      function showSelection(photo) {
+        if (photo) {
+          preview.src = imageUrl(photo);
+          preview.alt = titleFor(photo);
+          preview.hidden = false;
+          empty.hidden = true;
+          titleInput.value = titleFor(photo) === 'Untitled photo' ? '' : titleFor(photo);
+          descriptionInput.value = descriptionFor(photo);
+        } else {
+          preview.removeAttribute('src');
+          preview.alt = '';
+          preview.hidden = true;
+          empty.hidden = false;
+          titleInput.value = '';
+          descriptionInput.value = '';
+        }
       }
 
+      showSelection(current);
       selectedText.textContent = current ? `Currently showing: ${titleFor(current)}` : 'Nothing is currently showing here';
       clearButton.disabled = !current;
 
@@ -197,21 +195,8 @@
         select.appendChild(option);
       });
 
-      select.addEventListener('change', () => {
-        const selected = photos.find(photo => photo.public_id === select.value);
-        if (selected) {
-          preview.src = imageUrl(selected);
-          preview.alt = titleFor(selected);
-          preview.hidden = false;
-          empty.hidden = true;
-        } else {
-          preview.removeAttribute('src');
-          preview.alt = '';
-          preview.hidden = true;
-          empty.hidden = false;
-        }
-      });
-      card.querySelector('.slot-save').addEventListener('click', () => saveSlot(slot.key, select.value));
+      select.addEventListener('change', () => showSelection(photos.find(photo => photo.public_id === select.value)));
+      card.querySelector('.slot-save').addEventListener('click', () => saveSlot(slot.key, select.value, titleInput.value, descriptionInput.value));
       clearButton.addEventListener('click', () => clearSlot(slot.key));
       grid.appendChild(card);
     });
@@ -222,15 +207,13 @@
     loading = true;
     setBusy(true);
     if (showMessage || !photos.length) setStatus('Loading your latest photos…', 'loading');
-
     try {
       const data = await api('/admin/photos');
       photos = Array.isArray(data.resources) ? data.resources : [];
       lastLoadedAt = Date.now();
       renderSlots();
-      updateStats();
       document.getElementById('homepage-load').textContent = 'Photos Loaded';
-      setStatus('Homepage photo positions are ready.', 'success', true);
+      setStatus('Homepage controls are ready.', 'success', true);
     } catch (error) {
       setStatus(error.message, 'error');
     } finally {
@@ -239,28 +222,19 @@
     }
   }
 
-  async function saveSlot(slot, publicId) {
-    if (!publicId) {
-      setStatus('Choose a photo before saving.', 'error');
-      return;
-    }
-
-    const usedElsewhere = photos.find(photo => photo.public_id === publicId && photo.homepage_slot && photo.homepage_slot !== slot);
-    if (usedElsewhere) {
-      const other = SLOTS.find(item => item.key === usedElsewhere.homepage_slot)?.name || 'another position';
-      setStatus(`That photo is already used for ${other}. Choose a different photo.`, 'error');
-      return;
-    }
+  async function saveSlot(slot, publicId, title, description) {
+    if (!publicId) return setStatus('Choose a photo before saving.', 'error');
+    const photo = photos.find(item => item.public_id === publicId);
+    const usedElsewhere = photos.find(item => item.public_id === publicId && item.homepage_slot && item.homepage_slot !== slot);
+    if (usedElsewhere) return setStatus('That photo is already being used in another homepage position.', 'error');
 
     setBusy(true);
-    setStatus('Saving homepage photo…', 'loading');
+    setStatus('Saving photo and wording…', 'loading');
     try {
-      await api('/admin/photo', {
-        method: 'POST',
-        body: JSON.stringify({ public_id: publicId, action: 'set-homepage-slot', slot })
-      });
+      await api('/admin/photo', { method: 'POST', body: JSON.stringify({ public_id: publicId, action: 'set-homepage-slot', slot }) });
+      await api('/admin/photo', { method: 'POST', body: JSON.stringify({ public_id: publicId, action: 'edit', title: title.trim(), description: description.trim(), category: photo?.category || 'farm-life', tags: photo?.tags || [] }) });
       await loadPhotos(false);
-      setStatus('Saved. Refresh the public homepage to see the change.', 'success', true);
+      setStatus('Homepage photo and wording saved.', 'success', true);
     } catch (error) {
       setStatus(error.message, 'error');
     } finally {
@@ -270,20 +244,13 @@
 
   async function clearSlot(slot) {
     const current = slotPhoto(slot);
-    if (!current) {
-      setStatus('That homepage position is already empty.', 'success', true);
-      return;
-    }
-
+    if (!current) return;
     setBusy(true);
-    setStatus('Clearing homepage position…', 'loading');
+    setStatus('Removing homepage photo…', 'loading');
     try {
-      await api('/admin/photo', {
-        method: 'POST',
-        body: JSON.stringify({ public_id: current.public_id, action: 'clear-homepage-slot', slot })
-      });
+      await api('/admin/photo', { method: 'POST', body: JSON.stringify({ public_id: current.public_id, action: 'clear-homepage-slot', slot }) });
       await loadPhotos(false);
-      setStatus('Homepage position cleared.', 'success', true);
+      setStatus('Homepage photo removed.', 'success', true);
     } catch (error) {
       setStatus(error.message, 'error');
     } finally {
@@ -291,65 +258,43 @@
     }
   }
 
-  function addSmartUpload() {
-    const title = document.getElementById('title');
-    const story = document.getElementById('story');
-    if (!title || !story || document.querySelector('.smart-upload-row')) return;
+  async function applyHomepageCount() {
+    const desired = Number(document.getElementById('homepage-photo-count').value);
+    const assigned = SLOTS.map(slot => ({ slot, photo: slotPhoto(slot.key) }));
+    const missing = assigned.slice(0, desired).filter(item => !item.photo);
+    if (missing.length) return setStatus(`Choose and save photos for the first ${desired} position${desired === 1 ? '' : 's'} before applying this number.`, 'error');
 
-    const row = document.createElement('div');
-    row.className = 'smart-upload-row';
-    row.style.cssText = 'display:flex;gap:.55rem;flex-wrap:wrap;margin:.8rem 0';
-    row.innerHTML = '<button class="homepage-refresh" type="button">✨ Suggest words</button><button class="homepage-refresh" type="button">Clear</button>';
-    title.closest('.field').before(row);
-
-    const suggestions = {
-      ducks: ['Duck Life at the Hollow', 'Another peaceful day with our ducks at Falling Feathers Hollow.'],
-      chickens: ['Life Around the Coop', 'A fresh moment with our chicken crew here at the Hollow.'],
-      quail: ['Tiny Birds, Big Personality', 'A quiet little moment with our quail flock.'],
-      eggs: ['Fresh From the Hollow', 'A look at today’s chicken, duck, or quail eggs.'],
-      babies: ['New Beginnings', 'These little ones are settling in and growing fast.'],
-      rescues: ['A Safe Place to Land', 'A new chapter begins with patience, care, and a safe home.'],
-      'around-the-hollow': ['Around the Hollow', 'A peaceful view from our little corner of Wheeling, West Virginia.'],
-      'farm-life': ['A Day at Falling Feathers Hollow', 'Real work, real animals, and another day building the Hollow feather by feather.']
-    };
-
-    row.children[0].addEventListener('click', () => {
-      const category = document.querySelector('.category.active')?.dataset.value || 'farm-life';
-      const [suggestedTitle, suggestedStory] = suggestions[category];
-      if (!title.value.trim()) title.value = suggestedTitle;
-      if (!story.value.trim()) story.value = suggestedStory;
-    });
-    row.children[1].addEventListener('click', () => {
-      title.value = '';
-      story.value = '';
-    });
+    setBusy(true);
+    setStatus('Updating the number of homepage photos…', 'loading');
+    try {
+      for (const item of assigned.slice(desired)) {
+        if (item.photo) await api('/admin/photo', { method: 'POST', body: JSON.stringify({ public_id: item.photo.public_id, action: 'clear-homepage-slot', slot: item.slot.key }) });
+      }
+      await loadPhotos(false);
+      setStatus(`Homepage will now show ${desired} photo${desired === 1 ? '' : 's'}.`, 'success', true);
+    } catch (error) {
+      setStatus(error.message, 'error');
+    } finally {
+      setBusy(false);
+    }
   }
 
   function createBottomNav() {
     if (document.querySelector('.bottom-nav')) return;
     const nav = document.createElement('nav');
     nav.className = 'bottom-nav';
-    nav.setAttribute('aria-label', 'Admin shortcuts');
     nav.innerHTML = '<a href="#"><span>🏠</span>Home</a><a href="#new-photo"><span>📷</span>Upload</a><a href="#homepage-manager"><span>⭐</span>Homepage</a><a href="#photo-manager-mount"><span>🖼️</span>Photos</a><a href="#egg-inventory"><span>🥚</span>Eggs</a>';
     document.body.appendChild(nav);
-  }
-
-  function refreshWhenNeeded() {
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && Date.now() - lastLoadedAt > 15000) loadPhotos(false);
-    });
-    window.addEventListener('focus', () => {
-      if (Date.now() - lastLoadedAt > 15000) loadPhotos(false);
-    });
   }
 
   function initialize() {
     injectStyles();
     simplifyVision();
     createPanel();
-    addSmartUpload();
     createBottomNav();
-    refreshWhenNeeded();
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && Date.now() - lastLoadedAt > 15000) loadPhotos(false);
+    });
     window.setTimeout(() => loadPhotos(false), 250);
   }
 

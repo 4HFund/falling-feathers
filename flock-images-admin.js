@@ -7,10 +7,9 @@
   const slots = [
     { key:'pekins', icon:'🦆', category:'ducks', badge:'Pekins', title:'Moonbeam & Ming Ming', description:'The Pekin ducks bring the classic duck charm, muddy footprints, and big personalities that helped define the hollow.' },
     { key:'rouens', icon:'🦆', category:'ducks', badge:'Rouens', title:'Pip, Puddles & Their Young', description:'The Rouen side of the flock is growing, with young birds being raised carefully as part of the sanctuary rhythm.' },
-    { key:'runners', icon:'🐥', category:'babies', badge:'Runner Ducks', title:'Runner Ducklings', description:'Runner ducklings add motion, energy, and a little comedy to the daily routine.' },
+    { key:'runners', icon:'🐥', category:'around-the-hollow', badge:'Runner Ducks', title:'Runner Ducklings', description:'Runner ducklings add motion, energy, and a little comedy to the daily routine.' },
     { key:'chickens', icon:'🐔', category:'chickens', badge:'Chicken Crew', title:'Chickens & Rooster', description:'The chicken crew supports the egg side of the hollow while bringing plenty of personality to the yard.' },
-    { key:'quail', icon:'🪶', category:'quail', badge:'Quail', title:'Miniature & Jumbo Quail', description:'The quail are cared for in a small-scale setting and help make the quail egg side of the hollow possible.' },
-    { key:'rescues', icon:'❤️', category:'rescues', badge:'Sanctuary', title:'Rescues & Special Care', description:'As needs arise, the hollow makes room for animals that need patience, safety, and a chance to settle in.' }
+    { key:'quail', icon:'🪶', category:'quail', badge:'Quail', title:'Miniature & Jumbo Quail', description:'The quail are cared for in a small-scale setting and help make the quail egg side of the hollow possible.' }
   ];
   let current = {};
 
@@ -39,7 +38,7 @@
   function createPanel(){
     const panel=document.createElement('section');
     panel.className='panel';panel.id='flock-image-controls';
-    panel.innerHTML=`<div class="section-title"><h2>Flock Manager</h2><span>Pictures & wording</span></div><p style="line-height:1.55;margin-top:0">Manage each group on the public Meet the Flock page. Change its picture, badge, title, or description from one place.</p><div class="flock-manager-grid" id="flock-manager-grid"></div><div class="result" id="flock-image-message" aria-live="polite"></div>`;
+    panel.innerHTML=`<div class="section-title"><h2>Flock Manager</h2><span>Pictures & wording</span></div><p style="line-height:1.55;margin-top:0">Manage every group currently shown on the public Meet the Flock page. Change its picture, badge, title, or description from one place.</p><div class="flock-manager-grid" id="flock-manager-grid"></div><div class="result" id="flock-image-message" aria-live="polite"></div>`;
     const mount=document.getElementById('photo-manager-mount');
     if(mount) mount.before(panel); else document.querySelector('main')?.appendChild(panel);
   }
@@ -55,7 +54,7 @@
 
   async function loadCurrent(){
     if(!API_BASE) return {};
-    const response=await fetch(`${API_BASE}/gallery`);if(!response.ok)return{};
+    const response=await fetch(`${API_BASE}/gallery`,{cache:'no-store'});if(!response.ok)return{};
     const data=await response.json();const photos=Array.isArray(data.resources)?data.resources:[];const found={};
     slots.forEach(slot=>{found[slot.key]=photos.find(photo=>Array.isArray(photo.tags)&&photo.tags.includes(`flock-${slot.key}`))||null;});
     return found;
@@ -74,7 +73,7 @@
       const description=card.querySelector('[data-field="description"]').value.trim();
       await api('/admin/photo',{method:'POST',body:JSON.stringify({public_id:photo.public_id,action:'edit',title:`${badge}${DELIMITER}${title}`,description,category:slot.category,tags:photo.tags||[]})});
       photo.context={custom:{title:`${badge}${DELIMITER}${title}`,description}};
-      message(`${title || slot.title} was updated on the flock page.`);
+      message(`${title || slot.title} was updated on the public Flock page.`);
     }catch(error){message(error.message,'error');}
     finally{button.disabled=false;button.textContent='Save Changes';}
   }
@@ -84,13 +83,13 @@
     const badge=card.querySelector('[data-field="badge"]').value.trim()||slot.badge;
     const title=card.querySelector('[data-field="title"]').value.trim()||slot.title;
     const description=card.querySelector('[data-field="description"]').value.trim()||slot.description;
-    const widget=cloudinary.createUploadWidget({cloudName:CLOUD_NAME,uploadPreset:UPLOAD_PRESET,multiple:false,sources:['local','camera'],resourceType:'image',clientAllowedFormats:['jpg','jpeg','png','webp','heic'],maxFileSize:12000000,folder:`falling-feathers/flock/${slot.key}`,tags:['website-gallery',slot.category,`flock-${slot.key}`],context:{title:`${badge}${DELIMITER}${title}`,description},showAdvancedOptions:false,cropping:true,croppingAspectRatio:4/3,croppingShowDimensions:true},(error,result)=>{
+    const widget=cloudinary.createUploadWidget({cloudName:CLOUD_NAME,uploadPreset:UPLOAD_PRESET,multiple:false,sources:['local','camera'],resourceType:'image',clientAllowedFormats:['jpg','jpeg','png','webp','heic'],maxFileSize:12000000,folder:`falling-feathers/flock/${slot.key}`,tags:['website-gallery','website-control',slot.category,`flock-${slot.key}`],context:{title:`${badge}${DELIMITER}${title}`,description},showAdvancedOptions:false,cropping:true,croppingAspectRatio:4/3,croppingShowDimensions:true},(error,result)=>{
       if(error){message(`Upload failed: ${error.message||'Unknown error'}`,'error');return;}
       if(result?.event==='success'){
-        current[slot.key]={public_id:result.info.public_id,format:result.info.format||'jpg',tags:['website-gallery',slot.category,`flock-${slot.key}`],context:{custom:{title:`${badge}${DELIMITER}${title}`,description}}};
+        current[slot.key]={public_id:result.info.public_id,format:result.info.format||'jpg',tags:['website-gallery','website-control',slot.category,`flock-${slot.key}`],context:{custom:{title:`${badge}${DELIMITER}${title}`,description}}};
         card.querySelector('.flock-manager-preview').innerHTML=`<img src="${result.info.secure_url}" alt="${title}">`;
         card.querySelector('.flock-manager-name small').textContent='Custom picture selected';
-        message(`${title} picture updated. You can also edit the wording and press Save Changes.`);
+        message(`${title} picture updated on the public Flock page. You can also edit the wording and press Save Changes.`);
       }
     });widget.open();
   }

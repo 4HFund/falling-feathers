@@ -3,15 +3,15 @@
   const apiBase = String(window.FFH_CONFIG?.apiBase || '').trim().replace(/\/$/, '');
 
   function titleFor(photo, fallback = 'Life at the Hollow') {
-    return photo.context?.custom?.title || photo.context?.title || fallback;
+    return photo?.context?.custom?.title || photo?.context?.title || fallback;
   }
 
   function descriptionFor(photo, fallback = 'A fresh moment from Falling Feathers Hollow.') {
-    return photo.context?.custom?.description || photo.context?.description || fallback;
+    return photo?.context?.custom?.description || photo?.context?.description || fallback;
   }
 
   function categoryFor(photo) {
-    const value = photo.category || 'farm-life';
+    const value = photo?.category || 'farm-life';
     return value.replace(/-/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
   }
 
@@ -26,7 +26,11 @@
   }
 
   function updateStoryCard(card, photo) {
-    if (!card || !photo) return;
+    if (!card) return;
+    if (!photo) {
+      card.hidden = true;
+      return;
+    }
     card.hidden = false;
     setImage(card.querySelector('img'), photo, 'Featured photo from Falling Feathers Hollow');
     const badge = card.querySelector('.badge');
@@ -37,31 +41,26 @@
     if (copy) copy.textContent = descriptionFor(photo);
   }
 
-  async function loadFeatured() {
+  async function loadHomepage() {
     if (!apiBase) return;
 
     try {
-      const response = await fetch(`${apiBase}/gallery`, { cache: 'no-store' });
-      if (!response.ok) throw new Error(`Homepage photo request returned ${response.status}`);
+      const response = await fetch(`${apiBase}/homepage`, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Homepage request returned ${response.status}`);
       const data = await response.json();
-      const resources = Array.isArray(data.resources) ? data.resources : [];
-      const featured = resources.filter(photo => photo.featured || photo.tags?.includes('featured'));
-      if (!featured.length) return;
+      const slots = data.slots || {};
 
-      setImage(document.getElementById('homepage-hero-photo'), featured[0], 'Featured photo from Falling Feathers Hollow');
+      if (slots['homepage-hero']) {
+        setImage(document.getElementById('homepage-hero-photo'), slots['homepage-hero'], 'Featured photo from Falling Feathers Hollow');
+      }
 
       const storyCards = [...document.querySelectorAll('[data-homepage-featured-card]')];
-      const storyPhotos = featured.slice(1, 3);
-
-      storyCards.forEach((card, index) => {
-        const photo = storyPhotos[index];
-        if (photo) updateStoryCard(card, photo);
-        else card.hidden = true;
-      });
+      updateStoryCard(storyCards[0], slots['homepage-story-1']);
+      updateStoryCard(storyCards[1], slots['homepage-story-2']);
     } catch (error) {
-      console.error('Homepage featured photos could not load:', error);
+      console.error('Homepage photos could not load:', error);
     }
   }
 
-  loadFeatured();
+  loadHomepage();
 })();

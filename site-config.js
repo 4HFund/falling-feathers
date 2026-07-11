@@ -3,8 +3,10 @@ window.FFH_CONFIG = {
 };
 
 if (/\/admin\.html$/i.test(window.location.pathname)) {
-  const script = document.createElement('script');
-  script.src = 'admin-vision.js';
-  script.defer = true;
-  document.head.appendChild(script);
+  ['admin-vision.js', 'egg-inventory-admin.js'].forEach(source => {
+    const script = document.createElement('script');
+    script.src = source;
+    script.defer = true;
+    document.head.appendChild(script);
+  });
 }

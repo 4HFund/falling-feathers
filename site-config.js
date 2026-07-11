@@ -24,14 +24,15 @@ async function loadAdminFeatures() {
   await whenDocumentReady();
 
   const scripts = [
-    'admin-recovery.js?v=20260711-hotfix1',
-    'admin-vision.js?v=20260711-hotfix1',
-    'homepage-gallery-control.js?v=20260711-hotfix1',
-    'egg-inventory-admin.js?v=20260711-hotfix1',
-    'egg-product-photos-admin.js?v=20260711-hotfix1',
-    'flock-images-admin.js?v=20260711-hotfix1',
-    'about-page-admin.js?v=20260711-hotfix1',
-    'admin-quick-publish.js?v=20260711-hotfix1'
+    'admin-recovery.js?v=20260711-present1',
+    'admin-vision.js?v=20260711-present1',
+    'homepage-gallery-control.js?v=20260711-present1',
+    'egg-inventory-admin.js?v=20260711-present1',
+    'egg-product-photos-admin.js?v=20260711-present1',
+    'flock-images-admin.js?v=20260711-present1',
+    'about-page-admin.js?v=20260711-present1',
+    'admin-quick-publish.js?v=20260711-present1',
+    'admin-presentation.js?v=20260711-present1'
   ];
 
   for (const source of scripts) {
@@ -50,13 +51,13 @@ if (/\/admin\.html$/i.test(window.location.pathname)) {
 }
 
 if (/\/profiles\.html$/i.test(window.location.pathname)) {
-  loadFfhScript('flock-images-public.js?v=20260711-hotfix1');
+  loadFfhScript('flock-images-public.js?v=20260711-present1');
 }
 
 if (/\/about\.html$/i.test(window.location.pathname)) {
-  loadFfhScript('about-page-public.js?v=20260711-hotfix1');
+  loadFfhScript('about-page-public.js?v=20260711-present1');
 }
 
 if (/\/gallery\.html$/i.test(window.location.pathname)) {
-  loadFfhScript('gallery-control-filter.js?v=20260711-hotfix1');
+  loadFfhScript('gallery-control-filter.js?v=20260711-present1');
 }

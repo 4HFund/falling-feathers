@@ -84,7 +84,7 @@ async function listTaggedResources(env, tag) {
   do {
     const query = new URLSearchParams({ max_results: '500', tags: 'true', context: 'true', metadata: 'true' });
     if (nextCursor) query.set('next_cursor', nextCursor);
-    const data = await cloudinaryRequest(env, `/resources/image/tags/${encodeURIComponent(tag)}?${query}`);
+    const data = await cloudinaryRequest(env, `/resources/image/upload/tags/${encodeURIComponent(tag)}?${query}`);
     resources.push(...(Array.isArray(data.resources) ? data.resources : []));
     nextCursor = data.next_cursor || '';
   } while (nextCursor && resources.length < 2000);
@@ -114,7 +114,7 @@ function normalizeResource(resource, status = 'visible') {
 async function changeTag(env, publicId, tag, command) {
   const body = new URLSearchParams({ command });
   body.append('public_ids[]', publicId);
-  return cloudinaryRequest(env, `/resources/image/tags/${encodeURIComponent(tag)}`, { method: 'POST', body });
+  return cloudinaryRequest(env, `/resources/image/upload/tags/${encodeURIComponent(tag)}`, { method: 'POST', body });
 }
 
 async function replaceCategory(env, publicId, currentTags, category) {

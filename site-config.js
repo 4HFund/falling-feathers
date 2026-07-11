@@ -15,7 +15,8 @@ if (/\/admin\.html$/i.test(window.location.pathname)) {
     'homepage-gallery-control.js?v=20260710-1',
     'egg-inventory-admin.js?v=20260710-1',
     'flock-images-admin.js?v=20260710-1',
-    'about-page-admin.js?v=20260710-1'
+    'about-page-admin.js?v=20260710-1',
+    'admin-quick-publish.js?v=20260711-1'
   ].forEach(loadFfhScript);
 }
 

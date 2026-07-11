@@ -26,10 +26,10 @@
   }
 
   function updateStoryCard(card, photo) {
-    if (!card) return;
+    if (!card) return false;
     if (!photo) {
       card.hidden = true;
-      return;
+      return false;
     }
     card.hidden = false;
     setImage(card.querySelector('img'), photo, 'Featured photo from Falling Feathers Hollow');
@@ -39,6 +39,7 @@
     if (badge) badge.textContent = categoryFor(photo);
     if (heading) heading.textContent = titleFor(photo);
     if (copy) copy.textContent = descriptionFor(photo);
+    return true;
   }
 
   async function loadHomepage() {
@@ -50,13 +51,22 @@
       const data = await response.json();
       const slots = data.slots || {};
 
+      const heroSection = document.getElementById('homepage-hero-section');
+      const heroMedia = document.getElementById('homepage-hero-media');
       if (slots['homepage-hero']) {
         setImage(document.getElementById('homepage-hero-photo'), slots['homepage-hero'], 'Featured photo from Falling Feathers Hollow');
+        if (heroMedia) heroMedia.hidden = false;
+        if (heroSection) heroSection.classList.remove('no-photo');
+      } else {
+        if (heroMedia) heroMedia.hidden = true;
+        if (heroSection) heroSection.classList.add('no-photo');
       }
 
       const storyCards = [...document.querySelectorAll('[data-homepage-featured-card]')];
-      updateStoryCard(storyCards[0], slots['homepage-story-1']);
-      updateStoryCard(storyCards[1], slots['homepage-story-2']);
+      const hasStoryOne = updateStoryCard(storyCards[0], slots['homepage-story-1']);
+      const hasStoryTwo = updateStoryCard(storyCards[1], slots['homepage-story-2']);
+      const storySection = document.getElementById('homepage-stories-section');
+      if (storySection) storySection.hidden = !(hasStoryOne || hasStoryTwo);
     } catch (error) {
       console.error('Homepage photos could not load:', error);
     }

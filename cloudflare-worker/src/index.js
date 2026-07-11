@@ -78,17 +78,29 @@ async function cloudinaryRequest(env, path, options = {}) {
   return data;
 }
 
-async function listTaggedResources(env, tag) {
+async function listAllImageResources(env) {
   const resources = [];
   let nextCursor = '';
   do {
-    const query = new URLSearchParams({ max_results: '500', tags: 'true', context: 'true', metadata: 'true' });
+    const query = new URLSearchParams({
+      max_results: '500',
+      tags: 'true',
+      context: 'true',
+      metadata: 'true'
+    });
     if (nextCursor) query.set('next_cursor', nextCursor);
-    const data = await cloudinaryRequest(env, `/resources/image/upload/tags/${encodeURIComponent(tag)}?${query}`);
+
+    const data = await cloudinaryRequest(env, `/resources/image/upload?${query}`);
     resources.push(...(Array.isArray(data.resources) ? data.resources : []));
     nextCursor = data.next_cursor || '';
   } while (nextCursor && resources.length < 2000);
+
   return resources;
+}
+
+async function listTaggedResources(env, tag) {
+  const resources = await listAllImageResources(env);
+  return resources.filter(resource => Array.isArray(resource.tags) && resource.tags.includes(tag));
 }
 
 function normalizeResource(resource, status = 'visible') {
@@ -112,9 +124,9 @@ function normalizeResource(resource, status = 'visible') {
 }
 
 async function changeTag(env, publicId, tag, command) {
-  const body = new URLSearchParams({ command });
+  const body = new URLSearchParams({ command, tag });
   body.append('public_ids[]', publicId);
-  return cloudinaryRequest(env, `/resources/image/upload/tags/${encodeURIComponent(tag)}`, { method: 'POST', body });
+  return cloudinaryRequest(env, '/image/tags', { method: 'POST', body });
 }
 
 async function replaceCategory(env, publicId, currentTags, category) {
@@ -146,7 +158,7 @@ async function updateContext(env, publicId, title, description) {
   const safeDescription = String(description || '').replace(/[|=]/g, ' ').trim();
   body.set('context', `title=${safeTitle}|description=${safeDescription}`);
   body.append('public_ids[]', publicId);
-  return cloudinaryRequest(env, '/resources/image/context', { method: 'POST', body });
+  return cloudinaryRequest(env, '/image/context', { method: 'POST', body });
 }
 
 async function deleteResource(env, publicId) {
@@ -162,13 +174,18 @@ async function readJson(request) {
 }
 
 async function getAllManagedPhotos(env) {
-  const [visible, hidden] = await Promise.all([
-    listTaggedResources(env, 'website-gallery'),
-    listTaggedResources(env, 'website-hidden')
-  ]);
+  const all = await listAllImageResources(env);
   const byId = new Map();
-  visible.forEach(photo => byId.set(photo.public_id, normalizeResource(photo, 'visible')));
-  hidden.forEach(photo => byId.set(photo.public_id, normalizeResource(photo, 'hidden')));
+
+  all.forEach(photo => {
+    const tags = Array.isArray(photo.tags) ? photo.tags : [];
+    if (tags.includes('website-hidden')) {
+      byId.set(photo.public_id, normalizeResource(photo, 'hidden'));
+    } else if (tags.includes('website-gallery')) {
+      byId.set(photo.public_id, normalizeResource(photo, 'visible'));
+    }
+  });
+
   return [...byId.values()].sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
 }
 
@@ -240,26 +257,39 @@ export default {
       const url = new URL(request.url);
 
       if (url.pathname === '/health' && request.method === 'GET') {
-        return json(request, env, { ok: true, service: 'Falling Feathers Hollow Admin API', egg_inventory_configured: Boolean(env.EGG_INVENTORY) });
+        return json(request, env, {
+          ok: true,
+          service: 'Falling Feathers Hollow Admin API',
+          egg_inventory_configured: Boolean(env.EGG_INVENTORY)
+        });
       }
 
       if (url.pathname === '/gallery' && request.method === 'GET') {
         const visible = await listTaggedResources(env, 'website-gallery');
-        const resources = visible.map(photo => normalizeResource(photo, 'visible')).sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
-        return json(request, env, { generated_at: new Date().toISOString(), resources }, 200, { 'Cache-Control': 'public, max-age=30, s-maxage=30' });
+        const resources = visible
+          .map(photo => normalizeResource(photo, 'visible'))
+          .sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
+        return json(request, env, { generated_at: new Date().toISOString(), resources }, 200, {
+          'Cache-Control': 'public, max-age=30, s-maxage=30'
+        });
       }
 
       if (url.pathname === '/homepage' && request.method === 'GET') {
-        const slotEntries = await Promise.all(HOMEPAGE_SLOTS.map(async slot => {
-          const matches = await listTaggedResources(env, slot);
-          return [slot, matches[0] ? normalizeResource(matches[0], 'visible') : null];
+        const all = await listAllImageResources(env);
+        const slots = Object.fromEntries(HOMEPAGE_SLOTS.map(slot => {
+          const match = all.find(resource => Array.isArray(resource.tags) && resource.tags.includes(slot));
+          return [slot, match ? normalizeResource(match, 'visible') : null];
         }));
-        return json(request, env, { slots: Object.fromEntries(slotEntries) }, 200, { 'Cache-Control': 'public, max-age=30, s-maxage=30' });
+        return json(request, env, { slots }, 200, {
+          'Cache-Control': 'public, max-age=30, s-maxage=30'
+        });
       }
 
       if (url.pathname === '/eggs' && request.method === 'GET') {
         const data = await readEggInventory(env);
-        return json(request, env, data, 200, { 'Cache-Control': 'public, max-age=20, s-maxage=20' });
+        return json(request, env, data, 200, {
+          'Cache-Control': 'public, max-age=20, s-maxage=20'
+        });
       }
 
       if (!isAuthorized(request, env)) {
@@ -272,7 +302,10 @@ export default {
 
       if (url.pathname === '/admin/eggs' && request.method === 'POST') {
         const body = await readJson(request);
-        return json(request, env, { inventory: await writeEggInventory(env, body), configured: true });
+        return json(request, env, {
+          inventory: await writeEggInventory(env, body),
+          configured: true
+        });
       }
 
       if (url.pathname === '/admin/photos' && request.method === 'GET') {
@@ -306,6 +339,7 @@ export default {
         } else {
           return json(request, env, { error: 'Unsupported action.' }, 400);
         }
+
         return json(request, env, { ok: true, public_id: publicId, action });
       }
 

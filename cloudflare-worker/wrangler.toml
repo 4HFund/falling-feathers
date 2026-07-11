@@ -3,5 +3,9 @@ main = "src/index.js"
 compatibility_date = "2026-07-10"
 workers_dev = true
 
+[[kv_namespaces]]
+binding = "EGG_INVENTORY"
+id = "153497b06a2c45d985afcab0d2edea90"
+
 [vars]
 CLOUDINARY_CLOUD_NAME = "ixfa510d"

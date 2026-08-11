@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-11T07:54:33Z",
+  "generated_at": "2026-08-11T08:53:35Z",
   "resources": [
     {
       "public_id": "falling-feathers/about/jacy/IMG_2388_yn5jon",
@@ -16,8 +16,8 @@
       ],
       "context": {
         "custom": {
-          "title": "Meet Jacy Portrait",
-          "description": "Main portrait beside Jacy’s story"
+          "description": "Main portrait beside Jacy’s story",
+          "title": "Meet Jacy Portrait"
         }
       }
     },
@@ -38,8 +38,8 @@
       ],
       "context": {
         "custom": {
-          "title": "Chicken Eggs product photo 1",
-          "description": "Rotating product image for Chicken Eggs on the Eggs page."
+          "description": "Rotating product image for Chicken Eggs on the Eggs page.",
+          "title": "Chicken Eggs product photo 1"
         }
       }
     },
@@ -199,8 +199,8 @@
       ],
       "context": {
         "custom": {
-          "title": "New Bantam Crew",
-          "description": "Came home with these little guys today."
+          "description": "Came home with these little guys today.",
+          "title": "New Bantam Crew"
         }
       }
     },
